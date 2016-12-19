@@ -1,22 +1,31 @@
-import pygame, tablero, ficha
-
-board = tablero.Tablero()
-chip = ficha.Ficha()
-pygame.init()                                        # Inicializando pygame
+import pygame, tablero
+from ficha import Ficha
+from tablero import Tablero
 
 display_width = 800
 display_heigth = 800
 
-gameDisplay = pygame.display.set_mode((display_width, display_heigth))    # Dimenciones del frame (ventana)
+mx = 0
+my = 0
+
+board = Tablero()
+
+pygame.init()                                                             # Inicializando pygame
+
+chip = Ficha('f_marron.png')
+
+gameSurface = pygame.display.set_mode((display_width, display_heigth))     # Dimenciones del surface (ventana)
+sup_tablero = pygame.image.load('tablero.png').convert()
+
+
 pygame.display.set_caption('Checkers')                                    # titulo de la ventana
-clock = pygame.time.Clock()                                               # reloj de juego
+                                                                          # reloj de juego
 gana_empate = False                                                       # Control main loop del juego, cambiando este valor, a True,                                                       # Se acaba el juego
 
-ficha = chip.cargar_imagen()           # 60 x 60
-background = board.cargar_imagen()                # 800 x 800
+gameSurface.blit(sup_tablero, (0, 0))
+gameSurface.blit(chip.sup_ficha, chip.ficha_rect)
 
-gameDisplay.blit(background, (0, 0))
-gameDisplay.blit(ficha, (20, 20))
+
 
 while not gana_empate:
 
@@ -24,8 +33,21 @@ while not gana_empate:
         if event.type == pygame.QUIT:
             gana_empate = True
 
+        #print(event)
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+
+            mx, my = pygame.mouse.get_pos()
+
+            print(mx, my)
+
+            # print(ficha_rect)
+            # ficha_rect.x, ficha_rect.y = mx, my
+            # gameSurface.blit(sup_tablero, (0, 0))
+            # gameSurface.blit(ficha, ficha_rect)
+
 
         pygame.display.update()                     # Si se coloca un parametro solo va a refrescar ese parametro
 
-pygame.quit()                                       # Cerrando pygame
-quit()
+pygame.quit()                                       # Cerrando todos los modulos de pygame
+quit()                                              # Cerrando Python
