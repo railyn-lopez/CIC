@@ -23,7 +23,7 @@ pygame.display.set_caption('Checkers')                                    # titu
 gana_empate = False                                                       # Control main loop del juego, cambiando este valor, a True,                                                       # Se acaba el juego
 
 gameSurface.blit(sup_tablero, (0, 0))
-gameSurface.blit(chip.sup_ficha, chip.ficha_rect)
+gameSurface.blit(chip.sup_ficha, chip.rect)
 
 
 
@@ -38,6 +38,12 @@ while not gana_empate:
         if event.type == pygame.MOUSEBUTTONDOWN:
 
             mx, my = pygame.mouse.get_pos()
+
+            if mx <= (chip.rect.bottomright[0] - 10)  and (my <= chip.rect.bottomright[1] - 10):
+                print(True)
+
+
+
 
             print(mx, my)
 
