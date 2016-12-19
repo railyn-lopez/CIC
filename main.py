@@ -25,35 +25,31 @@ gana_empate = False                                                       # Cont
 gameSurface.blit(sup_tablero, (0, 0))
 gameSurface.blit(chip.sup_ficha, chip.rect)
 
-
-
 while not gana_empate:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             gana_empate = True
 
-        #print(event)
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEMOTION and pygame.mouse.get_pressed()[0] == 1:
 
             mx, my = pygame.mouse.get_pos()
+            #print(mx, my)
 
-            if mx <= (chip.rect.bottomright[0] - 10)  and (my <= chip.rect.bottomright[1] - 10):
-                print(True)
+            if mx <= (chip.rect.x + chip.rect.width) and (my <= (chip.rect.y) + chip.rect.height) and pygame.mouse.get_pressed()[0] == 1:
+
+                print('TRUE')
+                mx, my = 0, 0
+                chip.rect.x, chip.rect.y = pygame.mouse.get_pos()
+
+                #print('True Presionado')
+                #print(chip.rect.x, (mx, my))
+
+                gameSurface.blit(sup_tablero, (0, 0))
+                gameSurface.blit(chip.sup_ficha, chip.rect)
 
 
-
-
-            print(mx, my)
-
-            # print(ficha_rect)
-            # ficha_rect.x, ficha_rect.y = mx, my
-            # gameSurface.blit(sup_tablero, (0, 0))
-            # gameSurface.blit(ficha, ficha_rect)
-
-
-        pygame.display.update()                     # Si se coloca un parametro solo va a refrescar ese parametro
+    pygame.display.update()                         # Si se coloca un parametro solo va a refrescar ese parametro
 
 pygame.quit()                                       # Cerrando todos los modulos de pygame
 quit()                                              # Cerrando Python
