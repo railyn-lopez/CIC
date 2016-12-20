@@ -46,8 +46,9 @@ while not gana_empate:                                                    # Game
         if event.type == pygame.MOUSEMOTION and conf_click_area:   # Si el mouse se esta moviendo y no se ha levantado
             mx2, my2 = pygame.mouse.get_pos()                      # el boton por arriba de la ficha, obtener posicion del mouse
 
-            chip.rect.x = mx2
-            chip.rect.y = my2
+            if mx2 < display_width - 60 and my2 < display_heigth - 60:      # Para que la ficha no se pierda en los borde derecho e inferior
+                chip.rect.x = mx2
+                chip.rect.y = my2
 
         gameSurface.blit(sup_tablero, (0, 0))                      # Redibujando para dar la ilucion de movimiento
         gameSurface.blit(chip.sup_ficha, chip.rect)
