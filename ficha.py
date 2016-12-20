@@ -6,7 +6,16 @@ class Ficha:
         gameSurface = pygame.display.set_mode((800, 800))
         self.sup_ficha = pygame.image.load(nom_archivo).convert_alpha()       # 60 x 60
         self.rect = self.sup_ficha.get_rect()
-        self.rect.x = 10
-        self.rect.y = 10
+        self.rect.x = 400
+        self.rect.y = 400
+
+    def click_area(self, mx, my):
+        """Para determinar si se esta clickeando dentro de una ficha"""
+
+        if (self.rect.x <= mx <= self.rect.topright[0]) and (self.rect.y <= my <= self.rect.bottomleft[1]):
+            return True
+
+        else:
+            return False
 
 
