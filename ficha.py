@@ -6,7 +6,7 @@ class Ficha:
         gameSurface = pygame.display.set_mode((800, 800))
         self.sup_ficha = pygame.image.load(nom_archivo).convert_alpha()       # 60 x 60
         self.rect = self.sup_ficha.get_rect()
-        self.rect.x = 20
+        self.rect.x = 120
         self.rect.y = 20
 
     def click_area(self, mx, my):
