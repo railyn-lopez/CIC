@@ -52,7 +52,7 @@ while not gana_empate:                                                    # Game
 
         gameSurface.blit(sup_tablero, (0, 0))                      # Redibujando para dar la ilucion de movimiento
         gameSurface.blit(chip.sup_ficha, chip.rect)
-        pygame.display.update()                         # Si se coloca un parametro solo va a refrescar ese parametro
+        pygame.display.update()                                    # Si se coloca un parametro solo va a refrescar ese parametro
 
-pygame.quit()                                           # Cerrando todos los modulos de pygame
-quit()                                                  # Cerrando Python
+pygame.quit()                                                      # Cerrando todos los modulos de pygame
+quit()                                                             # Cerrando Python
