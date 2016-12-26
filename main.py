@@ -62,7 +62,7 @@ while not gana_empate:                                                    # Game
         if event.type == pygame.MOUSEBUTTONUP and pygame.mouse.get_pressed()[0] == 0:           # Para determinar si se levanto el boton izq.
 
             mx, my = pygame.mouse.get_pos()
-            if board.movimiento_valido(mx, my):                                                 # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
+            if board.movimiento_valido(mx, my, mxg, myg):                                       # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
 
                 board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
                 cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada

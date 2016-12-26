@@ -57,14 +57,16 @@ class Tablero:
 
                     return f, c
 
-    def movimiento_valido(self, x, y):
+    def movimiento_valido(self, x, y, x_vieja, y_vieja):
         """Para determinar si la ficha se ha movido a una casilla valida"""
 
-        f, c = self.det_casilla(x, y)
+        f_vieja, c_vieja = self.det_casilla(x_vieja, y_vieja)               # Para determinar, la casilla de arrancada de moviemiento.
+
+        f, c = self.det_casilla(x, y)                                       # Para determinar, la casilla de actual
 
         casilla = self._matriz[f][c]
 
-        if casilla.ficha == None and casilla.color == True:
+        if casilla.ficha == None and casilla.color == True and  (f - 1) == f_vieja: # El mov. es valido si la ficha a sido movida a una casilla solida y ha decendido una fila.
 
             return True
 
