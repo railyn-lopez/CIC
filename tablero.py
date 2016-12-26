@@ -66,9 +66,23 @@ class Tablero:
 
         if casilla.ficha == None and casilla.color == True:
 
-            #self._matriz[f][c] = casilla
-
             return True
+
+    def cop_ficha(self, x, y, ficha):
+        """Para copiar una ficha de una casilla a otra"""
+
+        f, c = self.det_casilla(x, y)
+        casilla = self._matriz[f][c]
+        casilla.ficha = ficha
+
+    def casilla_activa(self, x, y):
+        """Para mover una ficha de casilla"""
+
+        f, c = self.det_casilla(x, y)
+
+        return self._matriz[f][c]
+
+
 
 #a = Tablero()
 #

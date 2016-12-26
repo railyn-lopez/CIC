@@ -37,8 +37,8 @@ for f in range(len(matriz)):
     for c in range(len(matriz[f])):
         casb = matriz[f][c]
         if casb.ficha != None:
-            cas = casb          # Almacenando la casilla que contiene la ficha
-            gameSurface.blit(cas.ficha.sup_ficha, cas.ficha.rect)         # chip.sup_ficha, chip.rect)
+            cas_pintar = casb          # Almacenando la casilla que contiene la ficha
+            gameSurface.blit(cas_pintar.ficha.sup_ficha, cas_pintar.ficha.rect)         # chip.sup_ficha, chip.rect)
 
 
 while not gana_empate:                                                    # Game Loop
@@ -50,27 +50,42 @@ while not gana_empate:                                                    # Game
 
         if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0] == 1:         # Si se clickeo con el boton izq
             mx, my = pygame.mouse.get_pos()
+            mxg = mx                                                                            # Para almacenar la posicion donde se clickeo la ficha para moverla
+            myg = my
+            cas = board.casilla_activa(mx, my)
 
             if cas.ficha != None:
-                ficha_mover = cas.ficha             # Almacenando la ficha que se cambiara de lugar
-                conf_click_area = cas.ficha.click_area(mx, my)
-
+                cas_mov = cas                                                                   # La casilla donde se almacena la ficha a cambiar de lugar
+                conf_click_area = cas.ficha.click_area(mx, my)                                  # Para validar si se esta clickeando una ficha
+                #print(conf_click_area)
 
         if event.type == pygame.MOUSEBUTTONUP and pygame.mouse.get_pressed()[0] == 0:           # Para determinar si se levanto el boton izq.
 
             mx, my = pygame.mouse.get_pos()
-            if board.movimiento_valido(mx, my):                     # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
-                print('Se ejecuto')
+            if board.movimiento_valido(mx, my):                                                 # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
+
+                board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
+                cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
+                #print('Se ejecuto')
                 conf_click_area = False
 
+            else:                                                                               # En caso de que el movimiento no sea valido, redibujar la ficha en la casilla donde estaba
+                conf_click_area = False
+                cas = board.casilla_activa(mxg, myg)
+                cas.ficha.rect.centerx = mxg
+                cas.ficha.rect.centery = myg
+
+                gameSurface.blit(sup_tablero, (0, 0))  # Redibujando para dar la ilucion de movimiento
+                gameSurface.blit(cas.ficha.sup_ficha, cas.ficha.rect)
+
+
         if event.type == pygame.MOUSEMOTION and conf_click_area:   # Si el mouse se esta moviendo y no se ha levantado
-            mx2, my2 = pygame.mouse.get_pos()                      # el boton por arriba de la ficha, obtener posicion del mouse
+            mx2, my2 = pygame.mouse.get_pos()                      # El boton por arriba de la ficha, obtener posicion del mouse
 
             cas.ficha.rect.centerx = mx2
             cas.ficha.rect.centery = my2
 
-        if cas.ficha != None:
-            gameSurface.blit(sup_tablero, (0, 0))                      # Redibujando para dar la ilucion de movimiento
+            gameSurface.blit(sup_tablero, (0, 0))                  # Redibujando para dar la ilucion de movimiento
             gameSurface.blit(cas.ficha.sup_ficha, cas.ficha.rect)
 
         pygame.display.update()                                    # Si se coloca un parametro solo va a refrescar ese parametro
