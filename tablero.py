@@ -21,16 +21,29 @@ class Tablero:
             for c in range(len(self._matriz[f])):
                 cont_pixels_x += pixels_cuadro
 
+                color = False                   # El color de la casilla
+
+                if (f % 2 == 0 and c % 2 != 0) or (f % 2 != 0 and c % 2 == 0):     # Para determinar si el color de la casilla es solido
+
+                    color = True
+
                 # Por el momento solo se estara utilizando una ficha para pruebas.
                 if f == 0 and c == 1:                                             #(superior_izq, superior_der, inferior_izq, inferior_der )
-                    self._matriz[f][c] = Casilla (Ficha('f_marron.png'), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y))
+
+                    self._matriz[f][c] = Casilla (Ficha('f_marron.png'), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
                 else:
-                    self._matriz[f][c] = Casilla(None, (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y))
+                    self._matriz[f][c] = Casilla(None, (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
             cont_pixels_x = 0           # Bajar la columna
 
-
+        # for f in range(len(self._matriz)):
+        #     for c in range(len(self._matriz[f])):
+        #
+        #         print(self._matriz[f][c])
+        #
+        #     print()
+        #
         return self._matriz
 
     def det_casilla(self, x, y):
@@ -51,7 +64,7 @@ class Tablero:
 
         casilla = self._matriz[f][c]
 
-        if casilla.ficha == None:
+        if casilla.ficha == None and casilla.color == True:
 
             #self._matriz[f][c] = casilla
 

@@ -60,7 +60,7 @@ while not gana_empate:                                                    # Game
 
             mx, my = pygame.mouse.get_pos()
             if board.movimiento_valido(mx, my):                     # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
-                #print('Se ejecuto')
+                print('Se ejecuto')
                 conf_click_area = False
 
         if event.type == pygame.MOUSEMOTION and conf_click_area:   # Si el mouse se esta moviendo y no se ha levantado
