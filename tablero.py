@@ -7,7 +7,8 @@ class Tablero:
     def __init__(self):
 
         self._matriz = [[None for f in range(8)] for c in range(8)]
-        self.filas_iniciales = [0, 1, 2, 5, 6, 7]                       # Filas iniciales que pueden ser llenadas con filas.
+        self.filas_ini_sup = [0, 1, 2]                                # Filas iniciales en la parte superior del tablero.
+        self.filas_ini_inf = [5, 6, 7]                                # Filas iniciales en la parte inferior del tablero.
 
 
     def inicializar_tablero(self):
@@ -27,8 +28,8 @@ class Tablero:
                     color = True                # Color solido
 
                 # Por el momento solo se estara utilizando una ficha para pruebas.
-                if f == 0 and c == 1:                                             #(x_izq, x_der, y_arriba, y_abajo )
-                    self._matriz[f][c] = Casilla (Ficha('f_blanca.png', f), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+                if f == 6 and c == 1:                                             #(x_izq, x_der, y_arriba, y_abajo )
+                    self._matriz[f][c] = Casilla (Ficha('f_marron.png', f), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
                 else:
                     self._matriz[f][c] = Casilla(None, (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
@@ -62,15 +63,22 @@ class Tablero:
 
         casilla_vieja = self._matriz[f_vieja][c_vieja]
 
-        f, c = self.det_casilla(x, y)                                               # Para determinar, la casilla de actual
+        f, c = self.det_casilla(x, y)                                               # Para determinar, la casilla donde se pienza realizar el movimiento.
 
         casilla = self._matriz[f][c]
 
-        if casilla_vieja.ficha.nom_archivo == 'f_blanca.png' or casilla_vieja.ficha.nom_archivo == 'f_marron.png':
+        if casilla_vieja.ficha.nom_archivo == 'f_blanca.png' or casilla_vieja.ficha.nom_archivo == 'f_marron.png':      # Logica mov. fichas simpoles
 
-            if casilla.ficha == None and casilla.color == True and  (f - 1) == f_vieja:                                 # El mov. es valido si la ficha a sido movida a una casilla solida y ha decendido una fila (ficha_normal).
+            if casilla_vieja.ficha.fila_inicial in self.filas_ini_sup:                                                  # Para fichas inicializadas en la filas superiores, solo pueden descender diagonalmente.
 
-                return True
+                if casilla.ficha == None and casilla.color == True and (f - 1) == f_vieja:                              # El mov. es valido si la ficha a sido movida a una casilla solida y ha decendido una fila (ficha_normal).
+                    return True
+
+            if casilla_vieja.ficha.fila_inicial in self.filas_ini_inf:                                                  # Para fichas inicializadas en la filas inferiores, solo pueden ascender diagonalmente.
+
+                if casilla.ficha == None and casilla.color == True and (f + 1) == f_vieja:                              # El mov. es valido si la ficha a sido movida a una casilla solida y ha ascendido una fila (ficha_normal).
+                    return True
+
 
         if casilla_vieja.ficha.nom_archivo == 'f_blanca_rey.png' or casilla_vieja.ficha.nom_archivo == 'f_marron_rey.png':
 

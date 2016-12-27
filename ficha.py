@@ -8,7 +8,7 @@ class Ficha:
         self.nom_archivo = nom_archivo
         self.rect = self.sup_ficha.get_rect()
         self.rect.x = 120
-        self.rect.y = 20
+        self.rect.y = 620
         self.fila_inicial = fila_inicial
 
     def click_area(self, mx, my):
