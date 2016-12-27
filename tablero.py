@@ -7,6 +7,7 @@ class Tablero:
     def __init__(self):
 
         self._matriz = [[None for f in range(8)] for c in range(8)]
+        self.filas_iniciales = [0, 1, 2, 5, 6, 7]                       # Filas iniciales que pueden ser llenadas con filas.
 
 
     def inicializar_tablero(self):
@@ -22,15 +23,12 @@ class Tablero:
                 cont_pixels_x += pixels_cuadro
 
                 color = False                   # El color de la casilla
-
                 if (f % 2 == 0 and c % 2 != 0) or (f % 2 != 0 and c % 2 == 0):     # Para determinar si el color de la casilla es solido
-
-                    color = True
+                    color = True                # Color solido
 
                 # Por el momento solo se estara utilizando una ficha para pruebas.
                 if f == 0 and c == 1:                                             #(x_izq, x_der, y_arriba, y_abajo )
-
-                    self._matriz[f][c] = Casilla (Ficha('f_marron.png'), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+                    self._matriz[f][c] = Casilla (Ficha('f_blanca.png', f), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
                 else:
                     self._matriz[f][c] = Casilla(None, (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
@@ -74,6 +72,19 @@ class Tablero:
         """Para copiar una ficha de una casilla a otra"""
 
         f, c = self.det_casilla(x, y)
+
+        if f == 0 or f == 7:                            # En caso de que se llege a kings row
+
+            if ficha.nom_archivo == 'f_marron.png':     # Coronando la ficha marron
+                ficha = Ficha('f_marron_rey.png', f)
+                ficha.rect.x = x
+                ficha.rect.y = y
+
+            if ficha.nom_archivo == 'f_blanca.png':     # Coronando la ficha blanca
+                ficha = Ficha('f_blanca_rey.png', f)
+                ficha.rect.x = x
+                ficha.rect.y = y
+
         casilla = self._matriz[f][c]
         casilla.ficha = ficha
 

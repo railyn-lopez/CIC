@@ -17,8 +17,6 @@ matriz = board.inicializar_tablero()
 
 pygame.init()                                                             # Inicializando pygame
 
-chip = Ficha('f_marron.png')
-
 gameSurface = pygame.display.set_mode((display_width, display_heigth))     # Dimenciones del surface (ventana)
 sup_tablero = pygame.image.load('tablero.png').convert()
 

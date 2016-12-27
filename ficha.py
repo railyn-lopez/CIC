@@ -1,13 +1,15 @@
 import pygame
 
 class Ficha:
-    def __init__(self, nom_archivo):
+    def __init__(self, nom_archivo, fila_inicial):
 
         gameSurface = pygame.display.set_mode((800, 800))
         self.sup_ficha = pygame.image.load(nom_archivo).convert_alpha()       # 60 x 60
+        self.nom_archivo = nom_archivo
         self.rect = self.sup_ficha.get_rect()
         self.rect.x = 120
         self.rect.y = 20
+        self.fila_inicial = fila_inicial
 
     def click_area(self, mx, my):
         """Para determinar si se esta clickeando dentro de una ficha"""
