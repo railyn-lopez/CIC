@@ -60,16 +60,27 @@ class Tablero:
 
         f_vieja, c_vieja = self.det_casilla(x_vieja, y_vieja)                       # Para determinar, la casilla de arrancada de moviemiento.
 
+        casilla_vieja = self._matriz[f_vieja][c_vieja]
+
         f, c = self.det_casilla(x, y)                                               # Para determinar, la casilla de actual
 
         casilla = self._matriz[f][c]
 
-        if casilla.ficha == None and casilla.color == True and  (f - 1) == f_vieja: # El mov. es valido si la ficha a sido movida a una casilla solida y ha decendido una fila.
+        if casilla_vieja.ficha.nom_archivo == 'f_blanca.png' or casilla_vieja.ficha.nom_archivo == 'f_marron.png':
 
-            return True
+            if casilla.ficha == None and casilla.color == True and  (f - 1) == f_vieja:                                 # El mov. es valido si la ficha a sido movida a una casilla solida y ha decendido una fila (ficha_normal).
+
+                return True
+
+        if casilla_vieja.ficha.nom_archivo == 'f_blanca_rey.png' or casilla_vieja.ficha.nom_archivo == 'f_marron_rey.png':
+
+            if casilla.ficha == None and casilla.color == True and ((f - 1) == f_vieja or (f + 1) == f_vieja):          # El mov. es valido si la ficha a sido movida a una casilla solida y ha decendido una fila.
+                                                                                                                        # O subido una fila (ficha rey).
+                return True
+
 
     def cop_ficha(self, x, y, ficha):
-        """Para copiar una ficha de una casilla a otra"""
+        """Para copiar una ficha de una casilla a otra y coronar fichas"""
 
         f, c = self.det_casilla(x, y)
 
