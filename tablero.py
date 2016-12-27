@@ -16,25 +16,36 @@ class Tablero:
 
         cont_pixels_x = 0        # Para contar los pixeles en x, y tenerlos como referencia en la casilla correspondiente
         cont_pixels_y = 0        # Para contar los pixeles en y, y tenerlos como referencia en la casilla correspondiente
+        cont_pixels_ficha_x = -80
+        cont_pixels_ficha_y = -80
         pixels_cuadro = 100
 
         for f in range(len(self._matriz)):      # Inicializando la matriz del tablero que va a contener los objetos casilla
             cont_pixels_y += pixels_cuadro
+            cont_pixels_ficha_y += pixels_cuadro
+
             for c in range(len(self._matriz[f])):
                 cont_pixels_x += pixels_cuadro
+                cont_pixels_ficha_x += pixels_cuadro
 
                 color = False                   # El color de la casilla
                 if (f % 2 == 0 and c % 2 != 0) or (f % 2 != 0 and c % 2 == 0):     # Para determinar si el color de la casilla es solido
                     color = True                # Color solido
 
                 # Por el momento solo se estara utilizando una ficha para pruebas.
-                if f == 6 and c == 1:                                             #(x_izq, x_der, y_arriba, y_abajo )
-                    self._matriz[f][c] = Casilla (Ficha('f_marron.png', f), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+                if f == 2 and c == 1:                                             #(x_izq, x_der, y_arriba, y_abajo )
+                    self._matriz[f][c] = Casilla (Ficha('f_blanca.png', f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+
+                # if f == 5 and c == 2:                                             #(x_izq, x_der, y_arriba, y_abajo )
+                #     self._matriz[f][c] = Casilla (Ficha('f_marron.png', f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+
 
                 else:
                     self._matriz[f][c] = Casilla(None, (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
+
             cont_pixels_x = 0           # Bajar la columna
+            cont_pixels_ficha_x = -80
 
         # for f in range(len(self._matriz)):
         #     for c in range(len(self._matriz[f])):
@@ -95,12 +106,12 @@ class Tablero:
         if f == 0 or f == 7:                            # En caso de que se llege a kings row
 
             if ficha.nom_archivo == 'f_marron.png':     # Coronando la ficha marron
-                ficha = Ficha('f_marron_rey.png', f)
+                ficha = Ficha('f_marron_rey.png', f, x, y)
                 ficha.rect.x = x
                 ficha.rect.y = y
 
             if ficha.nom_archivo == 'f_blanca.png':     # Coronando la ficha blanca
-                ficha = Ficha('f_blanca_rey.png', f)
+                ficha = Ficha('f_blanca_rey.png', f, x, y)
                 ficha.rect.x = x
                 ficha.rect.y = y
 

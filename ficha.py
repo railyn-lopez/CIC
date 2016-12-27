@@ -1,14 +1,14 @@
 import pygame
 
 class Ficha:
-    def __init__(self, nom_archivo, fila_inicial):
+    def __init__(self, nom_archivo, fila_inicial, x, y):
 
         gameSurface = pygame.display.set_mode((800, 800))
         self.sup_ficha = pygame.image.load(nom_archivo).convert_alpha()       # 60 x 60
         self.nom_archivo = nom_archivo
         self.rect = self.sup_ficha.get_rect()
-        self.rect.x = 120
-        self.rect.y = 620
+        self.rect.x = x
+        self.rect.y = y
         self.fila_inicial = fila_inicial
 
     def click_area(self, mx, my):
