@@ -28,7 +28,7 @@ class Tablero:
                     color = True
 
                 # Por el momento solo se estara utilizando una ficha para pruebas.
-                if f == 0 and c == 1:                                             #(superior_izq, superior_der, inferior_izq, inferior_der )
+                if f == 0 and c == 1:                                             #(x_izq, x_der, y_arriba, y_abajo )
 
                     self._matriz[f][c] = Casilla (Ficha('f_marron.png'), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
@@ -60,9 +60,9 @@ class Tablero:
     def movimiento_valido(self, x, y, x_vieja, y_vieja):
         """Para determinar si la ficha se ha movido a una casilla valida"""
 
-        f_vieja, c_vieja = self.det_casilla(x_vieja, y_vieja)               # Para determinar, la casilla de arrancada de moviemiento.
+        f_vieja, c_vieja = self.det_casilla(x_vieja, y_vieja)                       # Para determinar, la casilla de arrancada de moviemiento.
 
-        f, c = self.det_casilla(x, y)                                       # Para determinar, la casilla de actual
+        f, c = self.det_casilla(x, y)                                               # Para determinar, la casilla de actual
 
         casilla = self._matriz[f][c]
 
@@ -77,11 +77,11 @@ class Tablero:
         casilla = self._matriz[f][c]
         casilla.ficha = ficha
 
+
     def casilla_activa(self, x, y):
         """Para mover una ficha de casilla"""
 
         f, c = self.det_casilla(x, y)
-
         return self._matriz[f][c]
 
 

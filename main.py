@@ -40,18 +40,37 @@ for f in range(len(matriz)):
             cas_pintar = casb          # Almacenando la casilla que contiene la ficha
             gameSurface.blit(cas_pintar.ficha.sup_ficha, cas_pintar.ficha.rect)         # chip.sup_ficha, chip.rect)
 
+def dibujar_ficha (x, y):
+    """Para dibujar una ficha determinada en el tablero"""
 
-while not gana_empate:                                                    # Game Loop
+    cas.ficha.rect.centerx = x
+    cas.ficha.rect.centery = y
+
+    gameSurface.blit(sup_tablero, (0, 0))  # Redibujando para dar la ilucion de movimiento
+    gameSurface.blit(cas.ficha.sup_ficha, cas.ficha.rect)
+
+def dibujar_ficha_centrada(x, y):
+    """Para dibujar la ficha centrada en la casilla despues de moverla"""
+    casilla = board.casilla_activa(x, y)                                                                            # Para determinar la casilla donde se encentra ubicada la ficha
+
+    casilla.ficha.rect.centerx = casilla.cor_pixeles[0] + (casilla.cor_pixeles[1] - casilla.cor_pixeles[0]) / 2     # Colocando la ficha centralizada
+    casilla.ficha.rect.centery = casilla.cor_pixeles[2] + (casilla.cor_pixeles[3] - casilla.cor_pixeles[2]) / 2
+
+    gameSurface.blit(sup_tablero, (0, 0))                                                                           # Redibujando la ficha centralizada
+    gameSurface.blit(casilla.ficha.sup_ficha, casilla.ficha.rect)
+
+
+
+while not gana_empate:                                                                           # Game Loop
 
     for event in pygame.event.get():
-        
+
         if event.type == pygame.QUIT:
             gana_empate = True
 
         if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0] == 1:         # Si se clickeo con el boton izq
             mx, my = pygame.mouse.get_pos()
-            mxg = mx                                                                            # Para almacenar la posicion donde se clickeo la ficha para moverla
-            myg = my
+            mxg, myg = mx, my                                                                   # Para almacenar la posicion donde se clickeo la ficha para moverla
             cas = board.casilla_activa(mx, my)
 
             if cas.ficha != None:
@@ -59,7 +78,7 @@ while not gana_empate:                                                    # Game
                 conf_click_area = cas.ficha.click_area(mx, my)                                  # Para validar si se esta clickeando una ficha
                 #print(conf_click_area)
 
-        if event.type == pygame.MOUSEBUTTONUP and pygame.mouse.get_pressed()[0] == 0:           # Para determinar si se levanto el boton izq.
+        if event.type == pygame.MOUSEBUTTONUP and pygame.mouse.get_pressed()[0] == 0:           # Para determinar si se levanto el boton izq del mouse.
 
             mx, my = pygame.mouse.get_pos()
             if board.movimiento_valido(mx, my, mxg, myg):                                       # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
@@ -67,26 +86,23 @@ while not gana_empate:                                                    # Game
                 board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
                 cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
                 #print('Se ejecuto')
-                conf_click_area = False
+                dibujar_ficha_centrada(mx, my)                                                  # Dibujar la ficha centrada
+                conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
 
             else:                                                                               # En caso de que el movimiento no sea valido, redibujar la ficha en la casilla donde estaba
-                conf_click_area = False
+                conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
                 cas = board.casilla_activa(mxg, myg)
-                cas.ficha.rect.centerx = mxg
-                cas.ficha.rect.centery = myg
 
-                gameSurface.blit(sup_tablero, (0, 0))  # Redibujando para dar la ilucion de movimiento
-                gameSurface.blit(cas.ficha.sup_ficha, cas.ficha.rect)
+                dibujar_ficha(mxg, myg)                                                         # En caso de que el mov. no sea valido, dibujar la ficha en la posicion original
+                dibujar_ficha_centrada(mxg, myg)                                                # Dibujar la ficha centrada en la casilla si el movimiento fue invalido
 
 
-        if event.type == pygame.MOUSEMOTION and conf_click_area:   # Si el mouse se esta moviendo y no se ha levantado
-            mx2, my2 = pygame.mouse.get_pos()                      # El boton por arriba de la ficha, obtener posicion del mouse
+        if event.type == pygame.MOUSEMOTION and conf_click_area:                                # Si el mouse se esta moviendo y no se ha levantado
+            mx2, my2 = pygame.mouse.get_pos()                                                   # El boton por arriba de la ficha, obtener posicion del mouse
 
-            cas.ficha.rect.centerx = mx2
-            cas.ficha.rect.centery = my2
+            dibujar_ficha(mx2, my2)                                                             # Dibujando la ficha para dar la ilucion de movimiento
 
-            gameSurface.blit(sup_tablero, (0, 0))                  # Redibujando para dar la ilucion de movimiento
-            gameSurface.blit(cas.ficha.sup_ficha, cas.ficha.rect)
+            #print(board.casilla_activa(mx2, my2))
 
         pygame.display.update()                                    # Si se coloca un parametro solo va a refrescar ese parametro
 
