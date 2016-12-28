@@ -34,6 +34,7 @@ cas = None          # La casilla que contiene la ficha que se va a a cambiar de 
 for f in range(len(matriz)):
     for c in range(len(matriz[f])):
         casb = matriz[f][c]
+        #print(casb)
         if casb.ficha != None:
             cas_pintar = casb          # Almacenando la casilla que contiene la ficha
             gameSurface.blit(cas_pintar.ficha.sup_ficha, cas_pintar.ficha.rect)         # chip.sup_ficha, chip.rect)
@@ -56,6 +57,11 @@ def dibujar_ficha_centrada(x, y):
 
     gameSurface.blit(sup_tablero, (0, 0))                                                                           # Redibujando la ficha centralizada
     gameSurface.blit(casilla.ficha.sup_ficha, casilla.ficha.rect)
+
+#def dibujar_todas_fichas:
+#    """Para dibujar toaas las fichas luego del mov. de una ficha"""
+    
+
 
 
 

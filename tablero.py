@@ -36,16 +36,16 @@ class Tablero:
                 if f == 2 and c == 1:                                             #(x_izq, x_der, y_arriba, y_abajo )
                     self._matriz[f][c] = Casilla (Ficha('f_blanca.png', f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
-                # if f == 5 and c == 2:                                             #(x_izq, x_der, y_arriba, y_abajo )
-                #     self._matriz[f][c] = Casilla (Ficha('f_marron.png', f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
+                elif f == 5 and c == 2:                                             #(x_izq, x_der, y_arriba, y_abajo )
+                    self._matriz[f][c] = Casilla (Ficha('f_marron.png', f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
                 else:
                     self._matriz[f][c] = Casilla(None, (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
 
             cont_pixels_x = 0           # Bajar la columna
-            cont_pixels_ficha_x = -80
+            cont_pixels_ficha_x = -80   # Reiniciar el contador de pixeles para acomodar la ficha.
 
         # for f in range(len(self._matriz)):
         #     for c in range(len(self._matriz[f])):
