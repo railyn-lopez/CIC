@@ -14,7 +14,8 @@ class Ficha:
     def click_area(self, mx, my):
         """Para determinar si se esta clickeando dentro de una ficha"""
 
-        if (self.rect.x <= mx <= self.rect.topright[0]) and (self.rect.y <= my <= self.rect.bottomleft[1]):
+        if (self.rect.x <= mx <= self.rect.topright[0]) and (self.rect.y <= my <= self.rect.bottomleft[1]) and pygame.mouse.get_pressed()[0] == 1:
+            #print('si')
             return True
 
         else:

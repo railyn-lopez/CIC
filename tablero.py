@@ -56,6 +56,9 @@ class Tablero:
         #
         return self._matriz
 
+    def getMatriz(self):
+        return self._matriz
+
     def det_casilla(self, x, y):
         """Para determinar la casilla sobre la que se ha clickeado"""
 
