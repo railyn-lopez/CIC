@@ -1,6 +1,9 @@
 import pygame
 
 class Ficha:
+
+    activa = None
+
     def __init__(self, nom_archivo, fila_inicial, x, y):
 
         gameSurface = pygame.display.set_mode((800, 800))
@@ -16,9 +19,11 @@ class Ficha:
 
         if (self.rect.x <= mx <= self.rect.topright[0]) and (self.rect.y <= my <= self.rect.bottomleft[1]) and pygame.mouse.get_pressed()[0] == 1:
             #print('si')
+            Ficha.activa = self
             return True
 
         else:
+            Ficha.activa = None
             return False
 
 

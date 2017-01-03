@@ -128,8 +128,6 @@ class Tablero:
         f, c = self.det_casilla(x, y)
         return self._matriz[f][c]
 
-
-
 #a = Tablero()
 #
 # ma = a.inicializar_tablero()
