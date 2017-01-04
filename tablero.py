@@ -66,7 +66,7 @@ class Tablero:
             for c in range(len(self._matriz[f])):
                 casilla = self._matriz[f][c]
 
-                if (casilla.cor_pixeles[0] < x < casilla.cor_pixeles[1]) and (casilla.cor_pixeles[2] < y < casilla.cor_pixeles[3]):
+                if (casilla.cor_pixeles[0] <= x < casilla.cor_pixeles[1]) and (casilla.cor_pixeles[2] <= y < casilla.cor_pixeles[3]):
 
                     return f, c
 
@@ -83,21 +83,21 @@ class Tablero:
 
         if casilla_vieja.ficha.nom_archivo == 'f_blanca.png' or casilla_vieja.ficha.nom_archivo == 'f_marron.png':      # Logica mov. fichas simpoles
 
-            if casilla_vieja.ficha.fila_inicial in self.filas_ini_sup:                                                  # Para fichas inicializadas en la filas superiores, solo pueden descender diagonalmente.
+            if casilla_vieja.ficha.fila_inicial in self.filas_ini_sup:                                                                                              # Para fichas inicializadas en la filas superiores, solo pueden descender diagonalmente.
 
-                if casilla.ficha == None and casilla.color == True and (f - 1) == f_vieja:                              # El mov. es valido si la ficha a sido movida a una casilla solida y ha decendido una fila (ficha_normal).
-                    return True
+                if casilla.ficha == None and casilla.color == True and (f - 1) == f_vieja and (c + 1 == c_vieja or c - 1 == c_vieja):      # El mov. es valido si la ficha a sido movida a una casilla solida, ha decendido una fila,
+                    return True                                                                                                            # y a aumentado una columna o disminuido una columna (ficha_normal).
 
-            if casilla_vieja.ficha.fila_inicial in self.filas_ini_inf:                                                  # Para fichas inicializadas en la filas inferiores, solo pueden ascender diagonalmente.
-
-                if casilla.ficha == None and casilla.color == True and (f + 1) == f_vieja:                              # El mov. es valido si la ficha a sido movida a una casilla solida y ha ascendido una fila (ficha_normal).
+            if casilla_vieja.ficha.fila_inicial in self.filas_ini_inf:                                                                     # El mov. es valido si la ficha a sido movida a una casilla solida, ha ascendido una fila,
+                                                                                                                                           # y a aumentado una columna o disminuido una columna (ficha_normal).
+                if casilla.ficha == None and casilla.color == True and (f + 1) == f_vieja and (c + 1 == c_vieja or c - 1 == c_vieja):      # El mov. es valido si la ficha a sido movida a una casilla solida y ha ascendido una fila (ficha_normal).
                     return True
 
 
         if casilla_vieja.ficha.nom_archivo == 'f_blanca_rey.png' or casilla_vieja.ficha.nom_archivo == 'f_marron_rey.png':
 
-            if casilla.ficha == None and casilla.color == True and ((f - 1) == f_vieja or (f + 1) == f_vieja):          # El mov. es valido si la ficha a sido movida a una casilla solida y ha decendido una fila.
-                                                                                                                        # O subido una fila (ficha rey).
+            if casilla.ficha == None and casilla.color == True and ((f - 1) == f_vieja or (f + 1) == f_vieja) and (c + 1 == c_vieja or c - 1 == c_vieja):  # El mov. es valido si la ficha a sido movida a una casilla solida, ha decendido una fila.
+                                                                                                                                                           # ,subido una fila, aumentado una columna o aumentado una fila (ficha rey).
                 return True
 
 

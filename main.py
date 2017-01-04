@@ -41,7 +41,6 @@ for f in range(len(matriz)):
 def dibujarFicha (x, y):
     """Para dibujar una ficha determinada en el tablero"""
 
-    print('\n1')
     cas.ficha.rect.centerx = x
     cas.ficha.rect.centery = y
 
@@ -52,7 +51,6 @@ def dibujarFicha (x, y):
 def dibujarFichaCentrada(x, y):
     """Para dibujar la ficha centrada en la casilla despues de moverla"""
 
-    print('2')
     casilla = board.casilla_activa(x, y)                                                                            # Para determinar la casilla donde se encentra ubicada la ficha
     casilla.ficha.rect.centerx = casilla.cor_pixeles[0] + (casilla.cor_pixeles[1] - casilla.cor_pixeles[0]) / 2     # Colocando la ficha centralizada
     casilla.ficha.rect.centery = casilla.cor_pixeles[2] + (casilla.cor_pixeles[3] - casilla.cor_pixeles[2]) / 2
@@ -64,7 +62,6 @@ def dibujarTodasFichas():
    """Para dibujar toads las fichas luego del mov. de una ficha"""
    tablero = board.getMatriz()
 
-   print('3')
    for f in range(len(tablero)):
        for c in range(len(tablero[f])):
 
@@ -105,26 +102,29 @@ while not gana_empate:                                                          
 
             mx, my = pygame.mouse.get_pos()
 
-            if board.movimiento_valido(mx, my, mxg, myg):                                       # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
+            cas_vieja = board.casilla_activa(mxg, myg)
 
-                board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
-                cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
-                #print('Se ejecuto')
+            if cas_vieja.ficha != None:                             # Si se clickeo una casilla con ficha, para empezar el movimiento
 
-                gameSurface.blit(sup_tablero, (0, 0))
-                dibujarFichaCentrada(mx, my)                                                    # Dibujar la ficha centrada
-                dibujarTodasFichas()
-                conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
+                if board.movimiento_valido(mx, my, mxg, myg):       # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
 
-            else:                                                                               # En caso de que el movimiento no sea valido, redibujar la ficha en la casilla donde estaba
-                conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
-                cas = board.casilla_activa(mxg, myg)
+                    board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
+                    cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
+                    #print('Se ejecuto')
 
-                gameSurface.blit(sup_tablero, (0, 0))
+                    gameSurface.blit(sup_tablero, (0, 0))
+                    dibujarFichaCentrada(mx, my)                                                    # Dibujar la ficha centrada
+                    dibujarTodasFichas()
+                    conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
 
-                dibujarFichaCentrada(mxg, myg)                                                  # Dibujar la ficha centrada en la casilla si el movimiento fue invalido
-                dibujarTodasFichas()
+                else:                                                                               # En caso de que el movimiento no sea valido, redibujar la ficha en la casilla donde estaba
+                    conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
+                    cas = board.casilla_activa(mxg, myg)
 
+                    gameSurface.blit(sup_tablero, (0, 0))
+
+                    dibujarFichaCentrada(mxg, myg)                                                  # Dibujar la ficha centrada en la casilla si el movimiento fue invalido
+                    dibujarTodasFichas()
 
 
         if event.type == pygame.MOUSEMOTION and conf_click_area:                                # Si el mouse se esta moviendo y no se ha levantado
