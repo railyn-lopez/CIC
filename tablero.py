@@ -100,6 +100,64 @@ class Tablero:
                                                                                                                                                            # ,subido una fila, aumentado una columna o aumentado una fila (ficha rey).
                 return True
 
+    def salto_valido(self, x, y, x_vieja, y_vieja):
+        """Para determinar si la ficha ha saltado movilidamente"""
+
+        f_vieja, c_vieja = self.det_casilla(x_vieja, y_vieja)                       # Para determinar, la casilla de arrancada de moviemiento.
+
+        casilla_vieja = self._matriz[f_vieja][c_vieja]
+
+        f, c = self.det_casilla(x, y)                                               # Para determinar, la casilla donde se pienza realizar el movimiento.
+
+        casilla = self._matriz[f][c]
+
+        if casilla_vieja.ficha.nom_archivo == 'f_blanca.png' or casilla_vieja.ficha.nom_archivo == 'f_marron.png':      # Logica mov. fichas simpoles
+
+            if casilla_vieja.ficha.fila_inicial in self.filas_ini_sup:                                                                     # Para fichas inicializadas en la filas superiores, solo pueden descender diagonalmente.
+                                                                                                                                           # El mov. es valido si la ficha a sido movida a una casilla solida, ha decendido una fila,
+                if casilla.ficha == None and casilla.color == True and (f - 2) == f_vieja and (c + 2 == c_vieja or c - 2 == c_vieja):      # Para movimientos hacia abajo
+
+                    if c - 2 == c_vieja:                
+                        casilla_int = self._matriz[f - 1][c - 1]
+
+                        if casilla_int.ficha != None:
+                            if casilla_int.ficha.nom_archivo != casilla_vieja.ficha.nom_archivo:
+                                return True
+
+                    if c + 2 == c_vieja:
+                        casilla_int = self._matriz[f - 1][c + 1]
+
+                        if casilla_int.ficha != None:
+                            if casilla_int.ficha.nom_archivo != casilla_vieja.ficha.nom_archivo:
+                                return True
+
+
+            if casilla_vieja.ficha.fila_inicial in self.filas_ini_inf:                                                                     # El mov. es valido si la ficha a sido movida a una casilla solida, ha ascendido una fila,
+                                                                                                                                           # y a aumentado una columna o disminuido una columna (ficha_normal).
+                if casilla.ficha == None and casilla.color == True and (f + 2) == f_vieja and (c + 2 == c_vieja or c - 2 == c_vieja):      # El mov. es valido si la ficha a sido movida a una casilla solida y ha ascendido una fila (ficha_normal).
+
+                    if c - 2 == c_vieja:
+                        casilla_int = self._matriz[f + 1][c - 1]
+
+                        if casilla_int.ficha != None:
+                            if casilla_int.ficha.nom_archivo != casilla_vieja.ficha.nom_archivo:
+                                return True
+
+                    if c + 2 == c_vieja:
+                        casilla_int = self._matriz[f + 1][c + 1]
+
+                        if casilla_int.ficha != None:
+                            if casilla_int.ficha.nom_archivo != casilla_vieja.ficha.nom_archivo:
+                                return True
+
+                    #return True
+
+        if casilla_vieja.ficha.nom_archivo == 'f_blanca_rey.png' or casilla_vieja.ficha.nom_archivo == 'f_marron_rey.png':
+
+            if casilla.ficha == None and casilla.color == True and ((f - 2) == f_vieja or (f + 2) == f_vieja) and (c + 2 == c_vieja or c - 2 == c_vieja):  # El mov. es valido si la ficha a sido movida a una casilla solida, ha decendido una fila.
+                                                                                                                                                           # ,subido una fila, aumentado una columna o aumentado una fila (ficha rey).
+                return True
+
 
     def cop_ficha(self, x, y, ficha):
         """Para copiar una ficha de una casilla a otra y coronar fichas"""

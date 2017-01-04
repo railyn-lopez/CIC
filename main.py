@@ -106,7 +106,18 @@ while not gana_empate:                                                          
 
             if cas_vieja.ficha != None:                             # Si se clickeo una casilla con ficha, para empezar el movimiento
 
-                if board.movimiento_valido(mx, my, mxg, myg):       # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
+                if board.movimiento_valido(mx, my, mxg, myg) == True:                               # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
+
+                    board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
+                    cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
+                    #print('Se ejecuto')
+
+                    gameSurface.blit(sup_tablero, (0, 0))
+                    dibujarFichaCentrada(mx, my)                                                    # Dibujar la ficha centrada
+                    dibujarTodasFichas()
+                    conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
+
+                elif board.salto_valido(mx, my, mxg, myg) == True:                                  # Para determinar si se esta comiendo validamente
 
                     board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
                     cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
