@@ -2,7 +2,7 @@ import pygame
 
 class Ficha:
 
-    activa = None
+    activa = None                               # Para determinar si la ficha esta en movimiento
 
     def __init__(self, nom_archivo, fila_inicial, x, y):
 
@@ -19,7 +19,7 @@ class Ficha:
 
         if (self.rect.x <= mx <= self.rect.topright[0]) and (self.rect.y <= my <= self.rect.bottomleft[1]) and pygame.mouse.get_pressed()[0] == 1:
             #print('si')
-            Ficha.activa = self
+            Ficha.activa = self                  # Para determinar si la ficha esta en movimiento
             return True
 
         else:

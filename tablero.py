@@ -40,11 +40,11 @@ class Tablero:
                     color = True                # Color solido
 
                 # Por el momento solo se estara utilizando una ficha para pruebas.
-                if f == 2 and c == 1:                                             #(x_izq, x_der, y_arriba, y_abajo )
+                if f == 2 and c == 1 or f == 2 and c == 3:                                             #(x_izq, x_der, y_arriba, y_abajo )
                     self._matriz[f][c] = Casilla (Ficha(self.ficha_1, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
 
-                elif f == 5 and c == 2:                                             #(x_izq, x_der, y_arriba, y_abajo )
+                elif f == 5 and c == 4 or f == 7 and c == 6:                                             #(x_izq, x_der, y_arriba, y_abajo )
                     self._matriz[f][c] = Casilla (Ficha(self.ficha_2, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
                 else:
@@ -114,7 +114,6 @@ class Tablero:
         casilla_vieja = self._matriz[f_vieja][c_vieja]
 
         f, c = self.det_casilla(x, y)                                               # Para determinar, la casilla donde se pienza realizar el movimiento.
-
         casilla = self._matriz[f][c]
 
         if casilla_vieja.ficha.nom_archivo == self.ficha_1 or casilla_vieja.ficha.nom_archivo == self.ficha_2:                       # Logica salto men
@@ -185,7 +184,7 @@ class Tablero:
                                 self.remover_ficha(casilla_int)
                                 return True
 
-                if f + 2 == f_vieja:                                                                                                                        # En caso de que el salto desienda
+                if f + 2 == f_vieja:                                                                                                                        # En caso de que el salto descienda
 
                     if c + 2 == c_vieja:
                         casilla_int = self._matriz[f + 1][c + 1]
@@ -235,15 +234,45 @@ class Tablero:
     def remover_ficha(self, casilla):
         """Para remover una ficha del tablero """
         
-        if casilla.ficha.tipo_color in self.ficha_1:
+        if casilla.ficha.tipo_color in self.ficha_1:            # Para contabilizar las fichas 1 comidas
             self.cont_f1 += 1
             casilla.ficha = None
 
-        elif casilla.ficha.tipo_color in self.ficha_2:
+        elif casilla.ficha.tipo_color in self.ficha_2:          # Para contabilizar las fichas 2 comidas.
             self.cont_f2 += 1
             casilla.ficha = None
 
         print(self.cont_f1, self.cont_f2)
+
+
+    def comp_seq_salto(self, casilla):
+        pass
+
+    def saltos_posibles(self, ficha):
+        """Determina los posibles saltos de una ficha"""
+
+        f, c = self.det_casilla(ficha.rect.x, ficha.rect.y)
+        casilla = self._matriz[f][c]
+        casillas_alrededor = []             # Para almacenar las casillas que rodean la ficha en cuestion
+
+
+        if f > 1:
+
+            if c > 1:
+                casillas_alrededor.append(self._matriz[f-1][c-1])
+
+            if c < 7:
+                casillas_alrededor.append(self._matriz[f - 1][c + 1])
+
+        if f < 7:
+
+            if c > 1:
+                casillas_alrededor.append(self._matriz[f - 1][c - 1])
+
+            if c < 7:
+                casillas_alrededor.append(self._matriz[f - 1][c + 1])
+
+        print(casillas_alrededor)
 
 
 #a = Tablero()
