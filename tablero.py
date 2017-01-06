@@ -34,11 +34,11 @@ class Tablero:
 
                 # Por el momento solo se estara utilizando una ficha para pruebas.
                 if f == 2 and c == 1:                                             #(x_izq, x_der, y_arriba, y_abajo )
-                    self._matriz[f][c] = Casilla (Ficha('f_blanca.png', f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+                    self._matriz[f][c] = Casilla (Ficha('f_blanca_.png', f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
 
                 elif f == 5 and c == 2:                                             #(x_izq, x_der, y_arriba, y_abajo )
-                    self._matriz[f][c] = Casilla (Ficha('f_marron.png', f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+                    self._matriz[f][c] = Casilla (Ficha('f_marron_.png', f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
                 else:
                     self._matriz[f][c] = Casilla(None, (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
@@ -81,7 +81,7 @@ class Tablero:
 
         casilla = self._matriz[f][c]
 
-        if casilla_vieja.ficha.nom_archivo == 'f_blanca.png' or casilla_vieja.ficha.nom_archivo == 'f_marron.png':      # Logica mov. fichas simpoles
+        if casilla_vieja.ficha.nom_archivo == 'f_blanca_.png' or casilla_vieja.ficha.nom_archivo == 'f_marron_.png':      # Logica mov. fichas simpoles
 
             if casilla_vieja.ficha.fila_inicial in self.filas_ini_sup:                                                                                              # Para fichas inicializadas en la filas superiores, solo pueden descender diagonalmente.
 
@@ -94,69 +94,99 @@ class Tablero:
                     return True
 
 
-        if casilla_vieja.ficha.nom_archivo == 'f_blanca_rey.png' or casilla_vieja.ficha.nom_archivo == 'f_marron_rey.png':
+        if casilla_vieja.ficha.nom_archivo == 'f_blanca_rey_.png' or casilla_vieja.ficha.nom_archivo == 'f_marron_rey_.png':
 
             if casilla.ficha == None and casilla.color == True and ((f - 1) == f_vieja or (f + 1) == f_vieja) and (c + 1 == c_vieja or c - 1 == c_vieja):  # El mov. es valido si la ficha a sido movida a una casilla solida, ha decendido una fila.
                                                                                                                                                            # ,subido una fila, aumentado una columna o aumentado una fila (ficha rey).
                 return True
 
     def salto_valido(self, x, y, x_vieja, y_vieja):
-        """Para determinar si la ficha ha saltado movilidamente"""
+        """Para determinar si la ficha ha saltado validamente"""
 
-        f_vieja, c_vieja = self.det_casilla(x_vieja, y_vieja)                       # Para determinar, la casilla de arrancada de moviemiento.
-
+        f_vieja, c_vieja = self.det_casilla(x_vieja, y_vieja)                       # Para determinar, la casilla de arrancada de moviemient
         casilla_vieja = self._matriz[f_vieja][c_vieja]
 
         f, c = self.det_casilla(x, y)                                               # Para determinar, la casilla donde se pienza realizar el movimiento.
 
         casilla = self._matriz[f][c]
 
-        if casilla_vieja.ficha.nom_archivo == 'f_blanca.png' or casilla_vieja.ficha.nom_archivo == 'f_marron.png':      # Logica mov. fichas simpoles
+        if casilla_vieja.ficha.nom_archivo == 'f_blanca_.png' or casilla_vieja.ficha.nom_archivo == 'f_marron_.png':                       # Logica salto men
 
             if casilla_vieja.ficha.fila_inicial in self.filas_ini_sup:                                                                     # Para fichas inicializadas en la filas superiores, solo pueden descender diagonalmente.
-                                                                                                                                           # El mov. es valido si la ficha a sido movida a una casilla solida, ha decendido una fila,
+                                                                                                                                           # El salto es valido si la ficha a sido movida a una casilla solida, ha asendido una fila,
                 if casilla.ficha == None and casilla.color == True and (f - 2) == f_vieja and (c + 2 == c_vieja or c - 2 == c_vieja):      # Para movimientos hacia abajo
 
-                    if c - 2 == c_vieja:                
+                    if c - 2 == c_vieja:                                                                                                   # Para determinar si la ficha se ha desplazado hacia la izquierda
                         casilla_int = self._matriz[f - 1][c - 1]
 
                         if casilla_int.ficha != None:
-                            if casilla_int.ficha.nom_archivo != casilla_vieja.ficha.nom_archivo:
+                            if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
                                 return True
 
-                    if c + 2 == c_vieja:
+                    if c + 2 == c_vieja:                                                                                                   # Para determinar si la ficha se ha desplazado hacia la derecha
                         casilla_int = self._matriz[f - 1][c + 1]
 
                         if casilla_int.ficha != None:
-                            if casilla_int.ficha.nom_archivo != casilla_vieja.ficha.nom_archivo:
+                            if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
                                 return True
 
 
-            if casilla_vieja.ficha.fila_inicial in self.filas_ini_inf:                                                                     # El mov. es valido si la ficha a sido movida a una casilla solida, ha ascendido una fila,
-                                                                                                                                           # y a aumentado una columna o disminuido una columna (ficha_normal).
-                if casilla.ficha == None and casilla.color == True and (f + 2) == f_vieja and (c + 2 == c_vieja or c - 2 == c_vieja):      # El mov. es valido si la ficha a sido movida a una casilla solida y ha ascendido una fila (ficha_normal).
+            if casilla_vieja.ficha.fila_inicial in self.filas_ini_inf:                                                                     # El salto es valido si la ficha a sido movida a una casilla solida, ha desendido una fila,
+                                                                                                                                           # y a aumentado una columna o disminuido una columna (izq. derecha) ficha men.
+                if casilla.ficha == None and casilla.color == True and (f + 2) == f_vieja and (c + 2 == c_vieja or c - 2 == c_vieja):      # El salto es valido si la ficha a sido movida a una casilla solida y ha desendido una fila (men).
 
-                    if c - 2 == c_vieja:
+                    if c - 2 == c_vieja:                                                                                                   # Para determinar si la ficha se ha desplazado hacia la izquierda
                         casilla_int = self._matriz[f + 1][c - 1]
 
                         if casilla_int.ficha != None:
-                            if casilla_int.ficha.nom_archivo != casilla_vieja.ficha.nom_archivo:
+                            if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
                                 return True
 
-                    if c + 2 == c_vieja:
+                    if c + 2 == c_vieja:                                                                                                   # Para determinar si la ficha se ha desplazado hacia la derecha
                         casilla_int = self._matriz[f + 1][c + 1]
 
                         if casilla_int.ficha != None:
-                            if casilla_int.ficha.nom_archivo != casilla_vieja.ficha.nom_archivo:
+                            if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
                                 return True
 
                     #return True
 
-        if casilla_vieja.ficha.nom_archivo == 'f_blanca_rey.png' or casilla_vieja.ficha.nom_archivo == 'f_marron_rey.png':
+        if casilla_vieja.ficha.nom_archivo == 'f_blanca_rey_.png' or casilla_vieja.ficha.nom_archivo == 'f_marron_rey_.png':                               # Para determinar saltos validos, reyes
 
             if casilla.ficha == None and casilla.color == True and ((f - 2) == f_vieja or (f + 2) == f_vieja) and (c + 2 == c_vieja or c - 2 == c_vieja):  # El mov. es valido si la ficha a sido movida a una casilla solida, ha decendido una fila.
-                                                                                                                                                           # ,subido una fila, aumentado una columna o aumentado una fila (ficha rey).
-                return True
+                                                                                                                                                            # ,subido una fila, aumentado una columna o aumentado una fila (ficha rey).
+
+                if f - 2 == f_vieja:                                                                                                                       # En caso de que el salto ascienda
+
+                    if c + 2 == c_vieja:                                                                                                                   # En caso de que el salto ascienda hacia la derecha
+                        casilla_int = self._matriz[f - 1][c + 1]
+
+                        if casilla_int.ficha != None:
+                            if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                return True
+
+                    if c - 2 == c_vieja:                                                                                                                    # En caso de que el salto ascienda hacia la izquierda
+                        casilla_int = self._matriz[f - 1][c - 1]
+
+                        if casilla_int.ficha != None:
+                            if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                return True
+
+                if f + 2 == f_vieja:                                                                                                                        # En caso de que el salto desienda
+
+                    if c + 2 == c_vieja:
+                        casilla_int = self._matriz[f + 1][c + 1]
+
+                        if casilla_int.ficha != None:                                                                                                       # En caso de que el salto desienda hacia la derecha
+                            if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                return True
+
+                    elif c - 2 == c_vieja:                                                                                                                  # En caso de que el salto desienda hacia la izquierda
+                        casilla_int = self._matriz[f + 1][c - 1]
+
+                        if casilla_int.ficha != None:
+                            if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                return True
 
 
     def cop_ficha(self, x, y, ficha):
@@ -166,13 +196,13 @@ class Tablero:
 
         if f == 0 or f == 7:                            # En caso de que se llege a kings row
 
-            if ficha.nom_archivo == 'f_marron.png':     # Coronando la ficha marron
-                ficha = Ficha('f_marron_rey.png', f, x, y)
+            if ficha.nom_archivo == 'f_marron_.png':     # Coronando la ficha marron
+                ficha = Ficha('f_marron_rey_.png', f, x, y)
                 ficha.rect.x = x
                 ficha.rect.y = y
 
-            if ficha.nom_archivo == 'f_blanca.png':     # Coronando la ficha blanca
-                ficha = Ficha('f_blanca_rey.png', f, x, y)
+            if ficha.nom_archivo == 'f_blanca_.png':     # Coronando la ficha blanca
+                ficha = Ficha('f_blanca_rey_.png', f, x, y)
                 ficha.rect.x = x
                 ficha.rect.y = y
 
@@ -190,7 +220,7 @@ class Tablero:
 #
 # ma = a.inicializar_tablero()
 #
-# ma[0][0] = Casilla (Ficha('f_marron.png'), (0, 0), (100, 0))
+# ma[0][0] = Casilla (Ficha('f_marron_.png'), (0, 0), (100, 0))
 
 
 

@@ -26,4 +26,13 @@ class Ficha:
             Ficha.activa = None
             return False
 
+    @property
+    def tipo_color(self):
+        """Para determinar el color de la ficha"""
+
+        nombre = self.nom_archivo               # Extrayendo el color de la ficha teniendo en cuenta que esta en '_'
+        end = nombre.find("_", 2)
+        color = nombre[2:end]
+
+        return color
 
