@@ -128,6 +128,7 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                self.remover_ficha(casilla_int)
                                 return True
 
                     if c + 2 == c_vieja:                                                                                                   # Para determinar si la ficha se ha desplazado hacia la derecha
@@ -135,6 +136,7 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                self.remover_ficha(casilla_int)
                                 return True
 
 
@@ -147,6 +149,7 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                self.remover_ficha(casilla_int)
                                 return True
 
                     if c + 2 == c_vieja:                                                                                                   # Para determinar si la ficha se ha desplazado hacia la derecha
@@ -154,6 +157,7 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                self.remover_ficha(casilla_int)
                                 return True
 
                     #return True
@@ -170,6 +174,7 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                self.remover_ficha(casilla_int)
                                 return True
 
                     if c - 2 == c_vieja:                                                                                                                    # En caso de que el salto ascienda hacia la izquierda
@@ -177,6 +182,7 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                self.remover_ficha(casilla_int)
                                 return True
 
                 if f + 2 == f_vieja:                                                                                                                        # En caso de que el salto desienda
@@ -186,6 +192,7 @@ class Tablero:
 
                         if casilla_int.ficha != None:                                                                                                       # En caso de que el salto desienda hacia la derecha
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                self.remover_ficha(casilla_int)
                                 return True
 
                     elif c - 2 == c_vieja:                                                                                                                  # En caso de que el salto desienda hacia la izquierda
@@ -193,6 +200,7 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
+                                self.remover_ficha(casilla_int)
                                 return True
 
 
@@ -227,9 +235,16 @@ class Tablero:
     def remover_ficha(self, casilla):
         """Para remover una ficha del tablero """
         
-        #if casilla.ficha.tipo_color
+        if casilla.ficha.tipo_color in self.ficha_1:
+            self.cont_f1 += 1
+            casilla.ficha = None
 
-        pass
+        elif casilla.ficha.tipo_color in self.ficha_2:
+            self.cont_f2 += 1
+            casilla.ficha = None
+
+        print(self.cont_f1, self.cont_f2)
+
 
 #a = Tablero()
 #
