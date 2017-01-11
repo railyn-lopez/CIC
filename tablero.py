@@ -44,7 +44,7 @@ class Tablero:
                     self._matriz[f][c] = Casilla (Ficha(self.ficha_1, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
 
-                elif f == 5 and c == 4 or f == 7 and c == 6:                                             #(x_izq, x_der, y_arriba, y_abajo )
+                elif f == 7 and c == 0 or f == 7 and c == 2 or f == 7 and c == 4 or f == 7 and c == 6:                                             #(x_izq, x_der, y_arriba, y_abajo )
                     self._matriz[f][c] = Casilla (Ficha(self.ficha_2, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
                 else:
@@ -245,34 +245,165 @@ class Tablero:
         print(self.cont_f1, self.cont_f2)
 
 
-    def comp_seq_salto(self, casilla):
-        pass
+    def movidas_posibles(self, casilla):
+        """Para determinar las movidas posibles que tiene una ficha"""
 
-    def saltos_posibles(self, ficha):
+
+        if casilla.ficha != None:
+
+            f, c = casilla.cor_tablero
+            casillas_vacias = []             # Para almacenar las casillas que rodean la ficha en cuestion
+
+
+            if casilla.ficha.tipo_men() == True:         # En caso de que la ficha seleccionada sea un men
+
+                if casilla.ficha.fila_inicial in self.filas_ini_sup:    # Si el men va bajando
+
+                    if f < 7:  # Revisando las 2 casillas inferiores
+
+                        if c >= 1:
+                            cas_prox = self._matriz[f + 1][c - 1]
+
+                            if cas_prox.ficha == None:
+                                casillas_vacias.append(cas_prox)
+
+                        if c < 7:
+                            cas_prox = self._matriz[f + 1][c + 1]
+
+                            if cas_prox.ficha == None:
+                                casillas_vacias.append(cas_prox)
+
+                elif casilla.ficha.fila_inicial in self.filas_ini_inf:  # Si el men va subiendo
+
+                    if f > 1:  # Revisando las 2 casillas superiores
+
+                        if c >= 1:
+                            cas_prox = self._matriz[f - 1][c - 1]
+
+                            if cas_prox.ficha == None:
+                                casillas_vacias.append(cas_prox)
+
+                        if c < 7:
+                            cas_prox = self._matriz[f - 1][c + 1]
+
+                            if cas_prox.ficha == None:
+                                casillas_vacias.append(cas_prox)
+
+            elif casilla.ficha.tipo_men() == False:                                       # En caso de que la ficha seleccionada sea un king
+
+                if f >= 1:                               # Revisando las 2 casillas superiores
+
+                    if c >= 1:
+                        cas_prox = self._matriz[f - 1][c - 1]
+
+                        if cas_prox.ficha == None:
+                            casillas_vacias.append(cas_prox)
+
+                    if c < 7:
+                        cas_prox = self._matriz[f - 1][c + 1]
+
+                        if cas_prox.ficha == None:
+                            casillas_vacias.append(cas_prox)
+
+                if f < 7:                               # Revisando las 2 casillas inferiores
+
+                    if c >= 1:
+                        cas_prox = self._matriz[f + 1][c - 1]
+
+                        if cas_prox.ficha == None:
+                            casillas_vacias.append(cas_prox)
+
+                    if c < 7:
+                        cas_prox = self._matriz[f + 1][c + 1]
+
+                        if cas_prox.ficha == None:
+                            casillas_vacias.append(cas_prox)
+
+            print('Moves posibles: ', len(casillas_vacias))
+
+            for ele in casillas_vacias:
+                print(ele.cor_tablero)
+
+            return (casillas_vacias)
+
+    def saltos_posibles(self, casilla):
         """Determina los posibles saltos de una ficha"""
 
-        f, c = self.det_casilla(ficha.rect.x, ficha.rect.y)
-        casilla = self._matriz[f][c]
-        casillas_alrededor = []             # Para almacenar las casillas que rodean la ficha en cuestion
+        if casilla.ficha != None:
+
+            f, c = casilla.cor_tablero
+            casillas_alrededor_enemigos = []             # Para almacenar las casillas que rodean la ficha en cuestion
 
 
-        if f > 1:
+            if casilla.ficha.tipo_men() == True:         # En caso de que la ficha seleccionada sea un men
 
-            if c > 1:
-                casillas_alrededor.append(self._matriz[f-1][c-1])
+                if casilla.ficha.fila_inicial in self.filas_ini_sup:    # Si el men va bajando
 
-            if c < 7:
-                casillas_alrededor.append(self._matriz[f - 1][c + 1])
+                    if f < 7:  # Revisando las 2 casillas inferiores
 
-        if f < 7:
+                        if c >= 1:
+                            cas_prox = self._matriz[f + 1][c - 1]
 
-            if c > 1:
-                casillas_alrededor.append(self._matriz[f - 1][c - 1])
+                            if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                                casillas_alrededor_enemigos.append(cas_prox)
 
-            if c < 7:
-                casillas_alrededor.append(self._matriz[f - 1][c + 1])
+                        if c < 7:
+                            cas_prox = self._matriz[f + 1][c + 1]
 
-        print(casillas_alrededor)
+                            if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                                casillas_alrededor_enemigos.append(cas_prox)
+
+                elif casilla.ficha.fila_inicial in self.filas_ini_inf:  # Si el men va subiendo
+
+                    if f > 1:  # Revisando las 2 casillas superiores
+
+                        if c >= 1:
+                            cas_prox = self._matriz[f - 1][c - 1]
+
+                            if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                                casillas_alrededor_enemigos.append(cas_prox)
+
+                        if c < 7:
+                            cas_prox = self._matriz[f - 1][c + 1]
+
+                            if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                                casillas_alrededor_enemigos.append(cas_prox)
+
+            else:                                       # En caso de que la ficha seleccionada sea un king
+
+                if f >= 1:                               # Revisando las 2 casillas superiores
+
+                    if c >= 1:
+                        cas_prox = self._matriz[f-1][c-1]
+
+                        if cas_prox.ficha != None and  casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                            casillas_alrededor_enemigos.append(cas_prox)
+
+                    if c < 7:
+                        cas_prox = self._matriz[f - 1][c + 1]
+
+                        if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                            casillas_alrededor_enemigos.append(cas_prox)
+
+                if f < 7:                               # Revisando las 2 casillas inferiores
+
+                    if c >= 1:
+                        cas_prox = self._matriz[f + 1][c - 1]
+
+                        if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+
+                            casillas_alrededor_enemigos.append(cas_prox)
+
+                    if c < 7:
+                        cas_prox = self._matriz[f + 1][c + 1]
+
+                        if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+
+                            casillas_alrededor_enemigos.append(cas_prox)
+
+
+
+            print(casillas_alrededor_enemigos)
 
 
 #a = Tablero()

@@ -36,3 +36,15 @@ class Ficha:
 
         return color
 
+
+    def tipo_men(self):
+        """Para determinar si la ficha es un men o un king"""
+
+        if 'rey' not in self.nom_archivo:
+
+            return True
+
+        else:
+
+            return False
+
