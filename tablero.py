@@ -106,15 +106,28 @@ class Tablero:
             if casilla.ficha == None and casilla.color == True and ((f - 1) == f_vieja or (f + 1) == f_vieja) and (c + 1 == c_vieja or c - 1 == c_vieja):  # El mov. es valido si la ficha a sido movida a una casilla solida, ha decendido una fila.
                                                                                                                                                            # ,subido una fila, aumentado una columna o aumentado una fila (ficha rey).
                 return True
-
-    def salto_valido(self, x, y, x_vieja, y_vieja):
+                                                                               #(f_nueva, c_nueva, f_vieja, c_vieja)
+    def salto_valido(self, x = None, y = None, x_vieja = None, y_vieja = None,  coor_fichas = None):
         """Para determinar si la ficha ha saltado validamente"""
 
-        f_vieja, c_vieja = self.det_casilla(x_vieja, y_vieja)                       # Para determinar, la casilla de arrancada de moviemient
-        casilla_vieja = self._matriz[f_vieja][c_vieja]
+        if coor_fichas == None:                                                         # En caso de que se tengan que determinar la posicion de las casillas, a traves del mouse
 
-        f, c = self.det_casilla(x, y)                                               # Para determinar, la casilla donde se pienza realizar el movimiento.
-        casilla = self._matriz[f][c]
+            f_vieja, c_vieja = self.det_casilla(x_vieja, y_vieja)                       # Para determinar, la casilla de arrancada de moviemient
+            casilla_vieja = self._matriz[f_vieja][c_vieja]
+
+            f, c = self.det_casilla(x, y)                                               # Para determinar, la casilla donde se pienza realizar el movimiento.
+            casilla = self._matriz[f][c]
+
+
+        else:                                                                           # En caso de que se tengan las coordenadas de las casillas
+
+            f_vieja, c_vieja = coor_fichas[2], coor_fichas[3]                           # Para determinar, la casilla de arrancada de moviemient
+            casilla_vieja = self._matriz[f_vieja][c_vieja]
+
+            f, c = coor_fichas[0], coor_fichas[1]                                       # Para determinar, la casilla donde se pienza realizar el movimiento.
+            casilla = self._matriz[f][c]
+
+
 
         if casilla_vieja.ficha.nom_archivo == self.ficha_1 or casilla_vieja.ficha.nom_archivo == self.ficha_2:                       # Logica salto men
 
