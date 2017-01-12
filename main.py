@@ -5,6 +5,7 @@ from casilla import Casilla
 
 display_width = 800
 display_heigth = 800
+archivo_tablero = 'tablero_coordenado.png'                                              # Variable global para el nombre del archivo tablero.
 
 mx = 0
 my = 0
@@ -18,7 +19,7 @@ matriz = board.inicializar_tablero()
 pygame.init()                                                                           # Inicializando pygame
 
 gameSurface = pygame.display.set_mode((display_width, display_heigth))                  # Dimenciones del surface (ventana)
-sup_tablero = pygame.image.load('tablero.png').convert()
+sup_tablero = pygame.image.load(archivo_tablero).convert()
 
 pygame.display.set_caption('Checkers')                                                  # titulo de la ventana
                                                                                         # reloj de juego
@@ -90,7 +91,7 @@ while not gana_empate:                                                          
             cas = board.casilla_activa(mx, my)
 
             board.saltos_posibles(cas)
-            # board.movidas_posibles(cas)
+            #board.movidas_posibles(cas)
 
             if cas.ficha != None:
 
