@@ -440,9 +440,6 @@ class Tablero:
 
                             f_vieja, c_vieja = casilla.cor_tablero
 
-                            #x = self._matriz[f_vieja][c_vieja]
-                            #print(x.ficha.nom_archivo)
-
                             if self._com_coordenadas(f_nueva, c_nueva):         # Para que solo sea posible introducir valores validos en la funcion
                                 # (f_nueva, c_nueva, f_vieja, c_vieja)
                                 print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
@@ -450,27 +447,24 @@ class Tablero:
                             else:
                                 print(False)
 
-                        if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la izquierda
+                        if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la derecha
                             print('Derecha')
-                            f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
+                            f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior Derecha inmediata
 
                             f_nueva -= 1
                             c_nueva += 1
 
                             f_vieja, c_vieja = casilla.cor_tablero
 
-                            # x = self._matriz[f_vieja][c_vieja]
-                            # print(x.ficha.nom_archivo)
-
                             # (f_nueva, c_nueva, f_vieja, c_vieja)
-
                             if self._com_coordenadas(f_nueva,c_nueva):  # Para que solo sea posible introducir valores validos en la funcion
                                 # (f_nueva, c_nueva, f_vieja, c_vieja)
                                 print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
 
                             else:
                                 print(False)
-                    if casilla.ficha.fila_inicial in self.filas_ini_sup:  # Si el men va subiendo
+
+                    if casilla.ficha.fila_inicial in self.filas_ini_sup:  # Si el men va bajando
 
                         if cas.cor_tablero[1] < casilla.cor_tablero[1]:  # Si el men esta a la izquierda
                             print('Izquierda')
@@ -481,9 +475,6 @@ class Tablero:
 
                             f_vieja, c_vieja = casilla.cor_tablero
 
-                            # x = self._matriz[f_vieja][c_vieja]
-                            # print(x.ficha.nom_archivo)
-
                             # (f_nueva, c_nueva, f_vieja, c_vieja)
                             if self._com_coordenadas(f_nueva, c_nueva):  # Para que solo sea posible introducir valores validos en la funcion
                                 # (f_nueva, c_nueva, f_vieja, c_vieja)
@@ -492,7 +483,7 @@ class Tablero:
                             else:
                                 print(False)
 
-                        if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la izquierda
+                        if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la Derecha
                             print('Derecha')
                             f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
 
@@ -501,8 +492,90 @@ class Tablero:
 
                             f_vieja, c_vieja = casilla.cor_tablero
 
-                            # x = self._matriz[f_vieja][c_vieja]
-                            # print(x.ficha.nom_archivo)
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            if self._com_coordenadas(f_nueva, c_nueva):  # Para que solo sea posible introducir valores validos en la funcion
+                                # (f_nueva, c_nueva, f_vieja, c_vieja)
+                                print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+
+                            else:
+                                print(False)
+
+
+                if casilla.ficha.tipo_men() == False:                       # En caso de que la ficha seleccionada sea un king
+
+                    if cas.cor_tablero[0] < casilla.cor_tablero[0]:         # Si la ficha  esta a la arriba
+                        print('Arriba')
+
+                        if cas.cor_tablero[1] < casilla.cor_tablero[1]:     # Si la ficha esta a la izq
+                            print('Izq')
+
+                            f_nueva, c_nueva = cas.cor_tablero              # El salto se realizara a la casilla superior izquierda inmediata
+
+                            f_nueva -= 1
+                            c_nueva -= 1
+
+                            f_vieja, c_vieja = casilla.cor_tablero
+
+                            if self._com_coordenadas(f_nueva, c_nueva):  # Para que solo sea posible introducir valores validos en la funcion
+                                # (f_nueva, c_nueva, f_vieja, c_vieja)
+                                print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+
+                            else:
+                                print(False)
+
+                        if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si la ficha esta a la Der
+                            print('Der')
+
+                            if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la derecha
+
+                                f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior derecha inmediata
+
+                                f_nueva -= 1
+                                c_nueva += 1
+
+                                f_vieja, c_vieja = casilla.cor_tablero
+
+                                # (f_nueva, c_nueva, f_vieja, c_vieja)
+                                if self._com_coordenadas(f_nueva,
+                                                         c_nueva):  # Para que solo sea posible introducir valores validos en la funcion
+                                    # (f_nueva, c_nueva, f_vieja, c_vieja)
+                                    print(
+                                        self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+
+                                else:
+                                    print(False)
+
+                    if cas.cor_tablero[0] > casilla.cor_tablero[0]:  # Si la ficha  esta a la abajo
+                        print('Abajo')
+
+                        if cas.cor_tablero[1] < casilla.cor_tablero[1]: # Si la ficha esta a la izq
+                            print('Izq')
+
+                            f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
+
+                            f_nueva += 1
+                            c_nueva -= 1
+
+                            f_vieja, c_vieja = casilla.cor_tablero
+
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            if self._com_coordenadas(f_nueva,
+                                                     c_nueva):  # Para que solo sea posible introducir valores validos en la funcion
+                                # (f_nueva, c_nueva, f_vieja, c_vieja)
+                                print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+
+                            else:
+                                print(False)
+
+                        if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si la ficha esta a la Der
+                            print('Der')
+
+                            f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
+
+                            f_nueva += 1
+                            c_nueva += 1
+
+                            f_vieja, c_vieja = casilla.cor_tablero
 
                             # (f_nueva, c_nueva, f_vieja, c_vieja)
                             if self._com_coordenadas(f_nueva, c_nueva):  # Para que solo sea posible introducir valores validos en la funcion
@@ -513,17 +586,11 @@ class Tablero:
                                 print(False)
 
 
-                if casilla.ficha.tipo_men() == False:           # En caso de que la ficha seleccionada sea un king
-
-                    if cas.cor_tablero[0] < casilla.cor_tablero[0]:  # Si la ficha  esta a la arriba
-                        print('Arriba')
-
-                    pass
 
     def _com_coordenadas(self, f, c):
         """Para comprobar si unas coordenadas de matriz son validas"""
 
-        if (f > 0 and f < 7) and (c > 0 and c < 7):
+        if (f >= 0 and f <= 7) and (c >= 0 and c <= 7):
             return True
 
         else:
