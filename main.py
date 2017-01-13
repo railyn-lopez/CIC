@@ -90,7 +90,7 @@ while not gana_empate:                                                          
             mxg, myg = mx, my                                                                   # Para almacenar la posicion donde se clickeo la ficha para moverla
             cas = board.casilla_activa(mx, my)
 
-            board.saltos_posibles(cas)
+            board.saltos_posibles(cas, [])
             #board.movidas_posibles(cas)
 
             if cas.ficha != None:

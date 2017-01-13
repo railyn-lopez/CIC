@@ -40,7 +40,7 @@ class Tablero:
                     color = True                # Color solido
 
                 # Por el momento solo se estara utilizando una ficha para pruebas.
-                if f == 2 and c == 1 or f == 2 and c == 3:                                             #(x_izq, x_der, y_arriba, y_abajo )
+                if f == 0 and c == 1 or f == 0 and c == 3:                                             #(x_izq, x_der, y_arriba, y_abajo )
                     self._matriz[f][c] = Casilla (Ficha(self.ficha_1, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
 
@@ -107,12 +107,12 @@ class Tablero:
                                                                                                                                                            # ,subido una fila, aumentado una columna o aumentado una fila (ficha rey).
                 return True
                                                                                #(f_nueva, c_nueva, f_vieja, c_vieja)
-    def salto_valido(self, x = None, y = None, x_vieja = None, y_vieja = None,  coor_fichas = None):
+    def salto_valido(self, x = None, y = None, x_vieja = None, y_vieja = None, coor_fichas = None):
         """Para determinar si la ficha ha saltado validamente"""
 
         if coor_fichas == None:                                                         # En caso de que se tengan que determinar la posicion de las casillas, a traves del mouse
 
-            f_vieja, c_vieja = self.det_casilla(x_vieja, y_vieja)                       # Para determinar, la casilla de arrancada de moviemient
+            f_vieja, c_vieja = self.det_casilla(x_vieja, y_vieja)                       # Para determinar, la casilla de arrancada de moviemiento
             casilla_vieja = self._matriz[f_vieja][c_vieja]
 
             f, c = self.det_casilla(x, y)                                               # Para determinar, la casilla donde se pienza realizar el movimiento.
@@ -121,11 +121,12 @@ class Tablero:
 
         else:                                                                           # En caso de que se tengan las coordenadas de las casillas
 
-            f_vieja, c_vieja = coor_fichas[2], coor_fichas[3]                           # Para determinar, la casilla de arrancada de moviemient
+            f_vieja, c_vieja = coor_fichas[2], coor_fichas[3]                           # Para determinar, la casilla de arrancada de moviemiento
             casilla_vieja = self._matriz[f_vieja][c_vieja]
 
             f, c = coor_fichas[0], coor_fichas[1]                                       # Para determinar, la casilla donde se pienza realizar el movimiento.
             casilla = self._matriz[f][c]
+
 
 
 
@@ -140,7 +141,8 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
-                                self.remover_ficha(casilla_int)
+                                if coor_fichas == None:                                                                                     # Si se utilizan las coordenadas de tablero, no eliminar la ficha ya que es una comprobacion
+                                    self.remover_ficha(casilla_int)
                                 return True
 
                     if c + 2 == c_vieja:                                                                                                   # Para determinar si la ficha se ha desplazado hacia la derecha
@@ -148,7 +150,8 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
-                                self.remover_ficha(casilla_int)
+                                if coor_fichas == None:                                                                                    # Si se utilizan las coordenadas de tablero, no eliminar la ficha ya que es una comprobacion
+                                    self.remover_ficha(casilla_int)
                                 return True
 
 
@@ -161,7 +164,8 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
-                                self.remover_ficha(casilla_int)
+                                if coor_fichas == None:                                                                                     # Si se utilizan las coordenadas de tablero, no eliminar la ficha ya que es una comprobacion
+                                    self.remover_ficha(casilla_int)
                                 return True
 
                     if c + 2 == c_vieja:                                                                                                   # Para determinar si la ficha se ha desplazado hacia la derecha
@@ -169,7 +173,8 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
-                                self.remover_ficha(casilla_int)
+                                if coor_fichas == None:                                                                                     # Si se utilizan las coordenadas de tablero, no eliminar la ficha ya que es una comprobacion
+                                    self.remover_ficha(casilla_int)
                                 return True
 
                     #return True
@@ -186,7 +191,8 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
-                                self.remover_ficha(casilla_int)
+                                if coor_fichas == None:                                                                                                     # Si se utilizan las coordenadas de tablero, no eliminar la ficha ya que es una comprobacion
+                                    self.remover_ficha(casilla_int)
                                 return True
 
                     if c - 2 == c_vieja:                                                                                                                    # En caso de que el salto ascienda hacia la izquierda
@@ -194,7 +200,8 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
-                                self.remover_ficha(casilla_int)
+                                if coor_fichas == None:                                                                                                     # Si se utilizan las coordenadas de tablero, no eliminar la ficha ya que es una comprobacion
+                                    self.remover_ficha(casilla_int)
                                 return True
 
                 if f + 2 == f_vieja:                                                                                                                        # En caso de que el salto descienda
@@ -204,7 +211,8 @@ class Tablero:
 
                         if casilla_int.ficha != None:                                                                                                       # En caso de que el salto desienda hacia la derecha
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
-                                self.remover_ficha(casilla_int)
+                                if coor_fichas == None:
+                                    self.remover_ficha(casilla_int)                                                                                         # Si se utilizan las coordenadas de tablero, no eliminar la ficha ya que es una comprobacion
                                 return True
 
                     elif c - 2 == c_vieja:                                                                                                                  # En caso de que el salto desienda hacia la izquierda
@@ -212,7 +220,8 @@ class Tablero:
 
                         if casilla_int.ficha != None:
                             if casilla_int.ficha.tipo_color != casilla_vieja.ficha.tipo_color:
-                                self.remover_ficha(casilla_int)
+                                if coor_fichas == None:                                                                                                     # Si se utilizan las coordenadas de tablero, no eliminar la ficha ya que es una comprobacion
+                                    self.remover_ficha(casilla_int)
                                 return True
 
 
@@ -236,13 +245,11 @@ class Tablero:
         casilla = self._matriz[f][c]
         casilla.ficha = ficha
 
-
     def casilla_activa(self, x, y):
         """Para mover una ficha de casilla"""
 
         f, c = self.det_casilla(x, y)
         return self._matriz[f][c]
-
 
     def remover_ficha(self, casilla):
         """Para remover una ficha del tablero """
@@ -256,7 +263,6 @@ class Tablero:
             casilla.ficha = None
 
         print(self.cont_f1, self.cont_f2)
-
 
     def movidas_posibles(self, casilla):
         """Para determinar las movidas posibles que tiene una ficha"""
@@ -339,13 +345,16 @@ class Tablero:
 
             return (casillas_vacias)
 
-    def saltos_posibles(self, casilla):
+    def saltos_posibles(self, casilla, casillas_alrededor_enemigos, lista_saltos = None, cas_inicial = None):
         """Determina los posibles saltos de una ficha"""
+
+        if cas_inicial != None:
+            casilla_inicial = cas_inicial
 
         if casilla.ficha != None:
 
             f, c = casilla.cor_tablero
-            casillas_alrededor_enemigos = []             # Para almacenar las casillas que rodean la ficha en cuestion
+            casillas_alrededor_enemigos = casillas_alrededor_enemigos             # Para almacenar las casillas que rodean la ficha en cuestion
 
 
             if casilla.ficha.tipo_men() == True:         # En caso de que la ficha seleccionada sea un men
@@ -368,7 +377,7 @@ class Tablero:
 
                 elif casilla.ficha.fila_inicial in self.filas_ini_inf:  # Si el men va subiendo
 
-                    if f > 1:  # Revisando las 2 casillas superiores
+                    if f > 0:  # Revisando las 2 casillas superiores
 
                         if c >= 1:
                             cas_prox = self._matriz[f - 1][c - 1]
@@ -414,9 +423,115 @@ class Tablero:
 
                             casillas_alrededor_enemigos.append(cas_prox)
 
-
-
             print(casillas_alrededor_enemigos)
+
+            for cas in casillas_alrededor_enemigos:
+
+                if casilla.ficha.tipo_men() == True:                        # Si la ficha seleccionada es un men
+
+                    if casilla.ficha.fila_inicial in self.filas_ini_inf:    # Si el men va subiendo
+
+                        if cas.cor_tablero[1] < casilla.cor_tablero[1]:     # Si el men esta a la izquierda
+                            print('Izquierda')
+                            f_nueva, c_nueva = cas.cor_tablero              # El salto se realizara a la casilla superior izquierda inmediata
+
+                            f_nueva -= 1
+                            c_nueva -= 1
+
+                            f_vieja, c_vieja = casilla.cor_tablero
+
+                            #x = self._matriz[f_vieja][c_vieja]
+                            #print(x.ficha.nom_archivo)
+
+                            if self._com_coordenadas(f_nueva, c_nueva):         # Para que solo sea posible introducir valores validos en la funcion
+                                # (f_nueva, c_nueva, f_vieja, c_vieja)
+                                print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+
+                            else:
+                                print(False)
+
+                        if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la izquierda
+                            print('Derecha')
+                            f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
+
+                            f_nueva -= 1
+                            c_nueva += 1
+
+                            f_vieja, c_vieja = casilla.cor_tablero
+
+                            # x = self._matriz[f_vieja][c_vieja]
+                            # print(x.ficha.nom_archivo)
+
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+
+                            if self._com_coordenadas(f_nueva,c_nueva):  # Para que solo sea posible introducir valores validos en la funcion
+                                # (f_nueva, c_nueva, f_vieja, c_vieja)
+                                print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+
+                            else:
+                                print(False)
+                    if casilla.ficha.fila_inicial in self.filas_ini_sup:  # Si el men va subiendo
+
+                        if cas.cor_tablero[1] < casilla.cor_tablero[1]:  # Si el men esta a la izquierda
+                            print('Izquierda')
+                            f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
+
+                            f_nueva += 1
+                            c_nueva -= 1
+
+                            f_vieja, c_vieja = casilla.cor_tablero
+
+                            # x = self._matriz[f_vieja][c_vieja]
+                            # print(x.ficha.nom_archivo)
+
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            if self._com_coordenadas(f_nueva, c_nueva):  # Para que solo sea posible introducir valores validos en la funcion
+                                # (f_nueva, c_nueva, f_vieja, c_vieja)
+                                print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+
+                            else:
+                                print(False)
+
+                        if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la izquierda
+                            print('Derecha')
+                            f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
+
+                            f_nueva += 1
+                            c_nueva += 1
+
+                            f_vieja, c_vieja = casilla.cor_tablero
+
+                            # x = self._matriz[f_vieja][c_vieja]
+                            # print(x.ficha.nom_archivo)
+
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            if self._com_coordenadas(f_nueva, c_nueva):  # Para que solo sea posible introducir valores validos en la funcion
+                                # (f_nueva, c_nueva, f_vieja, c_vieja)
+                                print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+
+                            else:
+                                print(False)
+
+
+                if casilla.ficha.tipo_men() == False:           # En caso de que la ficha seleccionada sea un king
+
+                    if cas.cor_tablero[0] < casilla.cor_tablero[0]:  # Si la ficha  esta a la arriba
+                        print('Arriba')
+
+                    pass
+
+    def _com_coordenadas(self, f, c):
+        """Para comprobar si unas coordenadas de matriz son validas"""
+
+        if (f > 0 and f < 7) and (c > 0 and c < 7):
+            return True
+
+        else:
+
+            return False
+
+
+
 
 
 #a = Tablero()
