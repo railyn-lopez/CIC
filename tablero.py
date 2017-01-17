@@ -224,7 +224,6 @@ class Tablero:
                                     self.remover_ficha(casilla_int)
                                 return True
 
-
     def cop_ficha(self, x, y, ficha):
         """Para copiar una ficha de una casilla a otra y coronar fichas"""
 
@@ -345,6 +344,96 @@ class Tablero:
 
             return (casillas_vacias)
 
+    def saltos_posibles_men(self, casilla):
+
+        enemigos_proximos =  self.enemigos_proximo(casilla)
+        print(enemigos_proximos)
+
+        pass
+
+    def enemigos_proximo(self, casilla):
+        """Para determinar los enemigos que una ficha (king o men) tiene alrededor"""
+
+        casillas_alrededor_enemigos = []  # Para almacenar las casillas que rodean la ficha en cuestion
+
+        if casilla.ficha != None:
+
+            f, c = casilla.cor_tablero
+
+            # Determinando las fichas enemigas que una ficha tiene a su arrededor
+            if casilla.ficha.tipo_men() == True:         # En caso de que la ficha seleccionada sea un men
+
+                if casilla.ficha.fila_inicial in self.filas_ini_sup:    # Si el men va bajando
+
+                    if f < 7:  # Revisando las 2 casillas inferiores
+
+                        if c >= 1:
+                            cas_prox = self._matriz[f + 1][c - 1]
+
+                            if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                                casillas_alrededor_enemigos.append(cas_prox)
+
+                        if c < 7:
+                            cas_prox = self._matriz[f + 1][c + 1]
+
+                            if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                                casillas_alrededor_enemigos.append(cas_prox)
+
+                elif casilla.ficha.fila_inicial in self.filas_ini_inf:  # Si el men va subiendo
+
+                    if f > 0:  # Revisando las 2 casillas superiores
+
+                        if c >= 1:
+                            cas_prox = self._matriz[f - 1][c - 1]
+
+                            if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                                casillas_alrededor_enemigos.append(cas_prox)
+
+                        if c < 7:
+                            cas_prox = self._matriz[f - 1][c + 1]
+
+                            if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                                casillas_alrededor_enemigos.append(cas_prox)
+
+            else:                                       # En caso de que la ficha seleccionada sea un king
+
+                if f >= 1:                               # Revisando las 2 casillas superiores
+
+                    if c >= 1:
+                        cas_prox = self._matriz[f-1][c-1]
+
+                        if cas_prox.ficha != None and  casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                            casillas_alrededor_enemigos.append(cas_prox)
+
+                    if c < 7:
+                        cas_prox = self._matriz[f - 1][c + 1]
+
+                        if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+                            casillas_alrededor_enemigos.append(cas_prox)
+
+                if f < 7:                               # Revisando las 2 casillas inferiores
+
+                    if c >= 1:
+                        cas_prox = self._matriz[f + 1][c - 1]
+
+                        if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+
+                            casillas_alrededor_enemigos.append(cas_prox)
+
+                    if c < 7:
+                        cas_prox = self._matriz[f + 1][c + 1]
+
+                        if cas_prox.ficha != None and casilla.ficha.tipo_color != cas_prox.ficha.tipo_color:
+
+                            casillas_alrededor_enemigos.append(cas_prox)
+
+            #print(casillas_alrededor_enemigos)
+            return (casillas_alrededor_enemigos)
+
+        elif casilla.ficha == None:
+
+            raise ValueError('La casilla no tiene ficha dentro')
+
     def saltos_posibles(self, casilla, casillas_alrededor_enemigos, lista_saltos = None, cas_inicial = None):
         """Determina los posibles saltos de una ficha"""
 
@@ -356,7 +445,7 @@ class Tablero:
             f, c = casilla.cor_tablero
             casillas_alrededor_enemigos = casillas_alrededor_enemigos             # Para almacenar las casillas que rodean la ficha en cuestion
 
-
+            # Determinando las fichas enemigas que una ficha tiene a su arrededor
             if casilla.ficha.tipo_men() == True:         # En caso de que la ficha seleccionada sea un men
 
                 if casilla.ficha.fila_inicial in self.filas_ini_sup:    # Si el men va bajando
@@ -425,9 +514,9 @@ class Tablero:
 
             print(casillas_alrededor_enemigos)
 
-            for cas in casillas_alrededor_enemigos:
+            for cas in casillas_alrededor_enemigos:                         # Para saber cuales de las fichas se pueden comer##########################3
 
-                if casilla.ficha.tipo_men() == True:                        # Si la ficha seleccionada es un men
+                if casilla.ficha.tipo_men() == True:                        # Si la ficha seleccionada es un men######################################
 
                     if casilla.ficha.fila_inicial in self.filas_ini_inf:    # Si el men va subiendo
 
@@ -501,7 +590,7 @@ class Tablero:
                                 print(False)
 
 
-                if casilla.ficha.tipo_men() == False:                       # En caso de que la ficha seleccionada sea un king
+                if casilla.ficha.tipo_men() == False:                       # En caso de que la ficha seleccionada sea un king###########################
 
                     if cas.cor_tablero[0] < casilla.cor_tablero[0]:         # Si la ficha  esta a la arriba
                         print('Arriba')
@@ -584,8 +673,6 @@ class Tablero:
 
                             else:
                                 print(False)
-
-
 
     def _com_coordenadas(self, f, c):
         """Para comprobar si unas coordenadas de matriz son validas"""
