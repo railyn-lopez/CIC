@@ -344,12 +344,90 @@ class Tablero:
 
             return (casillas_vacias)
 
-    def saltos_posibles_men(self, casilla):
+    def saltos_posibles_men(self, casilla, enemigos_proximos, lista_saltos, casillas_saltadas, casillas_imposible_saltar):
 
-        enemigos_proximos =  self.enemigos_proximo(casilla)
-        print(enemigos_proximos)
 
-        pass
+        if len(lista_saltos) == 0:                      # Almacenando la pos inicial como 1er salto
+
+            lista_saltos.append(casilla)
+
+        if casilla.ficha.tipo_men() == True:            # Asegurando que la ficha sea men
+
+            enemigos = self.enemigos_proximo(casilla)   # Determinando si la ficha tiene enemigos proximos
+
+            print(enemigos)
+
+            for cas in enemigos:                        # En enemigos_proximos no pueden estar las fichas saltadas o las imposibles de saltar.
+
+                if cas not in casillas_saltadas and cas not in casillas_imposible_saltar and cas not in enemigos_proximos:      # Para serciorarse de que esa casilla no fue revisada
+
+                    enemigos_proximos.append(cas)
+
+            #print('Enemigos proximos')
+            # for cas in enemigos_proximos:
+            #     print(cas)
+
+            if len(enemigos_proximos) == 0 and lista_saltos[0] == casilla:         # condicion de salida de la funcion
+
+                for x in range(len(lista_saltos)):
+
+                    if x > 0:
+                        lista_saltos[x].ficha = None
+                        print(lista_saltos[x])
+
+                return lista_saltos
+
+            saltos_posibles = self.comidas_posibles(casilla, enemigos_proximos)     # Determinando donde la ficha puede saltar
+
+            if len(saltos_posibles) > 0:    # Determinando si es posible realizar el salto.
+
+                #print('Saltos posibles')
+                for x in range(len(saltos_posibles)):
+                    # print(saltos_posibles[x])
+
+                    if saltos_posibles[x] not in lista_saltos:
+                        lista_saltos.append(saltos_posibles[x])
+                        saltos_posibles[x].ficha = casilla.ficha
+                        casilla.ficha = None
+                        casillas_saltadas.append(enemigos_proximos[x])
+                        enemigos_proximos.remove(enemigos_proximos[x])
+                        casilla = saltos_posibles[x]
+
+                        break
+
+                enemigos = self.enemigos_proximo(casilla)   # Determinando si la ficha tiene enemigos proximos
+
+                #print(enemigos)
+
+                for cas in enemigos:                        # En enemigos_proximos no pueden estar las fichas saltadas o las imposibles de saltar.
+
+                    if cas not in casillas_saltadas and cas not in casillas_imposible_saltar:
+
+                        enemigos_proximos.append(cas)
+
+                if len(enemigos_proximos) == 0 and casilla != lista_saltos[0]:      # En caso de que no se produzcan saltos, volver atras una ficha
+
+                    indice_pos_anterior = lista_saltos.index(casilla) - 1
+                    pos_anterior = lista_saltos[indice_pos_anterior]
+                    pos_anterior.ficha = casilla.ficha
+                    casilla.ficha = None
+                    casilla = pos_anterior
+                    # pos = self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, [])
+                    self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, [])
+                    # return pos
+
+                # pos = self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, [])
+                self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, [])
+                # return pos
+
+            else:       # En caso de que no se puedan realizar saltos
+                return lista_saltos
+
+
+
+        else:
+            print('Solo para fichas men')
+
 
     def enemigos_proximo(self, casilla):
         """Para determinar los enemigos que una ficha (king o men) tiene alrededor"""
@@ -361,11 +439,11 @@ class Tablero:
             f, c = casilla.cor_tablero
 
             # Determinando las fichas enemigas que una ficha tiene a su arrededor
-            if casilla.ficha.tipo_men() == True:         # En caso de que la ficha seleccionada sea un men
+            if casilla.ficha.tipo_men() == True:    # En caso de que la ficha seleccionada sea un men
 
                 if casilla.ficha.fila_inicial in self.filas_ini_sup:    # Si el men va bajando
 
-                    if f < 7:  # Revisando las 2 casillas inferiores
+                    if f < 7:   # Revisando las 2 casillas inferiores
 
                         if c >= 1:
                             cas_prox = self._matriz[f + 1][c - 1]
@@ -433,6 +511,178 @@ class Tablero:
         elif casilla.ficha == None:
 
             raise ValueError('La casilla no tiene ficha dentro')
+
+    def comidas_posibles(self, casilla, casillas_alrededor_enemigos):
+        """Para determinar hacia donde una ficha (men o king) puede realizar un salto valido, en caso de que no se pueda realizar saltos validos devuelve una lista vacia"""
+
+        lista_saltos = []   # Para almacenar las coordenadas a donde puede ser posible saltar validamente
+
+        for cas in casillas_alrededor_enemigos:  # Para saber cuales de las fichas se pueden comer##########################3
+
+            if casilla.ficha.tipo_men() == True:  # Si la ficha seleccionada es un men######################################
+
+                if casilla.ficha.fila_inicial in self.filas_ini_inf:  # Si el men va subiendo
+
+                    if cas.cor_tablero[1] < casilla.cor_tablero[1]:  # Si el men esta a la izquierda
+                        print('Izquierda')
+                        f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
+
+                        f_nueva -= 1
+                        c_nueva -= 1
+
+                        f_vieja, c_vieja = casilla.cor_tablero
+
+                        if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            lista_saltos.append(self._matriz[f_nueva][c_nueva])
+
+                        else:
+                            continue
+
+                    if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la derecha
+                        print('Derecha')
+                        f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior Derecha inmediata
+
+                        f_nueva -= 1
+                        c_nueva += 1
+
+                        f_vieja, c_vieja = casilla.cor_tablero
+
+                        # (f_nueva, c_nueva, f_vieja, c_vieja)
+                        if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            lista_saltos.append(self._matriz[f_nueva][c_nueva])
+
+                        else:
+                            continue
+
+                if casilla.ficha.fila_inicial in self.filas_ini_sup:  # Si el men va bajando
+
+                    if cas.cor_tablero[1] < casilla.cor_tablero[1]:  # Si el men esta a la izquierda
+                        print('Izquierda')
+                        f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
+
+                        f_nueva += 1
+                        c_nueva -= 1
+
+                        f_vieja, c_vieja = casilla.cor_tablero
+
+                        # (f_nueva, c_nueva, f_vieja, c_vieja)
+                        if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion y la casilla proxima este vacia
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            lista_saltos.append(self._matriz[f_nueva][c_nueva])
+
+                        else:
+                            continue
+
+                    if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la Derecha
+                        print('Derecha')
+                        f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior derecha inmediata
+
+                        f_nueva += 1
+                        c_nueva += 1
+
+                        f_vieja, c_vieja = casilla.cor_tablero
+
+                        # (f_nueva, c_nueva, f_vieja, c_vieja)
+                        if self._com_coordenadas(f_nueva,c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion y la casilla proxima este vacia
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            lista_saltos.append(self._matriz[f_nueva][c_nueva])
+
+                        else:
+                           continue
+
+            if casilla.ficha.tipo_men() == False:  # En caso de que la ficha seleccionada sea un king###########################
+
+                if cas.cor_tablero[0] < casilla.cor_tablero[0]:  # Si la ficha  esta a la arriba
+                    print('Arriba')
+
+                    if cas.cor_tablero[1] < casilla.cor_tablero[1]:  # Si la ficha esta a la izq
+                        print('Izq')
+
+                        f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
+
+                        f_nueva -= 1
+                        c_nueva -= 1
+
+                        f_vieja, c_vieja = casilla.cor_tablero
+
+                        if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            lista_saltos.append(self._matriz[f_nueva][c_nueva])
+
+                        else:
+                            continue
+
+                    if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si la ficha esta a la Der
+                        print('Der')
+
+                        if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la derecha
+
+                            f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior derecha inmediata
+
+                            f_nueva -= 1
+                            c_nueva += 1
+
+                            f_vieja, c_vieja = casilla.cor_tablero
+
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
+                                # (f_nueva, c_nueva, f_vieja, c_vieja)
+                                print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                                lista_saltos.append(self._matriz[f_nueva][c_nueva])
+
+                            else:
+                                continue
+
+                if cas.cor_tablero[0] > casilla.cor_tablero[0]:  # Si la ficha  esta a la abajo
+                    print('Abajo')
+
+                    if cas.cor_tablero[1] < casilla.cor_tablero[1]:  # Si la ficha esta a la izq
+                        print('Izq')
+
+                        f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
+
+                        f_nueva += 1
+                        c_nueva -= 1
+
+                        f_vieja, c_vieja = casilla.cor_tablero
+
+                        # (f_nueva, c_nueva, f_vieja, c_vieja)
+                        if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            lista_saltos.append(self._matriz[f_nueva][c_nueva])
+
+                        else:
+                            continue
+
+                    if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si la ficha esta a la Der
+                        print('Der')
+
+                        f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
+
+                        f_nueva += 1
+                        c_nueva += 1
+
+                        f_vieja, c_vieja = casilla.cor_tablero
+
+                        # (f_nueva, c_nueva, f_vieja, c_vieja)
+                        if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
+                            # (f_nueva, c_nueva, f_vieja, c_vieja)
+                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            lista_saltos.append(self._matriz[f_nueva][c_nueva])
+
+                        else:
+                            continue
+        pass
+
+        return (lista_saltos)
 
     def saltos_posibles(self, casilla, casillas_alrededor_enemigos, lista_saltos = None, cas_inicial = None):
         """Determina los posibles saltos de una ficha"""

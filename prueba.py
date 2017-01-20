@@ -1,16 +1,9 @@
+for x in range(5):
 
-def prueba(a, cont):
+    if x == 2:
+        break
 
-    if a < 10:
-        a += 1
-        cont += 1
-        print(a, cont)
-        return prueba(a, cont)
-
-    else:
-        return (a, cont)
+    print(x)
 
 
-
-print(prueba(5, 0))
 
