@@ -19,7 +19,7 @@ class Ficha:
 
         if (self.rect.x <= mx <= self.rect.topright[0]) and (self.rect.y <= my <= self.rect.bottomleft[1]) and pygame.mouse.get_pressed()[0] == 1:
             #print('si')
-            Ficha.activa = self                  # Para determinar si la ficha esta en movimiento
+            Ficha.activa = self                                             # Para determinar si la ficha esta en movimiento
             return True
 
         else:
@@ -30,7 +30,7 @@ class Ficha:
     def tipo_color(self):
         """Para determinar el color de la ficha"""
 
-        nombre = self.nom_archivo               # Extrayendo el color de la ficha teniendo en cuenta que esta en '_'
+        nombre = self.nom_archivo                                           # Extrayendo el color de la ficha teniendo en cuenta que esta en '_'
         end = nombre.find("_", 2)
         color = nombre[2:end]
 

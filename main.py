@@ -90,31 +90,29 @@ while not gana_empate:                                                          
             mxg, myg = mx, my                                                                   # Para almacenar la posicion donde se clickeo la ficha para moverla
             cas = board.casilla_activa(mx, my)
 
-
-            nada  = board.saltos_posibles_men(cas, [], [], [], [])
-            print(nada)
-            print('Salida!!!!!!!!!!!!!!!!!!!!')
-            for x in nada:
-                print(x)
+            #nada  = board.saltos_posibles_men(cas, [], [], [], [])
             #board.enemigos_proximo(cas)
             #board.saltos_posibles(cas, [])
             #board.movidas_posibles(cas)
 
             if cas.ficha != None:
 
-                cas_mov = cas                                                                   # La casilla donde se almacena la ficha a cambiar de lugar
-                conf_click_area = cas.ficha.click_area(mx, my)                                  # Para validar si se esta clickeando una ficha
+                cas_mov = cas                                                                       # La casilla donde se almacena la ficha a cambiar de lugar
+                conf_click_area = cas.ficha.click_area(mx, my)                                      # Para validar si se esta clickeando una ficha
                 #print(conf_click_area)
 
+                #board.movidas_posibles_men(cas.ficha)                                               # Movimientos validos fichas men
+                #board.movidas_posibles_king(cas.ficha)                                              # Movimientos validos fichas king
 
 
-        if event.type == pygame.MOUSEBUTTONUP and pygame.mouse.get_pressed()[0] == 0:           # Para determinar si se levanto el boton izq del mouse.
+
+        if event.type == pygame.MOUSEBUTTONUP and pygame.mouse.get_pressed()[0] == 0:               # Para determinar si se levanto el boton izq del mouse.
 
             mx, my = pygame.mouse.get_pos()
 
             cas_vieja = board.casilla_activa(mxg, myg)
 
-            if cas_vieja.ficha != None:                             # Si se clickeo una casilla con ficha, para empezar el movimiento
+            if cas_vieja.ficha != None:                                                             # Si se clickeo una casilla con ficha, para empezar el movimiento
 
                 if board.movimiento_valido(mx, my, mxg, myg) == True:                               # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
 
