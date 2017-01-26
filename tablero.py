@@ -17,7 +17,6 @@ class Tablero:
         self.cont_f1 = 0                                              # Para contar las fichas comidas
         self.cont_f2 = 0                                              # Para contar las fichas comidas
 
-
     def inicializar_tablero(self):
         """Metetodo utilizado para inicializar el tablero, con la posicion de juego inicial"""
 
@@ -394,10 +393,10 @@ class Tablero:
 
                 print('La ficha introducida no es men')
 
-            print('Moves posibles: ', len(casillas_vacias))
-
-            for ele in casillas_vacias:
-                print(ele.cor_tablero)
+            # print('Moves posibles: ', len(casillas_vacias))
+            #
+            # for ele in casillas_vacias:
+            #     print(ele.cor_tablero)
 
             return (casillas_vacias)
 
@@ -446,13 +445,87 @@ class Tablero:
 
                 print('La ficha introducida no es king')
 
-            print('Moves posibles: ', len(casillas_vacias))
-
-            for ele in casillas_vacias:
-                print(ele.cor_tablero)
+            # print('Moves posibles: ', len(casillas_vacias))
+            #
+            # for ele in casillas_vacias:
+            #     print(ele.cor_tablero)
 
             return (casillas_vacias)
 
+    def saltos_posibles_men_2(self, ficha):
+        """Imprime todos los posibles jumps de una ficha"""
+
+        f, c = self.det_casilla(ficha.rect.x, ficha.rect.y)
+
+        casilla = self._matriz[f][c]
+
+        if casilla.ficha != None and casilla.ficha.tipo_men() == True:
+
+            enemigos = self.enemigos_proximo(casilla)
+
+            posiciones = self.comidas_posibles(casilla, enemigos)
+
+            for cas in posiciones[0]:
+               print(cas)
+
+            return(posiciones)
+
+        else:
+
+            print("La casilla no esta vacia, o la ficha no es men")
+
+    def saltos_posibles_king(self, ficha):
+        """Imprime todos los posibles jumps de una ficha"""
+
+        f, c = self.det_casilla(ficha.rect.x, ficha.rect.y)
+
+        casilla = self._matriz[f][c]
+
+        if casilla.ficha != None and casilla.ficha.tipo_men() == False:
+
+            enemigos = self.enemigos_proximo(casilla)
+
+            posiciones = self.comidas_posibles(casilla, enemigos)
+
+            for cas in posiciones[0]:
+                print(cas)
+
+            return (posiciones)
+
+        else:
+
+            print("La casilla no esta vacia, o la ficha no es men")
+
+    def movidas_validos_por_color(self, color):
+        """Imprime la posicion de las fichas, que pueden tener movimientos validos para ese color"""
+
+        for f in range(len(self._matriz)):              # Inicializando la matriz del tablero que va a contener los objetos casilla
+
+            for c in range(len(self._matriz[f])):
+
+                casilla = self._matriz[f][c]
+
+                if casilla.ficha != None:
+
+                    ficha = casilla.ficha
+
+                    if ficha.tipo_color == color:
+
+                        if ficha.tipo_men() == True:
+
+                            movimientos = self.movidas_posibles_men(ficha)
+
+                            if len(movimientos) > 0:
+
+                                print(casilla.cor_tablero, "\n")
+
+                        else:           # En caso de que sea una king
+
+                            movimientos = self.movidas_posibles_king(ficha)
+
+                            if len(movimientos) > 0:
+
+                                print(casilla.cor_tablero, "\n")
 
     def saltos_posibles_men(self, casilla, enemigos_proximos, lista_saltos, casillas_saltadas, casillas_imposible_saltar):
 
@@ -598,13 +671,6 @@ class Tablero:
         else:
             print('Solo para fichas men')
 
-    def saltos_posibles_men_2(self, ficha):
-        """Imprime todos los posibles jumps de una ficha"""
-
-        if casilla.ficha != None:
-            enemigos = self.enemigos_proximo(casilla)
-            comidas
-
     def enemigos_proximo(self, casilla):
         """Para determinar los enemigos que una ficha (king o men) tiene alrededor"""
 
@@ -701,7 +767,7 @@ class Tablero:
                 if casilla.ficha.fila_inicial in self.filas_ini_inf:  # Si el men va subiendo
 
                     if cas.cor_tablero[1] < casilla.cor_tablero[1]:  # Si el men esta a la izquierda
-                        print('Izquierda')
+                        #print('Izquierda')
                         f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
 
                         f_nueva -= 1
@@ -711,7 +777,7 @@ class Tablero:
 
                         if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
                             # (f_nueva, c_nueva, f_vieja, c_vieja)
-                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            #print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
@@ -719,7 +785,7 @@ class Tablero:
                             lista_no_saltos.append(cas)
 
                     if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la derecha
-                        print('Derecha')
+                        #print('Derecha')
                         f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior Derecha inmediata
 
                         f_nueva -= 1
@@ -730,7 +796,7 @@ class Tablero:
                         # (f_nueva, c_nueva, f_vieja, c_vieja)
                         if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
                             # (f_nueva, c_nueva, f_vieja, c_vieja)
-                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            #print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
@@ -740,7 +806,7 @@ class Tablero:
                 if casilla.ficha.fila_inicial in self.filas_ini_sup:  # Si el men va bajando
 
                     if cas.cor_tablero[1] < casilla.cor_tablero[1]:  # Si el men esta a la izquierda
-                        print('Izquierda')
+                        #print('Izquierda')
                         f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
 
                         f_nueva += 1
@@ -751,7 +817,7 @@ class Tablero:
                         # (f_nueva, c_nueva, f_vieja, c_vieja)
                         if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion y la casilla proxima este vacia
                             # (f_nueva, c_nueva, f_vieja, c_vieja)
-                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            #print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
@@ -759,7 +825,7 @@ class Tablero:
                             lista_no_saltos.append(cas)
 
                     if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la Derecha
-                        print('Derecha')
+                        #print('Derecha')
                         f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior derecha inmediata
 
                         f_nueva += 1
@@ -770,7 +836,7 @@ class Tablero:
                         # (f_nueva, c_nueva, f_vieja, c_vieja)
                         if self._com_coordenadas(f_nueva,c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion y la casilla proxima este vacia
                             # (f_nueva, c_nueva, f_vieja, c_vieja)
-                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            #print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
@@ -780,10 +846,10 @@ class Tablero:
             if casilla.ficha.tipo_men() == False:  # En caso de que la ficha seleccionada sea un king###########################
 
                 if cas.cor_tablero[0] < casilla.cor_tablero[0]:  # Si la ficha  esta a la arriba
-                    print('Arriba')
+                    #print('Arriba')
 
                     if cas.cor_tablero[1] < casilla.cor_tablero[1]:  # Si la ficha esta a la izq
-                        print('Izq')
+                        #print('Izq')
 
                         f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
 
@@ -794,7 +860,7 @@ class Tablero:
 
                         if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
                             # (f_nueva, c_nueva, f_vieja, c_vieja)
-                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            #print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
@@ -802,7 +868,7 @@ class Tablero:
                             lista_no_saltos.append(cas)
 
                     if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si la ficha esta a la Der
-                        print('Der')
+                        #print('Der')
 
                         if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la derecha
 
@@ -816,7 +882,7 @@ class Tablero:
                             # (f_nueva, c_nueva, f_vieja, c_vieja)
                             if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
                                 # (f_nueva, c_nueva, f_vieja, c_vieja)
-                                print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                                #print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
                                 lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                             else:
@@ -824,10 +890,10 @@ class Tablero:
                                 lista_no_saltos.append(cas)
 
                 if cas.cor_tablero[0] > casilla.cor_tablero[0]:  # Si la ficha  esta a la abajo
-                    print('Abajo')
+                    #print('Abajo')
 
                     if cas.cor_tablero[1] < casilla.cor_tablero[1]:  # Si la ficha esta a la izq
-                        print('Izq')
+                        #print('Izq')
 
                         f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
 
@@ -839,7 +905,7 @@ class Tablero:
                         # (f_nueva, c_nueva, f_vieja, c_vieja)
                         if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
                             # (f_nueva, c_nueva, f_vieja, c_vieja)
-                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            #print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
@@ -847,7 +913,7 @@ class Tablero:
                             lista_no_saltos.append(cas)
 
                     if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si la ficha esta a la Der
-                        print('Der')
+                        #print('Der')
 
                         f_nueva, c_nueva = cas.cor_tablero  # El salto se realizara a la casilla superior izquierda inmediata
 
@@ -859,7 +925,7 @@ class Tablero:
                         # (f_nueva, c_nueva, f_vieja, c_vieja)
                         if self._com_coordenadas(f_nueva, c_nueva) and self._matriz[f_nueva][c_nueva].ficha == None:  # Para que solo sea posible introducir valores validos en la funcion
                             # (f_nueva, c_nueva, f_vieja, c_vieja)
-                            print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
+                            #print(self.salto_valido(None, None, None, None, (f_nueva, c_nueva, f_vieja, c_vieja)))
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:

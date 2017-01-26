@@ -77,6 +77,8 @@ def dibujarTodasFichas():
                gameSurface.blit(casilla.ficha.sup_ficha, casilla.ficha.rect)
 
 
+
+
 while not gana_empate:                                                                           # Game Loop
 
     for event in pygame.event.get():
@@ -95,16 +97,19 @@ while not gana_empate:                                                          
             #board.saltos_posibles(cas, [])
             #board.movidas_posibles(cas)
 
+            print('Prueba')
+            board.movidas_validos_por_color('marron')
+
             if cas.ficha != None:
 
-                cas_mov = cas                                                                       # La casilla donde se almacena la ficha a cambiar de lugar
-                conf_click_area = cas.ficha.click_area(mx, my)                                      # Para validar si se esta clickeando una ficha
+                cas_mov = cas                                                                        # La casilla donde se almacena la ficha a cambiar de lugar
+                conf_click_area = cas.ficha.click_area(mx, my)                                       # Para validar si se esta clickeando una ficha
                 #print(conf_click_area)
 
                 #board.movidas_posibles_men(cas.ficha)                                               # Movimientos validos fichas men
                 #board.movidas_posibles_king(cas.ficha)                                              # Movimientos validos fichas king
-
-
+                #board.saltos_posibles_men_2(cas.ficha)
+                #board.saltos_posibles_king(cas.ficha)
 
         if event.type == pygame.MOUSEBUTTONUP and pygame.mouse.get_pressed()[0] == 0:               # Para determinar si se levanto el boton izq del mouse.
 
