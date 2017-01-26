@@ -92,8 +92,10 @@ while not gana_empate:                                                          
 
 
             nada  = board.saltos_posibles_men(cas, [], [], [], [])
-            print('Salida!!!!!!!!!!!!!!!!!!!!')
             print(nada)
+            print('Salida!!!!!!!!!!!!!!!!!!!!')
+            for x in nada:
+                print(x)
             #board.enemigos_proximo(cas)
             #board.saltos_posibles(cas, [])
             #board.movidas_posibles(cas)

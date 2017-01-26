@@ -40,7 +40,7 @@ class Tablero:
                     color = True                # Color solido
 
                 # Por el momento solo se estara utilizando una ficha para pruebas.
-                if f == 0 and c == 1 or f == 0 and c == 3:                                             #(x_izq, x_der, y_arriba, y_abajo )
+                if (f == 0 and c == 1) or (f == 0 and c == 3) or (f == 0 and c == 5) or (f == 0 and c == 7) or (f == 1 and c == 0) or (f == 1 and c == 2) or (f == 1 and c == 4) or (f == 1 and c == 6):                                              #(x_izq, x_der, y_arriba, y_abajo )
                     self._matriz[f][c] = Casilla (Ficha(self.ficha_1, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
 
@@ -346,7 +346,6 @@ class Tablero:
 
     def saltos_posibles_men(self, casilla, enemigos_proximos, lista_saltos, casillas_saltadas, casillas_imposible_saltar):
 
-
         if len(lista_saltos) == 0:                      # Almacenando la pos inicial como 1er salto
 
             lista_saltos.append(casilla)
@@ -361,7 +360,7 @@ class Tablero:
 
                 if cas not in casillas_saltadas and cas not in casillas_imposible_saltar and cas not in enemigos_proximos:      # Para serciorarse de que esa casilla no fue revisada
 
-                    enemigos_proximos.append(cas)
+                    enemigos_proximos.insert(0, cas)
 
             #print('Enemigos proximos')
             # for cas in enemigos_proximos:
@@ -377,7 +376,19 @@ class Tablero:
 
                 return lista_saltos
 
-            saltos_posibles = self.comidas_posibles(casilla, enemigos_proximos)     # Determinando donde la ficha puede saltar
+
+            enemigos_proximos_vol = list(enemigos_proximos)
+            enemigos_proximos_vol.reverse()
+
+            intentos_saltos = self.comidas_posibles(casilla, enemigos_proximos_vol)     # Determinando donde la ficha puede saltar
+            saltos_posibles = intentos_saltos[0]
+
+            for cas in intentos_saltos[1]:                                              # Para introducir en casillas_imposible_saltar las casillas que no se pudieron saltar
+
+                if cas not in casillas_imposible_saltar:
+                    casillas_imposible_saltar.append(cas)
+
+
 
             if len(saltos_posibles) > 0:    # Determinando si es posible realizar el salto.
 
@@ -385,15 +396,19 @@ class Tablero:
                 for x in range(len(saltos_posibles)):
                     # print(saltos_posibles[x])
 
-                    if saltos_posibles[x] not in lista_saltos:
+                    if enemigos_proximos_vol[x] not in casillas_saltadas and enemigos_proximos_vol[x] not in casillas_imposible_saltar:
+                    #if saltos_posibles[x] not in lista_saltos:  # Si no se ha saltado previamente
+
                         lista_saltos.append(saltos_posibles[x])
                         saltos_posibles[x].ficha = casilla.ficha
                         casilla.ficha = None
-                        casillas_saltadas.append(enemigos_proximos[x])
-                        enemigos_proximos.remove(enemigos_proximos[x])
+                        casillas_saltadas.append(enemigos_proximos_vol[x])
+                        enemigos_proximos = []
+                        #enemigos_proximos.remove(enemigos_proximos[x])
                         casilla = saltos_posibles[x]
 
                         break
+
 
                 enemigos = self.enemigos_proximo(casilla)   # Determinando si la ficha tiene enemigos proximos
 
@@ -403,31 +418,75 @@ class Tablero:
 
                     if cas not in casillas_saltadas and cas not in casillas_imposible_saltar:
 
-                        enemigos_proximos.append(cas)
+                        enemigos_proximos.insert(0, cas)
 
-                if len(enemigos_proximos) == 0 and casilla != lista_saltos[0]:      # En caso de que no se produzcan saltos, volver atras una ficha
+                enemigos_proximos_vol = list(enemigos_proximos)
+                enemigos_proximos_vol.reverse()
+
+                #saltos_posibles = self.comidas_posibles(casilla, enemigos_proximos_vol)  # Determinando donde la ficha puede saltar
+
+                intentos_saltos = self.comidas_posibles(casilla, enemigos_proximos_vol)  # Determinando donde la ficha puede saltar
+                saltos_posibles = intentos_saltos[0]
+
+                for cas in intentos_saltos[1]:  # Para introducir en casillas_imposible_saltar las casillas que no se pudieron saltar
+
+                    if cas not in casillas_imposible_saltar:
+                        casillas_imposible_saltar.append(cas)
+
+
+
+                if len(saltos_posibles) == 0 and casilla != lista_saltos[0]:      # En caso de que no se produzcan saltos, volver atras una ficha
+
+                    for cas in enemigos_proximos:
+                        casillas_imposible_saltar.append(cas)
+
+                    enemigos_proximos = []  # Ya que dicha casilla no se puede saltar, se remueve.
+
+
+                    #indice_pos_anterior = lista_saltos.index(casilla) - 1
+                    indice_pos_anterior = len(lista_saltos) - 2
+                    pos_anterior = lista_saltos[indice_pos_anterior]
+                    pos_anterior.ficha = casilla.ficha
+                    casilla.ficha = None
+                    casilla = pos_anterior
+                    # pos = self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, [])
+                    self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas,casillas_imposible_saltar)
+                    return lista_saltos[1:]
+
+                # pos = self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, [])
+                self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, casillas_imposible_saltar)
+                return lista_saltos[1:]
+
+            else:       # En caso de que no se puedan realizar saltos
+
+                #return lista_saltos
+                for cas in enemigos_proximos:
+
+                    if cas not in casillas_imposible_saltar:
+
+                        casillas_imposible_saltar.append(cas)
+
+                enemigos_proximos = []              # Ya que dicha casilla no se puede saltar, se remueve.
+
+                if len(saltos_posibles) == 0 and casilla != lista_saltos[0]:      # En caso de que no se produzcan saltos, volver atras una ficha
 
                     indice_pos_anterior = lista_saltos.index(casilla) - 1
                     pos_anterior = lista_saltos[indice_pos_anterior]
                     pos_anterior.ficha = casilla.ficha
                     casilla.ficha = None
                     casilla = pos_anterior
-                    # pos = self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, [])
-                    self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, [])
-                    # return pos
 
-                # pos = self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, [])
-                self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, [])
-                # return pos
+                    self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, casillas_imposible_saltar)
+                    return lista_saltos[1:]
 
-            else:       # En caso de que no se puedan realizar saltos
-                return lista_saltos
+                else:
 
+                    self.saltos_posibles_men(casilla, enemigos_proximos, lista_saltos, casillas_saltadas, casillas_imposible_saltar)
+                    return lista_saltos[1:]
 
 
         else:
             print('Solo para fichas men')
-
 
     def enemigos_proximo(self, casilla):
         """Para determinar los enemigos que una ficha (king o men) tiene alrededor"""
@@ -515,7 +574,8 @@ class Tablero:
     def comidas_posibles(self, casilla, casillas_alrededor_enemigos):
         """Para determinar hacia donde una ficha (men o king) puede realizar un salto valido, en caso de que no se pueda realizar saltos validos devuelve una lista vacia"""
 
-        lista_saltos = []   # Para almacenar las coordenadas a donde puede ser posible saltar validamente
+        lista_saltos = []       # Para almacenar las coordenadas a donde puede ser posible saltar validamente
+        lista_no_saltos = []    # Para almacenar las coordenadas de las fichas que no se pueden saltar
 
         for cas in casillas_alrededor_enemigos:  # Para saber cuales de las fichas se pueden comer##########################3
 
@@ -538,7 +598,8 @@ class Tablero:
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
-                            continue
+                            #continue
+                            lista_no_saltos.append(cas)
 
                     if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la derecha
                         print('Derecha')
@@ -556,7 +617,8 @@ class Tablero:
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
-                            continue
+                            #continue
+                            lista_no_saltos.append(cas)
 
                 if casilla.ficha.fila_inicial in self.filas_ini_sup:  # Si el men va bajando
 
@@ -576,7 +638,8 @@ class Tablero:
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
-                            continue
+                            #continue
+                            lista_no_saltos.append(cas)
 
                     if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si el men esta a la Derecha
                         print('Derecha')
@@ -594,7 +657,8 @@ class Tablero:
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
-                           continue
+                           #continue
+                           lista_no_saltos.append(cas)
 
             if casilla.ficha.tipo_men() == False:  # En caso de que la ficha seleccionada sea un king###########################
 
@@ -617,7 +681,8 @@ class Tablero:
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
-                            continue
+                            #continue
+                            lista_no_saltos.append(cas)
 
                     if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si la ficha esta a la Der
                         print('Der')
@@ -638,7 +703,8 @@ class Tablero:
                                 lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                             else:
-                                continue
+                                #continue
+                                lista_no_saltos.append(cas)
 
                 if cas.cor_tablero[0] > casilla.cor_tablero[0]:  # Si la ficha  esta a la abajo
                     print('Abajo')
@@ -660,7 +726,8 @@ class Tablero:
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
-                            continue
+                            #continue
+                            lista_no_saltos.append(cas)
 
                     if cas.cor_tablero[1] > casilla.cor_tablero[1]:  # Si la ficha esta a la Der
                         print('Der')
@@ -679,10 +746,11 @@ class Tablero:
                             lista_saltos.append(self._matriz[f_nueva][c_nueva])
 
                         else:
-                            continue
+                            #continue
+                            lista_no_saltos.append(cas)
         pass
 
-        return (lista_saltos)
+        return lista_saltos, lista_no_saltos
 
     def saltos_posibles(self, casilla, casillas_alrededor_enemigos, lista_saltos = None, cas_inicial = None):
         """Determina los posibles saltos de una ficha"""

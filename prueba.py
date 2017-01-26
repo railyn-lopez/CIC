@@ -1,7 +1,4 @@
-for x in range(5):
-
-    if x == 2:
-        break
+for x in range((5-1), -1, -1):
 
     print(x)
 
