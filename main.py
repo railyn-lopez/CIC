@@ -1,4 +1,4 @@
-import pygame, tablero
+import pygame, time
 from ficha import Ficha
 from tablero import Tablero
 from casilla import Casilla
@@ -6,44 +6,47 @@ from casilla import Casilla
 display_width = 800
 display_heigth = 800
 archivo_tablero = 'tablero_coordenado.png'                                              # Variable global para el nombre del archivo tablero.
+black = (0, 0, 0,)
+white = (255, 255, 255)
+brown = (51, 25, 0)
 
 mx = 0
 my = 0
 
-conf_click_area = False
-
 board = Tablero()
 
-matriz = board.inicializar_tablero()
-
 pygame.init()                                                                           # Inicializando pygame
+pygame.font.init()                                                                      # Inicializar el modulo font de pygame
+font = pygame.font.SysFont(None, 25)                                                    # Creando el objeto font
+
 
 gameSurface = pygame.display.set_mode((display_width, display_heigth))                  # Dimenciones del surface (ventana)
 sup_tablero = pygame.image.load(archivo_tablero).convert()
 
 pygame.display.set_caption('Checkers')                                                  # titulo de la ventana
                                                                                         # reloj de juego
-gana_empate = False                                                                     # Control main loop del juego, cambiando este valor, a True, # Se acaba el juego
 
-gameSurface.blit(sup_tablero, (0, 0))
+def inicializar_juego():
 
-cas = None          # La casilla que contiene la ficha que se va a a cambiar de posicion
+    matriz = board.inicializar_tablero()
+    gameSurface.blit(sup_tablero, (0, 0))
+    cas = None                                                                              # La casilla que contiene la ficha que se va a a cambiar de posicion
+
+    # Determinado donde se encuentra la ficha a mover
+    for f in range(len(matriz)):
+        for c in range(len(matriz[f])):
+            casb = matriz[f][c]
+            #print(casb)
+            if casb.ficha != None:
+                cas_pintar = casb                                                           # Almacenando la casilla que contiene la ficha
+                gameSurface.blit(cas_pintar.ficha.sup_ficha, cas_pintar.ficha.rect)         # chip.sup_ficha, chip.rect)
 
 
-# Determinado donde se encuentra la ficha a mover
-for f in range(len(matriz)):
-    for c in range(len(matriz[f])):
-        casb = matriz[f][c]
-        #print(casb)
-        if casb.ficha != None:
-            cas_pintar = casb                                                           # Almacenando la casilla que contiene la ficha
-            gameSurface.blit(cas_pintar.ficha.sup_ficha, cas_pintar.ficha.rect)         # chip.sup_ficha, chip.rect)
-
-def dibujarFicha (x, y):
+def dibujarFicha (cas):#(x, y):
     """Para dibujar una ficha determinada en el tablero"""
 
-    cas.ficha.rect.centerx = x
-    cas.ficha.rect.centery = y
+    # cas.ficha.rect.centerx = x
+    # cas.ficha.rect.centery = y
 
     #gameSurface.blit(sup_tablero, (0, 0))                                               # Redibujando para dar la ilucion de movimiento
     gameSurface.blit(cas.ficha.sup_ficha, cas.ficha.rect)
@@ -59,9 +62,10 @@ def dibujarFichaCentrada(x, y):
     #gameSurface.blit(sup_tablero, (0, 0))                                                                           # Redibujando la ficha centralizada
     gameSurface.blit(casilla.ficha.sup_ficha, casilla.ficha.rect)
 
-def dibujarTodasFichas():
+def dibujarTodasFichas(tablero1):
    """Para dibujar toads las fichas luego del mov. de una ficha"""
-   tablero = board.getMatriz()
+   tablero = tablero1
+   #tablero = board.getMatriz()
 
    for f in range(len(tablero)):
        for c in range(len(tablero[f])):
@@ -77,91 +81,132 @@ def dibujarTodasFichas():
                gameSurface.blit(casilla.ficha.sup_ficha, casilla.ficha.rect)
 
 
+def message_to_screen(msg, color):
+
+    screen_text = font.render(msg, True, color)                             # Creando el surface que contiene el texto
+    rect_text = screen_text.get_rect()                                      # Obteniendo el Rectangulo, para la centralizacion
+    rect_text.center = (display_width/2, display_heigth/2)                  # Para que el mensaje quede centralizado
+    gameSurface.blit(screen_text, rect_text)                                # Dibujando el mensaje en la pantalla
+
+def game_loop():
+
+    gana_empate = False                                                     # Control main loop del juego, cambiando este valor, a True, # Se acaba el juego
+    conf_click_area = False
+    game_over = False
+    tablero = board.getMatriz()
+    inicializar_juego()
+
+    while not gana_empate:                                                                           # Game Loop
+
+        game_over_loop = board.game_over()                                                           # Para determinar si el juego termino
+        while game_over_loop:                                                                        # En caso de que el juego terminara entrara al game over loop
+            time.sleep(2)                                                                            # Para no borrar la pantalla del juego inmediatamente.
+            gameSurface.fill(brown)
+            message_to_screen('Game over, press C to continue or Q to quit', white)
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:                 # Si se presiona la q, el juego termina
+                        gana_empate = True
+                        game_over_loop = False
+
+                    if event.key == pygame.K_c:
+                        board.limpiar_marcador()                # Si se presiona la c, el juego continua
+                        game_over_loop = False
+                        game_loop()                             # Jugar nuevamente
+                        gana_empate = True                      # Para que el programa termine cuando salga de la llamada recursiva (no darle 2 veces a la x)
 
 
-while not gana_empate:                                                                           # Game Loop
+        for event in pygame.event.get():
 
-    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                print('Entro')
+                gana_empate = True
+                return
 
-        if event.type == pygame.QUIT:
-            gana_empate = True
+            if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0] == 1:         # Si se clickeo con el boton izq
 
-        if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0] == 1:         # Si se clickeo con el boton izq
+                mx, my = pygame.mouse.get_pos()
+                mxg, myg = mx, my                                                                   # Para almacenar la posicion donde se clickeo la ficha para moverla
+                cas = board.casilla_activa(mx, my)
 
-            mx, my = pygame.mouse.get_pos()
-            mxg, myg = mx, my                                                                   # Para almacenar la posicion donde se clickeo la ficha para moverla
-            cas = board.casilla_activa(mx, my)
+                #nada  = board.saltos_posibles_men(cas, [], [], [], [])
+                #board.enemigos_proximo(cas)
+                #board.saltos_posibles(cas, [])
+                #board.movidas_posibles(cas)
 
-            #nada  = board.saltos_posibles_men(cas, [], [], [], [])
-            #board.enemigos_proximo(cas)
-            #board.saltos_posibles(cas, [])
-            #board.movidas_posibles(cas)
+                print('Prueba')
+                board.movidas_validos_por_color('marron')
 
-            print('Prueba')
-            board.movidas_validos_por_color('marron')
+                if cas.ficha != None:
 
-            if cas.ficha != None:
+                    cas_mov = cas                                                                        # La casilla donde se almacena la ficha a cambiar de lugar
+                    conf_click_area = cas.ficha.click_area(mx, my)                                       # Para validar si se esta clickeando una ficha
+                    #print(conf_click_area)
 
-                cas_mov = cas                                                                        # La casilla donde se almacena la ficha a cambiar de lugar
-                conf_click_area = cas.ficha.click_area(mx, my)                                       # Para validar si se esta clickeando una ficha
-                #print(conf_click_area)
+                    #board.movidas_posibles_men(cas.ficha)                                               # Movimientos validos fichas men
+                    #board.movidas_posibles_king(cas.ficha)                                              # Movimientos validos fichas king
+                    #board.saltos_posibles_men_2(cas.ficha)
+                    #board.saltos_posibles_king(cas.ficha)
 
-                #board.movidas_posibles_men(cas.ficha)                                               # Movimientos validos fichas men
-                #board.movidas_posibles_king(cas.ficha)                                              # Movimientos validos fichas king
-                #board.saltos_posibles_men_2(cas.ficha)
-                #board.saltos_posibles_king(cas.ficha)
+            if event.type == pygame.MOUSEBUTTONUP and pygame.mouse.get_pressed()[0] == 0:               # Para determinar si se levanto el boton izq del mouse.
 
-        if event.type == pygame.MOUSEBUTTONUP and pygame.mouse.get_pressed()[0] == 0:               # Para determinar si se levanto el boton izq del mouse.
+                mx, my = pygame.mouse.get_pos()
 
-            mx, my = pygame.mouse.get_pos()
+                cas_vieja = board.casilla_activa(mxg, myg)
 
-            cas_vieja = board.casilla_activa(mxg, myg)
+                if cas_vieja.ficha != None:                                                             # Si se clickeo una casilla con ficha, para empezar el movimiento
 
-            if cas_vieja.ficha != None:                                                             # Si se clickeo una casilla con ficha, para empezar el movimiento
+                    if board.movimiento_valido(mx, my, mxg, myg) == True:                               # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
 
-                if board.movimiento_valido(mx, my, mxg, myg) == True:                               # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
+                        board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
+                        cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
+                        #print('Se ejecuto')
 
-                    board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
-                    cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
-                    #print('Se ejecuto')
+                        gameSurface.blit(sup_tablero, (0, 0))
+                        dibujarFichaCentrada(mx, my)                                                    # Dibujar la ficha centrada
+                        dibujarTodasFichas(tablero)
+                        conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
 
-                    gameSurface.blit(sup_tablero, (0, 0))
-                    dibujarFichaCentrada(mx, my)                                                    # Dibujar la ficha centrada
-                    dibujarTodasFichas()
-                    conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
-
-                elif board.salto_valido(mx, my, mxg, myg) == True:                                  # Para determinar si se esta comiendo validamente
-
-                    board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
-                    cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
-                    #print('Se ejecuto')
-
-                    gameSurface.blit(sup_tablero, (0, 0))
-                    dibujarFichaCentrada(mx, my)                                                    # Dibujar la ficha centrada
-                    dibujarTodasFichas()
-                    conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
-
-                else:                                                                               # En caso de que el movimiento no sea valido, redibujar la ficha en la casilla donde estaba
-                    conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
-                    cas = board.casilla_activa(mxg, myg)
-
-                    gameSurface.blit(sup_tablero, (0, 0))
-
-                    dibujarFichaCentrada(mxg, myg)                                                  # Dibujar la ficha centrada en la casilla si el movimiento fue invalido
-                    dibujarTodasFichas()
+                    elif board.salto_valido(mx, my, mxg, myg) == True:                                  # Para determinar si se esta comiendo validamente
 
 
-        if event.type == pygame.MOUSEMOTION and conf_click_area:                                # Si el mouse se esta moviendo y no se ha levantado
-            mx2, my2 = pygame.mouse.get_pos()                                                   # El boton por arriba de la ficha, obtener posicion del mouse
+                        board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
+                        cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
+                        #print('Se ejecuto')
 
-            gameSurface.blit(sup_tablero, (0, 0))
-            dibujarTodasFichas()
-            dibujarFicha(mx2, my2)                                                              # Dibujando la ficha para dar la ilucion de movimiento
-            #dibujarTodasFichas()
+                        gameSurface.blit(sup_tablero, (0, 0))
+                        dibujarFichaCentrada(mx, my)                                                    # Dibujar la ficha centrada
+                        dibujarTodasFichas(tablero)
+                        conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
+
+                    else:                                                                               # En caso de que el movimiento no sea valido, redibujar la ficha en la casilla donde estaba
+                        conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
+                        cas = board.casilla_activa(mxg, myg)
+                        gameSurface.blit(sup_tablero, (0, 0))
+                        dibujarFichaCentrada(mxg, myg)                                                  # Dibujar la ficha centrada en la casilla si el movimiento fue invalido
+                        dibujarTodasFichas(tablero)
+
+            if event.type == pygame.MOUSEMOTION and conf_click_area:                                # Si el mouse se esta moviendo y no se ha levantado
+                mx2, my2 = pygame.mouse.get_pos()                                                   # El boton por arriba de la ficha, obtener posicion del mouse
+
+                gameSurface.blit(sup_tablero, (0, 0))
+                tablero = board.getMatriz()                                                         # Pasandole la matriz a la funcion
+                dibujarTodasFichas(tablero)
+
+                cas.ficha.rect.centerx = mx2
+                cas.ficha.rect.centery = my2
+
+                dibujarFicha(cas)                                                                   # Dibujando la ficha para dar la ilucion de movimiento
+                #dibujarTodasFichas()
+
+        pygame.display.update()                                                                     # Si se coloca un parametro solo va a refrescar ese parametro
 
 
-    pygame.display.update()                                    # Si se coloca un parametro solo va a refrescar ese parametro
-
-
+game_loop()
+#message_to_screen('Game Over', (0, 0, 0))
+#pygame.display.update()
+#time.sleep(2)
 pygame.quit()                                                      # Cerrando todos los modulos de pygame
 quit()                                                             # Cerrando Python

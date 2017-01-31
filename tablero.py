@@ -14,8 +14,11 @@ class Tablero:
         self.ficha_2 = 'f_marron_.png'                                # Variable global para hacer el juego independiente de la ficha
         self.ficha_2_rey = 'f_marron_rey_.png'
 
-        self.cont_f1 = 0                                              # Para contar las fichas comidas
+        self.cont_f1 = 12                                              # Para contar las fichas comidas
         self.cont_f2 = 0                                              # Para contar las fichas comidas
+
+
+
 
     def inicializar_tablero(self):
         """Metetodo utilizado para inicializar el tablero, con la posicion de juego inicial"""
@@ -39,7 +42,7 @@ class Tablero:
                     color = True                # Color solido
 
                 # Por el momento solo se estara utilizando una ficha para pruebas.
-                if (f == 0 and c == 1) or (f == 0 and c == 3) or (f == 0 and c == 5) or (f == 0 and c == 7) or (f == 1 and c == 0) or (f == 1 and c == 2) or (f == 1 and c == 4) or (f == 1 and c == 6):                                              #(x_izq, x_der, y_arriba, y_abajo )
+                if (f == 0 and c == 1) or (f == 0 and c == 3) or (f == 0 and c == 5) or (f == 0 and c == 7) or (f == 1 and c == 0) or (f == 1 and c == 2) or (f == 1 and c == 4) or (f == 1 and c == 6) or (f == 2 and c == 1) or (f == 2 and c == 3) or (f == 2 and c == 5) or (f == 2 and c == 7):                                              #(x_izq, x_der, y_arriba, y_abajo )
                     self._matriz[f][c] = Casilla (Ficha(self.ficha_1, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
 
@@ -264,7 +267,6 @@ class Tablero:
 
     def movidas_posibles(self, casilla):
         """Para determinar las movidas posibles que tiene una ficha"""
-
 
         if casilla.ficha != None:
 
@@ -1185,6 +1187,20 @@ class Tablero:
 
             return False
 
+    def game_over(self):
+        """Utilizada para monitoriar el tablero, revisara si el juego esta acabado o empate"""
+
+        if self.cont_f1 == 12 or self.cont_f2 == 12:
+            return True
+
+        else:
+            return False
+
+    def limpiar_marcador(self):
+        """Para resetear los contadores a 0 luego de que una partida acabe y se desida seguir jugando"""
+
+        self.cont_f1 = 0
+        self.cont_f2 = 0
 
 
 
