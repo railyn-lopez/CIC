@@ -14,7 +14,7 @@ class Tablero:
         self.ficha_2 = 'f_marron_.png'                                # Variable global para hacer el juego independiente de la ficha
         self.ficha_2_rey = 'f_marron_rey_.png'
 
-        self.cont_f1 = 12                                              # Para contar las fichas comidas
+        self.cont_f1 = 0                                             # Para contar las fichas comidas
         self.cont_f2 = 0                                              # Para contar las fichas comidas
 
 

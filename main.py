@@ -89,7 +89,7 @@ def make_rect_text(text, dis_y):
     return rect_text
 
 def message_to_screen(msg, color, size='small', dis_y=0):
-
+                                                                                    # y_dis, para mover el texto a lo largo de y (arriba y abajo).
     if size == 'small':
         screen_text = smallfont.render(msg, True, color)                            # Creando el surface que contiene de acuerdo al tamano
         rect_text = make_rect_text(screen_text, dis_y)
@@ -103,13 +103,37 @@ def message_to_screen(msg, color, size='small', dis_y=0):
         rect_text = make_rect_text(screen_text, dis_y)
 
     else:
-
         print('Condicion indeterminada, no deberias estar aqui')
 
     gameSurface.blit(screen_text, rect_text)  # Dibujando el mensaje en la pantalla
 
+def menu_loop():
+    """Para que el usuario seleccione el modo de juego"""
+    modo_juego = True                                                      # Para controlar el loop que le permitira al usuario seleccionar el modo de juego
+
+    while modo_juego:
+
+        gameSurface.fill(brown)
+        message_to_screen('Welcome to chechers', red, 'large', 0)
+        message_to_screen('Press S to single player (Against the machine)', white, 'small', 40)
+        message_to_screen('Press M to multiplayer', white, 'small', 80)
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_s:                 # Si se presiona la s, se jugara contra la maquina
+                    gameSurface.fill(brown)
+                    message_to_screen('Single player mode is a work in progress', red, 'medium', 0)
+                    pygame.display.update()
+                    time.sleep(4)
+                    modo_juego = False
+
+                if event.key == pygame.K_m:                 # Si se presiona la s, Se jugara contra otro jugador
+                    modo_juego = False
+
 
 def game_loop():
+    """Logica del juego, interaccion del usuario y las fichas"""
 
     gana_empate = False                                                     # Control main loop del juego, cambiando este valor, a True, # Se acaba el juego
     conf_click_area = False
@@ -224,7 +248,7 @@ def game_loop():
 
         pygame.display.update()                                                                     # Si se coloca un parametro solo va a refrescar ese parametro
 
-
+menu_loop()
 game_loop()
 #message_to_screen('Game Over', (0, 0, 0))
 #pygame.display.update()
