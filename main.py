@@ -9,7 +9,7 @@ archivo_tablero = 'tablero_coordenado.png'                                      
 black = (0, 0, 0,)
 white = (255, 255, 255)
 brown = (51, 25, 0)
-
+red = (255, 0, 0)
 mx = 0
 my = 0
 
@@ -17,7 +17,9 @@ board = Tablero()
 
 pygame.init()                                                                           # Inicializando pygame
 pygame.font.init()                                                                      # Inicializar el modulo font de pygame
-font = pygame.font.SysFont(None, 25)                                                    # Creando el objeto font
+smallfont = pygame.font.SysFont(None, 25)                                                    # Creando el objeto font
+medfont = pygame.font.SysFont(None, 50)
+largefont = pygame.font.SysFont(None, 75)
 
 
 gameSurface = pygame.display.set_mode((display_width, display_heigth))                  # Dimenciones del surface (ventana)
@@ -80,13 +82,32 @@ def dibujarTodasFichas(tablero1):
                #gameSurface.blit(sup_tablero, (0, 0))  # Redibujando la ficha centralizada
                gameSurface.blit(casilla.ficha.sup_ficha, casilla.ficha.rect)
 
+def make_rect_text(text, dis_y):
+    """Para crear rectangulo, para manipular el texto """
+    rect_text = text.get_rect()                                                     # Sacando rectangulo del texto, para su manupulacion
+    rect_text.center = (display_width / 2, ((display_heigth / 2) + dis_y))          # Para que el mensaje quede centralizado
+    return rect_text
 
-def message_to_screen(msg, color):
+def message_to_screen(msg, color, size='small', dis_y=0):
 
-    screen_text = font.render(msg, True, color)                             # Creando el surface que contiene el texto
-    rect_text = screen_text.get_rect()                                      # Obteniendo el Rectangulo, para la centralizacion
-    rect_text.center = (display_width/2, display_heigth/2)                  # Para que el mensaje quede centralizado
-    gameSurface.blit(screen_text, rect_text)                                # Dibujando el mensaje en la pantalla
+    if size == 'small':
+        screen_text = smallfont.render(msg, True, color)                            # Creando el surface que contiene de acuerdo al tamano
+        rect_text = make_rect_text(screen_text, dis_y)
+
+    elif size == 'medium':
+        screen_text = medfont.render(msg, True, color)
+        rect_text = make_rect_text(screen_text, dis_y)
+
+    elif size == 'large':
+        screen_text = largefont.render(msg, True, color)                            # Obteniendo el Rectangulo, para la centralizacion
+        rect_text = make_rect_text(screen_text, dis_y)
+
+    else:
+
+        print('Condicion indeterminada, no deberias estar aqui')
+
+    gameSurface.blit(screen_text, rect_text)  # Dibujando el mensaje en la pantalla
+
 
 def game_loop():
 
@@ -102,7 +123,8 @@ def game_loop():
         while game_over_loop:                                                                        # En caso de que el juego terminara entrara al game over loop
             time.sleep(2)                                                                            # Para no borrar la pantalla del juego inmediatamente.
             gameSurface.fill(brown)
-            message_to_screen('Game over, press C to continue or Q to quit', white)
+            message_to_screen('Game Over', red, 'large', 0)
+            message_to_screen('Press C to continue or Q to quit', white, 'small', 40)
             pygame.display.update()
 
             for event in pygame.event.get():
@@ -121,7 +143,6 @@ def game_loop():
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
-                print('Entro')
                 gana_empate = True
                 return
 
