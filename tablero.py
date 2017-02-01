@@ -19,6 +19,7 @@ class Tablero:
 
         self.cont_turno = 0                                           # Utilizado para determinar el color al que le toca mover, aumentara en uno con cada movimiento valido.
 
+        self.orden_fichas = 'b'                                       # Por defecto, las fichas oscuras estaran debajo
 
 
     def inicializar_tablero(self):
@@ -44,16 +45,28 @@ class Tablero:
 
                 # Llenando las casillas
 
-                if f < 3 and color == True:                         # Llenando las primeras 3 filas
-                    self._matriz[f][c] = Casilla(Ficha(self.ficha_1, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+                if self.orden_fichas == 'b':
 
-                elif f > 4 and color == True:                       # Llenando las ultimas 3 filas
-                    self._matriz[f][c] = Casilla(Ficha(self.ficha_2, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+                    if f < 3 and color == True:                         # Llenando las primeras 3 filas
+                        self._matriz[f][c] = Casilla(Ficha(self.ficha_1, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
-                else:
-                    self._matriz[f][c] = Casilla(None, (f, c), ( cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+                    elif f > 4 and color == True:                       # Llenando las ultimas 3 filas
+                        self._matriz[f][c] = Casilla(Ficha(self.ficha_2, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
-                
+                    else:
+                        self._matriz[f][c] = Casilla(None, (f, c), ( cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+
+                if self.orden_fichas == 'a':
+
+                    if f < 3 and color == True:  # Llenando las primeras 3 filas
+                        self._matriz[f][c] = Casilla(Ficha(self.ficha_2, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+
+                    elif f > 4 and color == True:  # Llenando las ultimas 3 fila
+                        self._matriz[f][c] = Casilla(Ficha(self.ficha_1, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+
+                    else:
+                        self._matriz[f][c] = Casilla(None, (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
+
 
                 # Por el momento solo se estara utilizando una ficha para pruebas.
                 # if (f == 0 and c == 1) or (f == 0 and c == 3) or (f == 0 and c == 5) or (f == 0 and c == 7) or (f == 1 and c == 0) or (f == 1 and c == 2) or (f == 1 and c == 4) or (f == 1 and c == 6) or (f == 2 and c == 1) or (f == 2 and c == 3) or (f == 2 and c == 5) or (f == 2 and c == 7):                                              #(x_izq, x_der, y_arriba, y_abajo )

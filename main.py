@@ -112,7 +112,7 @@ def message_to_screen(msg, color, size='small', dis_y=0):
 def menu_loop():
     """Para que el usuario seleccione el modo de juego"""
     modo_juego = True                                                      # Para controlar el loop que le permitira al usuario seleccionar el modo de juego
-
+    modo_juego2 = True                                                     # Para controlar el loop que le permitira al usuario seleccionar el modo el lugar de las fichas
     while modo_juego:
 
         gameSurface.fill(brown)
@@ -135,9 +135,31 @@ def menu_loop():
                     modo_juego = False
                     return True
 
-                if event.key == pygame.K_m:                 # Si se presiona la s, Se jugara contra otro jugador
-                    modo_juego = False
-                    return True
+                if event.key == pygame.K_m:                 # Si se presiona la m, Se jugara contra otro jugador
+
+                    while modo_juego2:
+
+                        gameSurface.fill(brown)
+                        message_to_screen('Select location for the darkers chips (1st move)', red, 'medium', 0)
+                        message_to_screen('Press a to above', white, 'small', 40)
+                        message_to_screen('Press b to bellow', white, 'small', 80)
+                        pygame.display.update()
+
+                        for event2 in pygame.event.get():
+
+                            if event2.type == pygame.QUIT:
+                                return False
+
+                            if event2.type == pygame.KEYDOWN:
+                                if event2.key == pygame.K_a:  # Si se presiona la a, las fichas oscuras estaran arriba
+                                    board.orden_fichas = 'a'
+                                    return True               # Para entrar al gameloop en el main program
+
+                                if event2.key == pygame.K_b:  # Si se presiona la s, las fichas oscuras estaran abajo
+                                    board.orden_fichas = 'b'
+                                    return True               # Para entrar al gameloop en el main program
+
+
 
 def game_loop():
     """Logica del juego, interaccion del usuario y las fichas"""
