@@ -14,9 +14,10 @@ class Tablero:
         self.ficha_2 = 'f_marron_.png'                                # Variable global para hacer el juego independiente de la ficha
         self.ficha_2_rey = 'f_marron_rey_.png'
 
-        self.cont_f1 = 0                                             # Para contar las fichas comidas
+        self.cont_f1 = 0                                              # Para contar las fichas comidas
         self.cont_f2 = 0                                              # Para contar las fichas comidas
 
+        self.cont_turno = 0                                           # Utilizado para determinar el color al que le toca mover, aumentara en uno con cada movimiento valido.
 
 
 
@@ -46,7 +47,7 @@ class Tablero:
                     self._matriz[f][c] = Casilla (Ficha(self.ficha_1, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
 
-                elif f == 7 and c == 0 or f == 7 and c == 2 or f == 7 and c == 4 or f == 7 and c == 6:                                             #(x_izq, x_der, y_arriba, y_abajo )
+                elif (f == 7 and c == 0) or (f == 7 and c == 2) or (f == 7 and c == 4) or (f == 7 and c == 6) or (f == 6 and c == 1) or (f == 6 and c == 3) or (f == 6 and c == 3) or (f == 6 and c == 5) or (f == 6 and c == 7) or (f == 5 and c == 0) or (f == 5 and c == 2) or (f == 5 and c == 4) or (f == 5 and c == 6):                                             #(x_izq, x_der, y_arriba, y_abajo )
                     self._matriz[f][c] = Casilla (Ficha(self.ficha_2, f, cont_pixels_ficha_x, cont_pixels_ficha_y), (f, c), (cont_pixels_x - pixels_cuadro, cont_pixels_x, cont_pixels_y - pixels_cuadro, cont_pixels_y), color)
 
                 else:
@@ -447,10 +448,10 @@ class Tablero:
 
                 print('La ficha introducida no es king')
 
-            # print('Moves posibles: ', len(casillas_vacias))
-            #
-            # for ele in casillas_vacias:
-            #     print(ele.cor_tablero)
+            print('Moves posibles: ', len(casillas_vacias))
+
+            for ele in casillas_vacias:
+                print(ele.cor_tablero)
 
             return (casillas_vacias)
 
@@ -1201,6 +1202,24 @@ class Tablero:
 
         self.cont_f1 = 0
         self.cont_f2 = 0
+
+    def turno_oscuras(self):
+        """Para determinar a que color de ficha le toca mover"""
+
+        if self.cont_turno % 2 == 0:
+
+            return True
+
+        else:
+
+            return False
+
+
+
+
+
+
+
 
 
 
