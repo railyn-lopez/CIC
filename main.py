@@ -147,7 +147,7 @@ def game_loop():
     game_over = False
     tablero = board.getMatriz()
     inicializar_juego()
-    ficha_selec = False
+    ficha_selec = False                                                     # Controla el turno
 
     while not gana_empate:                                                                           # Game Loop
 
@@ -222,7 +222,7 @@ def game_loop():
 
             if event.type == pygame.MOUSEBUTTONUP and pygame.mouse.get_pressed()[0] == 0 and ficha_selec == True:               # Para determinar si se levanto el boton izq del mouse.
 
-                ficha_selec = False
+                ficha_selec = False                                                                     # Reseteando, la variable que controla el turno
                 mx, my = pygame.mouse.get_pos()
 
                 cas_vieja = board.casilla_activa(mxg, myg)
