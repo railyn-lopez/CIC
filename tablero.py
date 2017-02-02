@@ -21,7 +21,6 @@ class Tablero:
 
         self.orden_fichas = 'b'                                       # Por defecto, las fichas oscuras estaran debajo
 
-
     def inicializar_tablero(self):
         """Metetodo utilizado para inicializar el tablero, con la posicion de juego inicial"""
 
@@ -493,13 +492,16 @@ class Tablero:
 
             posiciones = self.comidas_posibles(casilla, enemigos)
 
-            for cas in posiciones[0]:
-               print(cas)
+            if len(posiciones[0]) > 0:
+                for cas in posiciones[0]:
+                   print(cas)
 
-            return(posiciones)
+                return(posiciones)
+
+            else:
+                return []
 
         else:
-
             print("La casilla no esta vacia, o la ficha no es men")
 
     def saltos_posibles_king(self, ficha):
@@ -515,10 +517,14 @@ class Tablero:
 
             posiciones = self.comidas_posibles(casilla, enemigos)
 
-            for cas in posiciones[0]:
-                print(cas)
+            if len(posiciones[0]) > 0:
+                for cas in posiciones[0]:
+                   print(cas)
 
-            return (posiciones)
+                return(posiciones)
+
+            else:
+                return []
 
         else:
 
@@ -1217,6 +1223,13 @@ class Tablero:
         """Utilizada para monitoriar el tablero, revisara si el juego esta acabado o empate"""
 
         if self.cont_f1 == 12 or self.cont_f2 == 12:
+
+            if self.cont_f1 == 12:
+                print('El jugador de las fichas claras gano')
+
+            else:
+                print('El jugador de las oscuras claras gano')
+
             return True
 
         else:
@@ -1239,7 +1252,10 @@ class Tablero:
 
             return False
 
+    def contador_turno(self, control=1):
+        """Manipula la variable que lleva el turno del juego"""
 
+        self.cont_turno += control
 
 
 
