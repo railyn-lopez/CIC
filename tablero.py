@@ -492,14 +492,14 @@ class Tablero:
 
             posiciones = self.comidas_posibles(casilla, enemigos)
 
-            if len(posiciones[0]) > 0:
+            if len(posiciones[0]) > 0:                      # En caso de que se alla saltos realizables.
                 for cas in posiciones[0]:
                    print(cas)
 
                 return(posiciones)
 
             else:
-                return []
+                return []                                   # En caso de que no alla saltos realizables.
 
         else:
             print("La casilla no esta vacia, o la ficha no es men")
@@ -517,14 +517,14 @@ class Tablero:
 
             posiciones = self.comidas_posibles(casilla, enemigos)
 
-            if len(posiciones[0]) > 0:
+            if len(posiciones[0]) > 0:                  # En caso de que se alla saltos realizables.
                 for cas in posiciones[0]:
                    print(cas)
 
                 return(posiciones)
 
             else:
-                return []
+                return []                               # En caso de que no alla saltos realizables.
 
         else:
 
@@ -1257,6 +1257,18 @@ class Tablero:
 
         self.cont_turno += control
 
+    def saltos_posibles_universal(self, ficha):
+        """Para retornar los saltos que una ficha, puede dar independientemente del tipo que sea (men o king)"""
+
+        if ficha.tipo_men() == True:                # Si la ficha es un men
+
+            saltos = self.saltos_posibles_men_2(ficha)
+            return saltos
+
+        else:                                       # Si la ficha es un king
+
+            saltos = self.saltos_posibles_king(ficha)
+            return saltos
 
 
 
