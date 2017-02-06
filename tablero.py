@@ -87,7 +87,7 @@ class Tablero:
         #         print(self._matriz[f][c])
         #
         #     print()
-        #
+
         return self._matriz
 
     def getMatriz(self):
@@ -260,16 +260,17 @@ class Tablero:
 
             if ficha.nom_archivo == self.ficha_2:     # Coronando la ficha marron
                 ficha = Ficha(self.ficha_2_rey, f, x, y)
-                ficha.rect.x = x
-                ficha.rect.y = y
+                ficha.rect.centerx = x
+                ficha.rect.centery = y
 
             if ficha.nom_archivo == self.ficha_1:     # Coronando la ficha blanca
                 ficha = Ficha(self.ficha_1_rey, f, x, y)
-                ficha.rect.x = x
-                ficha.rect.y = y
+                ficha.rect.centerx = x
+                ficha.rect.centery = y
 
         casilla = self._matriz[f][c]
         casilla.ficha = ficha
+        pass
 
     def casilla_activa(self, x, y):
         """Para mover una ficha de casilla"""
@@ -373,7 +374,7 @@ class Tablero:
     def movidas_posibles_men(self, ficha):
         """Para determinar las movidas posibles de una ficha, men"""
 
-        f, c = (self.det_casilla(ficha.rect.x, ficha.rect.y))
+        f, c = (self.det_casilla(ficha.rect.centerx, ficha.rect.centery))
 
         casilla = self._matriz[f][c]
 
@@ -430,7 +431,7 @@ class Tablero:
     def movidas_posibles_king(self, ficha):
         """Para determinar las movidas posibles de una ficha, king"""
 
-        f, c = (self.det_casilla(ficha.rect.x, ficha.rect.y))
+        f, c = (self.det_casilla(ficha.rect.centerx, ficha.rect.centery))
 
         casilla = self._matriz[f][c]
 
@@ -482,7 +483,7 @@ class Tablero:
     def saltos_posibles_men_2(self, ficha):
         """Imprime todos los posibles jumps de una ficha"""
 
-        f, c = self.det_casilla(ficha.rect.x, ficha.rect.y)
+        f, c = self.det_casilla(ficha.rect.centerx, ficha.rect.centery)
 
         casilla = self._matriz[f][c]
 
@@ -507,7 +508,7 @@ class Tablero:
     def saltos_posibles_king(self, ficha):
         """Imprime todos los posibles jumps de una ficha"""
 
-        f, c = self.det_casilla(ficha.rect.x, ficha.rect.y)
+        f, c = self.det_casilla(ficha.rect.centerx, ficha.rect.centery)
 
         casilla = self._matriz[f][c]
 
@@ -965,7 +966,6 @@ class Tablero:
                         else:
                             #continue
                             lista_no_saltos.append(cas)
-        pass
 
         return lista_saltos, lista_no_saltos
 
