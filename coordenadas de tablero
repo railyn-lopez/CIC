@@ -1,0 +1,72 @@
+/usr/bin/python3.5 "/home/miguel/Google Drive/Programacion/Cincinnatus/4 - Programming Foundations with Python/checkers/main.py"
+contenido: None, cor_tablero: (0, 0), cor_pixeles: (0, 100, 0, 100), color: False
+contenido: <ficha.Ficha object at 0x7f6818703860>, cor_tablero: (0, 1), cor_pixeles: (100, 200, 0, 100), color: True
+contenido: None, cor_tablero: (0, 2), cor_pixeles: (200, 300, 0, 100), color: False
+contenido: <ficha.Ficha object at 0x7f68187039e8>, cor_tablero: (0, 3), cor_pixeles: (300, 400, 0, 100), color: True
+contenido: None, cor_tablero: (0, 4), cor_pixeles: (400, 500, 0, 100), color: False
+contenido: <ficha.Ficha object at 0x7f68188a5ba8>, cor_tablero: (0, 5), cor_pixeles: (500, 600, 0, 100), color: True
+contenido: None, cor_tablero: (0, 6), cor_pixeles: (600, 700, 0, 100), color: False
+contenido: <ficha.Ficha object at 0x7f680ea605f8>, cor_tablero: (0, 7), cor_pixeles: (700, 800, 0, 100), color: True
+
+contenido: <ficha.Ficha object at 0x7f680ea605c0>, cor_tablero: (1, 0), cor_pixeles: (0, 100, 100, 200), color: True
+contenido: None, cor_tablero: (1, 1), cor_pixeles: (100, 200, 100, 200), color: False
+contenido: <ficha.Ficha object at 0x7f680ea60630>, cor_tablero: (1, 2), cor_pixeles: (200, 300, 100, 200), color: True
+contenido: None, cor_tablero: (1, 3), cor_pixeles: (300, 400, 100, 200), color: False
+contenido: <ficha.Ficha object at 0x7f680ea60710>, cor_tablero: (1, 4), cor_pixeles: (400, 500, 100, 200), color: True
+contenido: None, cor_tablero: (1, 5), cor_pixeles: (500, 600, 100, 200), color: False
+contenido: <ficha.Ficha object at 0x7f680ea607f0>, cor_tablero: (1, 6), cor_pixeles: (600, 700, 100, 200), color: True
+contenido: None, cor_tablero: (1, 7), cor_pixeles: (700, 800, 100, 200), color: False
+
+contenido: None, cor_tablero: (2, 0), cor_pixeles: (0, 100, 200, 300), color: False
+contenido: <ficha.Ficha object at 0x7f680ea60908>, cor_tablero: (2, 1), cor_pixeles: (100, 200, 200, 300), color: True
+contenido: None, cor_tablero: (2, 2), cor_pixeles: (200, 300, 200, 300), color: False
+contenido: <ficha.Ficha object at 0x7f680ea680b8>, cor_tablero: (2, 3), cor_pixeles: (300, 400, 200, 300), color: True
+contenido: None, cor_tablero: (2, 4), cor_pixeles: (400, 500, 200, 300), color: False
+contenido: <ficha.Ficha object at 0x7f680ea77400>, cor_tablero: (2, 5), cor_pixeles: (500, 600, 200, 300), color: True
+contenido: None, cor_tablero: (2, 6), cor_pixeles: (600, 700, 200, 300), color: False
+contenido: <ficha.Ficha object at 0x7f680ea772b0>, cor_tablero: (2, 7), cor_pixeles: (700, 800, 200, 300), color: True
+
+contenido: None, cor_tablero: (3, 0), cor_pixeles: (0, 100, 300, 400), color: True
+contenido: None, cor_tablero: (3, 1), cor_pixeles: (100, 200, 300, 400), color: False
+contenido: None, cor_tablero: (3, 2), cor_pixeles: (200, 300, 300, 400), color: True
+contenido: None, cor_tablero: (3, 3), cor_pixeles: (300, 400, 300, 400), color: False
+contenido: None, cor_tablero: (3, 4), cor_pixeles: (400, 500, 300, 400), color: True
+contenido: None, cor_tablero: (3, 5), cor_pixeles: (500, 600, 300, 400), color: False
+contenido: None, cor_tablero: (3, 6), cor_pixeles: (600, 700, 300, 400), color: True
+contenido: None, cor_tablero: (3, 7), cor_pixeles: (700, 800, 300, 400), color: False
+
+contenido: None, cor_tablero: (4, 0), cor_pixeles: (0, 100, 400, 500), color: False
+contenido: None, cor_tablero: (4, 1), cor_pixeles: (100, 200, 400, 500), color: True
+contenido: None, cor_tablero: (4, 2), cor_pixeles: (200, 300, 400, 500), color: False
+contenido: None, cor_tablero: (4, 3), cor_pixeles: (300, 400, 400, 500), color: True
+contenido: None, cor_tablero: (4, 4), cor_pixeles: (400, 500, 400, 500), color: False
+contenido: None, cor_tablero: (4, 5), cor_pixeles: (500, 600, 400, 500), color: True
+contenido: None, cor_tablero: (4, 6), cor_pixeles: (600, 700, 400, 500), color: False
+contenido: None, cor_tablero: (4, 7), cor_pixeles: (700, 800, 400, 500), color: True
+
+contenido: <ficha.Ficha object at 0x7f680ea77710>, cor_tablero: (5, 0), cor_pixeles: (0, 100, 500, 600), color: True
+contenido: None, cor_tablero: (5, 1), cor_pixeles: (100, 200, 500, 600), color: False
+contenido: <ficha.Ficha object at 0x7f680ea777f0>, cor_tablero: (5, 2), cor_pixeles: (200, 300, 500, 600), color: True
+contenido: None, cor_tablero: (5, 3), cor_pixeles: (300, 400, 500, 600), color: False
+contenido: <ficha.Ficha object at 0x7f680ea778d0>, cor_tablero: (5, 4), cor_pixeles: (400, 500, 500, 600), color: True
+contenido: None, cor_tablero: (5, 5), cor_pixeles: (500, 600, 500, 600), color: False
+contenido: <ficha.Ficha object at 0x7f680ea779b0>, cor_tablero: (5, 6), cor_pixeles: (600, 700, 500, 600), color: True
+contenido: None, cor_tablero: (5, 7), cor_pixeles: (700, 800, 500, 600), color: False
+
+contenido: None, cor_tablero: (6, 0), cor_pixeles: (0, 100, 600, 700), color: False
+contenido: <ficha.Ficha object at 0x7f680ea77ac8>, cor_tablero: (6, 1), cor_pixeles: (100, 200, 600, 700), color: True
+contenido: None, cor_tablero: (6, 2), cor_pixeles: (200, 300, 600, 700), color: False
+contenido: <ficha.Ficha object at 0x7f680ea77ba8>, cor_tablero: (6, 3), cor_pixeles: (300, 400, 600, 700), color: True
+contenido: None, cor_tablero: (6, 4), cor_pixeles: (400, 500, 600, 700), color: False
+contenido: <ficha.Ficha object at 0x7f680ea77c88>, cor_tablero: (6, 5), cor_pixeles: (500, 600, 600, 700), color: True
+contenido: None, cor_tablero: (6, 6), cor_pixeles: (600, 700, 600, 700), color: False
+contenido: <ficha.Ficha object at 0x7f680ea77d68>, cor_tablero: (6, 7), cor_pixeles: (700, 800, 600, 700), color: True
+
+contenido: <ficha.Ficha object at 0x7f680ea77e10>, cor_tablero: (7, 0), cor_pixeles: (0, 100, 700, 800), color: True
+contenido: None, cor_tablero: (7, 1), cor_pixeles: (100, 200, 700, 800), color: False
+contenido: <ficha.Ficha object at 0x7f680ea77ef0>, cor_tablero: (7, 2), cor_pixeles: (200, 300, 700, 800), color: True
+contenido: None, cor_tablero: (7, 3), cor_pixeles: (300, 400, 700, 800), color: False
+contenido: <ficha.Ficha object at 0x7f680ea77fd0>, cor_tablero: (7, 4), cor_pixeles: (400, 500, 700, 800), color: True
+contenido: None, cor_tablero: (7, 5), cor_pixeles: (500, 600, 700, 800), color: False
+contenido: <ficha.Ficha object at 0x7f680ea8d0f0>, cor_tablero: (7, 6), cor_pixeles: (600, 700, 700, 800), color: True
+contenido: None, cor_tablero: (7, 7), cor_pixeles: (700, 800, 700, 800), color: False

@@ -116,9 +116,9 @@ def menu_loop():
     while modo_juego:
 
         gameSurface.fill(brown)
-        message_to_screen('Welcome to chechers', red, 'large', 0)
-        message_to_screen('Press S to single player (Against the machine)', white, 'small', 40)
-        message_to_screen('Press M to multiplayer', white, 'small', 80)
+        message_to_screen('Welcome to chechers', red, 'large', -40)
+        message_to_screen('Press S to single player (Against the machine)', white, 'small', 0)
+        message_to_screen('Press M to multiplayer', white, 'small', 40)
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -140,9 +140,9 @@ def menu_loop():
                     while modo_juego2:
 
                         gameSurface.fill(brown)
-                        message_to_screen('Select location for the darkers chips (1st move)', red, 'medium', 0)
-                        message_to_screen('Press a to above', white, 'small', 40)
-                        message_to_screen('Press b to bellow', white, 'small', 80)
+                        message_to_screen('Select location for the darkers chips (1st move)', red, 'medium', -40)
+                        message_to_screen('Press A to above', white, 'small', 0)
+                        message_to_screen('Press B to bellow', white, 'small', 40)
                         pygame.display.update()
 
                         for event2 in pygame.event.get():
@@ -170,6 +170,8 @@ def game_loop():
     tablero = board.getMatriz()
     inicializar_juego()
     ficha_selec = False                                                     # Controla el turno
+    casilla_en_salto = None                                                 # Para que la ficha realice todos los saltos posibles, en una secuencia determinada y no se puedan mover las demas fichas
+    saltos_posibles = []                                                    # Utilizada para contabilizar si una casilla tiene, saltos disponibles luego de realizar un salto.
 
     while not gana_empate:                                                                           # Game Loop
 
@@ -220,20 +222,31 @@ def game_loop():
                     # cas_mov = cas  # La casilla donde se almacena la ficha a cambiar de lugar
                     # conf_click_area = cas.ficha.click_area(mx, my)  # Para validar si se esta clickeando una ficha
                     # ficha_selec = True
-
+                    ####################################################################################################
                     # Para jugar con turno
 
-                    if board.turno_oscuras() == True and cas.ficha.tipo_color == 'marron':
+                    if casilla_en_salto == None:                                                                    # Si no hay una casilla en medio de una secuencia de salto.
 
-                        cas_mov = cas                                                                        # La casilla donde se almacena la ficha a cambiar de lugar
-                        conf_click_area = cas.ficha.click_area(mx, my)                                       # Para validar si se esta clickeando una ficha
-                        ficha_selec = True
+                        if board.turno_oscuras() == True and cas.ficha.tipo_color == 'marron':
 
-                    if board.turno_oscuras() == False and cas.ficha.tipo_color == 'blanca':
+                            cas_mov = cas                                                                           # La casilla donde se almacena la ficha a cambiar de lugar
+                            conf_click_area = cas.ficha.click_area(mx, my)                                          # Para validar si se esta clickeando una ficha
+                            ficha_selec = True
 
-                        cas_mov = cas                                                                        # La casilla donde se almacena la ficha a cambiar de lugar
-                        conf_click_area = cas.ficha.click_area(mx, my)                                       # Para validar si se esta clickeando una ficha
-                        ficha_selec = True
+                        if board.turno_oscuras() == False and cas.ficha.tipo_color == 'blanca':
+
+                            cas_mov = cas                                                                           # La casilla donde se almacena la ficha a cambiar de lugar
+                            conf_click_area = cas.ficha.click_area(mx, my)                                          # Para validar si se esta clickeando una ficha
+                            ficha_selec = True
+
+                    else:                                                                                           # Si hay una casilla en medio de una secuencia de salto,
+
+                        if cas == casilla_en_salto:
+
+                            cas_mov = cas                                                                           # La casilla donde se almacena la ficha a cambiar de lugar
+                            conf_click_area = cas.ficha.click_area(mx, my)                                          # Para validar si se esta clickeando una ficha
+                            ficha_selec = True
+
 
                     #print(conf_click_area)
 
@@ -256,23 +269,38 @@ def game_loop():
                         board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
                         cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
                         #print('Se ejecuto')
-
                         gameSurface.blit(sup_tablero, (0, 0))
                         dibujarFichaCentrada(mx, my)                                                    # Dibujar la ficha centrada
                         dibujarTodasFichas(tablero)
-                        board.cont_turno += 1
+                        board.contador_turno()
                         conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
 
                     elif board.salto_valido(mx, my, mxg, myg) == True:                                  # Para determinar si se esta comiendo validamente
 
                         board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
                         cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
+
+                        f, c = board.det_casilla(mx, my)                                                # Para averiguar si la casilla esta en medio de una secuencia de salto
+                        cas_ver = board._matriz[f][c]
+
+                        if len(saltos_posibles) > 0 and [cas_ver] in saltos_posibles:                   # En caso de que se este en una secuencia de salto y el salto realizado este en los saltos posibles que se puedem realizar
+                            casilla_en_salto = None  ###########                                        # Para indicar que no se esta en medio de una secuencia de salto
+                            #board.contador_turno()
+
+                        saltos_posibles = board.saltos_posibles_universal(cas_ver.ficha)                # Para verificar despues del salto si es necesario seguir saltando
+
+                        if len(saltos_posibles) == 0:                                                   # En caso de que no sea necesario seguir saltando
+                            casilla_en_salto = None  ###########
+                            board.contador_turno()
+
+                        else:
+                            casilla_en_salto = cas_ver                                                  # Para solo poder mover la ficha que empezo una secuencia de salto.
+
                         #print('Se ejecuto')
 
                         gameSurface.blit(sup_tablero, (0, 0))
                         dibujarFichaCentrada(mx, my)                                                    # Dibujar la ficha centrada
                         dibujarTodasFichas(tablero)
-                        board.cont_turno += 1
                         conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
 
                     else:                                                                               # En caso de que el movimiento no sea valido, redibujar la ficha en la casilla donde estaba
@@ -297,7 +325,7 @@ def game_loop():
 
         pygame.display.update()                                                                     # Si se coloca un parametro solo va a refrescar ese parametro
 
-if menu_loop():
+if menu_loop():                                                                                     # Despues que se tome la accion pertinente en el menu
     game_loop()
 #message_to_screen('Game Over', (0, 0, 0))
 #pygame.display.update()

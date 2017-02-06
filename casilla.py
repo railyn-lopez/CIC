@@ -4,7 +4,7 @@ class Casilla:
 
         self.ficha = ficha                  # none significa que la casilla esta vacia
         self.cor_tablero = cor_tablero      # En la matriz
-        self.cor_pixeles = cor_pixeles      # En pixels
+        self.cor_pixeles = cor_pixeles      # En pixels #(x_izq, x_der, y_arriba, y_abajo )
         self.color = color                  # color de la casilla
 
     def __str__(self):

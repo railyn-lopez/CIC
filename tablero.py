@@ -134,6 +134,7 @@ class Tablero:
                                                                                                                                                            # ,subido una fila, aumentado una columna o aumentado una fila (ficha rey).
                 return True
                                                                                #(f_nueva, c_nueva, f_vieja, c_vieja)
+
     def salto_valido(self, x = None, y = None, x_vieja = None, y_vieja = None, coor_fichas = None):
         """Para determinar si la ficha ha saltado validamente"""
 
@@ -252,18 +253,31 @@ class Tablero:
                                 return True
 
     def cop_ficha(self, x, y, ficha):
-        """Para copiar una ficha de una casilla a otra y coronar fichas"""
+        """Para copiar una ficha de una casilla a otra"""
 
         f, c = self.det_casilla(x, y)
 
-        if f == 0 or f == 7:                            # En caso de que se llege a kings row
+        if f > 0 and f < 7:                                  # Copiando una ficha de una casilla normal a otra
 
-            if ficha.nom_archivo == self.ficha_2:     # Coronando la ficha marron
+            casilla = self._matriz[f][c]
+            casilla.ficha = ficha
+
+        else:                                               # En caso de que se llegue a kings row, es necesario coronarla
+            self.coronar_ficha(x, y, ficha)
+
+    def coronar_ficha(self, x, y, ficha):
+        """Para coronar las fichas"""
+
+        f, c = self.det_casilla(x, y)
+
+        if f == 0 or f == 7:                                # En caso de que se llegue a kings row
+
+            if ficha.nom_archivo == self.ficha_2:           # Coronando la ficha marron
                 ficha = Ficha(self.ficha_2_rey, f, x, y)
                 ficha.rect.centerx = x
                 ficha.rect.centery = y
 
-            if ficha.nom_archivo == self.ficha_1:     # Coronando la ficha blanca
+            if ficha.nom_archivo == self.ficha_1:           # Coronando la ficha blanca
                 ficha = Ficha(self.ficha_1_rey, f, x, y)
                 ficha.rect.centerx = x
                 ficha.rect.centery = y
@@ -494,8 +508,8 @@ class Tablero:
             posiciones = self.comidas_posibles(casilla, enemigos)
 
             if len(posiciones[0]) > 0:                      # En caso de que se alla saltos realizables.
-                for cas in posiciones[0]:
-                   print(cas)
+                # for cas in posiciones[0]:
+                #    print(cas)
 
                 return(posiciones)
 
@@ -519,8 +533,8 @@ class Tablero:
             posiciones = self.comidas_posibles(casilla, enemigos)
 
             if len(posiciones[0]) > 0:                  # En caso de que se alla saltos realizables.
-                for cas in posiciones[0]:
-                   print(cas)
+                # for cas in posiciones[0]:
+                #    print(cas)
 
                 return(posiciones)
 
