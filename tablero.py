@@ -442,7 +442,7 @@ class Tablero:
 
             return (casillas_vacias)
 
-    def movidas_posibles_king(self, ficha, vervose = None):
+    def movidas_posibles_king(self, ficha, vervose=None):
         """Para determinar las movidas posibles de una ficha, king"""
 
         f, c = (self.det_casilla(ficha.rect.centerx, ficha.rect.centery))
@@ -495,7 +495,7 @@ class Tablero:
 
             return (casillas_vacias)
 
-    def saltos_posibles_men_2(self, ficha):
+    def saltos_posibles_men_2(self, ficha, vervose=None):
         """Imprime todos los posibles jumps de una ficha"""
 
         f, c = self.det_casilla(ficha.rect.centerx, ficha.rect.centery)
@@ -508,9 +508,11 @@ class Tablero:
 
             posiciones = self.comidas_posibles(casilla, enemigos)
 
-            if len(posiciones[0]) > 0:                      # En caso de que se alla saltos realizables.
-                # for cas in posiciones[0]:
-                #    print(cas)
+            if vervose == True:
+
+                if len(posiciones[0]) > 0:                      # En caso de que se alla saltos realizables.
+                    for cas in posiciones[0]:
+                       print(cas)
 
                 return(posiciones)
 
