@@ -203,7 +203,7 @@ def game_loop():
                 gana_empate = True
                 return
 
-            if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0] == 1:         # Si se clickeo con el boton izq
+            if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed() == (1, 0, 0):         # Si se clickeo con el boton izq
 
                 mx, my = pygame.mouse.get_pos()
                 mxg, myg = mx, my                                                                   # Para almacenar la posicion donde se clickeo la ficha para moverla
@@ -311,8 +311,8 @@ def game_loop():
                         dibujarTodasFichas(tablero)
 
             if event.type == pygame.MOUSEMOTION and conf_click_area:                                # Si el mouse se esta moviendo y no se ha levantado
+                
                 mx2, my2 = pygame.mouse.get_pos()                                                   # El boton por arriba de la ficha, obtener posicion del mouse
-
                 gameSurface.blit(sup_tablero, (0, 0))
                 tablero = board.getMatriz()                                                         # Pasandole la matriz a la funcion
                 dibujarTodasFichas(tablero)
