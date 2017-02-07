@@ -517,6 +517,7 @@ class Tablero:
                 return(posiciones)
 
             else:
+
                 return []                                   # En caso de que no alla saltos realizables.
 
         else:
