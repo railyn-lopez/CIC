@@ -442,7 +442,7 @@ class Tablero:
 
             return (casillas_vacias)
 
-    def movidas_posibles_king(self, ficha):
+    def movidas_posibles_king(self, ficha, vervose = None):
         """Para determinar las movidas posibles de una ficha, king"""
 
         f, c = (self.det_casilla(ficha.rect.centerx, ficha.rect.centery))
@@ -487,10 +487,11 @@ class Tablero:
 
                 print('La ficha introducida no es king')
 
-            print('Moves posibles: ', len(casillas_vacias))
+            if vervose == True:
 
-            for ele in casillas_vacias:
-                print(ele.cor_tablero)
+                print('Moves posibles: ', len(casillas_vacias))
+                for ele in casillas_vacias:
+                    print(ele.cor_tablero)
 
             return (casillas_vacias)
 
@@ -1250,10 +1251,10 @@ class Tablero:
         if self.cont_f1 == 12 or self.cont_f2 == 12:                        # Game over por comer todas las fichas
 
             if self.cont_f1 == 12:
-                print('El jugador de las fichas claras gano')
+                print('El jugador de las fichas claras gano 1')
 
             else:
-                print('El jugador de las oscuras gano')
+                print('El jugador de las oscuras gano 1')
 
             return True
 
@@ -1266,11 +1267,11 @@ class Tablero:
 
             if self.movidas_validos_por_color('blanca') == 0:
 
-                print('El jugador de las oscuras gano')
+                print('El jugador de las oscuras gano 2')
                 return True
 
-            else:
-                print('El jugador de las fichas claras gano')
+            elif self.movidas_validos_por_color('marron') == 0:
+                print('El jugador de las fichas claras gano 2')
                 return True
 
         else:
