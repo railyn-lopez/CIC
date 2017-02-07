@@ -521,7 +521,9 @@ class Tablero:
                 return []                                   # En caso de que no alla saltos realizables.
 
         else:
-            print("La casilla no esta vacia, o la ficha no es men")
+
+            if vervose == True:
+                print("La casilla no esta vacia, o la ficha no es men")
 
     def saltos_posibles_king(self, ficha, vervose = None):
         """Imprime todos los posibles jumps de una ficha"""
