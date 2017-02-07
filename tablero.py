@@ -487,7 +487,7 @@ class Tablero:
 
                 print('La ficha introducida no es king')
 
-            if vervose == True:
+            if vervose == True:                                 # Para imprimir cuando el usuario lo desee
 
                 print('Moves posibles: ', len(casillas_vacias))
                 for ele in casillas_vacias:
@@ -508,7 +508,7 @@ class Tablero:
 
             posiciones = self.comidas_posibles(casilla, enemigos)
 
-            if vervose == True:
+            if vervose == True:                                 # Para imprimir cuando el usuario lo desee
 
                 if len(posiciones[0]) > 0:                      # En caso de que se alla saltos realizables.
                     for cas in posiciones[0]:
@@ -523,7 +523,7 @@ class Tablero:
         else:
             print("La casilla no esta vacia, o la ficha no es men")
 
-    def saltos_posibles_king(self, ficha):
+    def saltos_posibles_king(self, ficha, vervose = None):
         """Imprime todos los posibles jumps de una ficha"""
 
         f, c = self.det_casilla(ficha.rect.centerx, ficha.rect.centery)
@@ -536,9 +536,11 @@ class Tablero:
 
             posiciones = self.comidas_posibles(casilla, enemigos)
 
-            if len(posiciones[0]) > 0:                  # En caso de que se alla saltos realizables.
-                # for cas in posiciones[0]:
-                #    print(cas)
+            if vervose == True:                             # Para imprimir cuando el usuario lo desee
+
+                if len(posiciones[0]) > 0:                  # En caso de que se alla saltos realizables.
+                    for cas in posiciones[0]:
+                       print(cas)
 
                 return(posiciones)
 
@@ -547,7 +549,9 @@ class Tablero:
 
         else:
 
-            print("La casilla no esta vacia, o la ficha no es men")
+            if vervose == True:
+
+                print("La casilla no esta vacia, o la ficha no es men")
 
     def movidas_validos_por_color(self, color, vervose = None):
         """Imprime la posicion de las fichas, que pueden tener movimientos validos para ese color
