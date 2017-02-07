@@ -176,7 +176,8 @@ def game_loop():
     while not gana_empate:                                                                           # Game Loop
 
         game_over_loop = board.game_over()                                                           # Para determinar si el juego termino
-        while game_over_loop:                                                                        # En caso de que el juego terminara entrara al game over loop
+        while game_over_loop == True or game_over == True:                                                                        # En caso de que el juego terminara entrara al game over loop
+
             time.sleep(2)                                                                            # Para no borrar la pantalla del juego inmediatamente.
             gameSurface.fill(brown)
             message_to_screen('Game Over', red, 'large', 0)
@@ -189,12 +190,14 @@ def game_loop():
                     if event.key == pygame.K_q:                 # Si se presiona la q, el juego termina
                         gana_empate = True
                         game_over_loop = False
+                        game_over = False
 
                     if event.key == pygame.K_c:
                         board.limpiar_marcador()                # Si se presiona la c, el juego continua
                         game_over_loop = False
                         game_loop()                             # Jugar nuevamente
                         gana_empate = True                      # Para que el programa termine cuando salga de la llamada recursiva (no darle 2 veces a la x)
+                        game_over = False
 
 
         for event in pygame.event.get():
@@ -206,14 +209,14 @@ def game_loop():
             if event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed() == (1, 0, 0):         # Si se clickeo con el boton izq
 
                 mx, my = pygame.mouse.get_pos()
-                mxg, myg = mx, my                                                                   # Para almacenar la posicion donde se clickeo la ficha para moverla
+                mxg, myg = mx, my                                                                        # Para almacenar la posicion donde se clickeo la ficha para moverla
                 cas = board.casilla_activa(mx, my)
 
                 #nada  = board.saltos_posibles_men(cas, [], [], [], [])
                 #board.enemigos_proximo(cas)
                 #board.movidas_posibles(cas)
                 #board.saltos_posibles(cas, [])
-                #board.movidas_validos_por_color('marron')
+                #board.movidas_validos_por_color('marron', 'True')
 
 
                 if cas.ficha != None:
@@ -275,6 +278,11 @@ def game_loop():
                         board.contador_turno()
                         conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
 
+                        if board.game_over2() == True:                                                  # Para verificar si se ha trancado a un usuario
+                            game_over = True
+                            break
+
+
                     elif board.salto_valido(mx, my, mxg, myg) == True:                                  # Para determinar si se esta comiendo validamente
 
                         board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
@@ -303,6 +311,10 @@ def game_loop():
                         dibujarTodasFichas(tablero)
                         conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
 
+                        if board.game_over2() == True:                                                  # Para verificar si se ha trancado a un usuario
+                            game_over = True
+                            break
+
                     else:                                                                               # En caso de que el movimiento no sea valido, redibujar la ficha en la casilla donde estaba
                         conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
                         cas = board.casilla_activa(mxg, myg)
@@ -310,8 +322,12 @@ def game_loop():
                         dibujarFichaCentrada(mxg, myg)                                                  # Dibujar la ficha centrada en la casilla si el movimiento fue invalido
                         dibujarTodasFichas(tablero)
 
+                        if board.game_over2() == True:                                                  # Para verificar si se ha trancado a un usuario
+                            game_over = True
+                            break
+
             if event.type == pygame.MOUSEMOTION and conf_click_area:                                # Si el mouse se esta moviendo y no se ha levantado
-                
+
                 mx2, my2 = pygame.mouse.get_pos()                                                   # El boton por arriba de la ficha, obtener posicion del mouse
                 gameSurface.blit(sup_tablero, (0, 0))
                 tablero = board.getMatriz()                                                         # Pasandole la matriz a la funcion

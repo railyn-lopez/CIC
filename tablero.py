@@ -545,9 +545,11 @@ class Tablero:
 
             print("La casilla no esta vacia, o la ficha no es men")
 
-    def movidas_validos_por_color(self, color):
-        """Imprime la posicion de las fichas, que pueden tener movimientos validos para ese color"""
+    def movidas_validos_por_color(self, color, vervose = None):
+        """Imprime la posicion de las fichas, que pueden tener movimientos validos para ese color
+        y retona la cantidad de fichas que pueden hacer movimientos validos, para dicho color"""
 
+        cant_fichas_mov = 0
         for f in range(len(self._matriz)):              # Inicializando la matriz del tablero que va a contener los objetos casilla
 
             for c in range(len(self._matriz[f])):
@@ -566,15 +568,24 @@ class Tablero:
 
                             if len(movimientos) > 0:
 
-                                print(casilla.cor_tablero, "\n")
+                                cant_fichas_mov += 1
+
+                                if vervose == True:    # Para imprimir cuando el usuario lo deseee
+
+                                    print(casilla.cor_tablero, "\n")
 
                         else:           # En caso de que sea una king
 
                             movimientos = self.movidas_posibles_king(ficha)
 
                             if len(movimientos) > 0:
+                                cant_fichas_mov += 1
 
-                                print(casilla.cor_tablero, "\n")
+                                if vervose == True:    # Para imprimir cuando el usuario lo deseee
+
+                                    print(casilla.cor_tablero, "\n")
+
+        return cant_fichas_mov
 
     def saltos_posibles_men(self, casilla, enemigos_proximos, lista_saltos, casillas_saltadas, casillas_imposible_saltar):
 
@@ -1234,17 +1245,33 @@ class Tablero:
             return False
 
     def game_over(self):
-        """Utilizada para monitoriar el tablero, revisara si el juego esta acabado o empate"""
+        """Utilizada para monitoriar el tablero, revisara si el juego esta acabado por captura de fichas"""
 
-        if self.cont_f1 == 12 or self.cont_f2 == 12:
+        if self.cont_f1 == 12 or self.cont_f2 == 12:                        # Game over por comer todas las fichas
 
             if self.cont_f1 == 12:
                 print('El jugador de las fichas claras gano')
 
             else:
-                print('El jugador de las oscuras claras gano')
+                print('El jugador de las oscuras gano')
 
             return True
+
+        else:
+            return False
+    def game_over2(self):
+        """Para determinar si el juego ha acabado por trancar las fichas"""
+
+        if self.movidas_validos_por_color('blanca') == 0 or self.movidas_validos_por_color('marron') == 0:
+
+            if self.movidas_validos_por_color('blanca') == 0:
+
+                print('El jugador de las oscuras gano')
+                return True
+
+            else:
+                print('El jugador de las fichas claras gano')
+                return True
 
         else:
             return False
