@@ -1250,7 +1250,7 @@ class Tablero:
         self.cont_turno += control
 
     def saltos_posibles_universal(self, ficha):
-        """Para retornar los saltos que una ficha, puede dar independientemente del tipo que sea (men o king)"""
+        """Para retornar una lista de los saltos que una ficha, puede dar independientemente del tipo que sea (men o king)"""
 
         if ficha.tipo_men() == True:                # Si la ficha es un men
 
@@ -1261,6 +1261,20 @@ class Tablero:
 
             saltos = self.saltos_posibles_king(ficha)
             return saltos
+
+    def mov_posibles_universal(self, ficha):
+        """Para retornar una lista de los mov que una ficha, puede dar independientemente del tipo que sea (men o king)"""
+
+        if ficha.tipo_men() == True:                # Si la ficha es un men
+
+            saltos = self.movidas_posibles_men(ficha)
+            return saltos
+
+        else:                                       # Si la ficha es un king
+
+            saltos = self.movidas_posibles_king(ficha)
+            return saltos
+
 
     def saltos_validos_por_color(self, color, vervose=None):
         '''Retorna un lista con las casillas que pueden realizar saltos posibles, por color & en caso de que
