@@ -1263,13 +1263,14 @@ class Tablero:
             return saltos
 
     def saltos_validos_por_color(self, color, vervose=None):
-        '''Retorna un listado con las casillas que pueden realizar saltos posibles, por color & en caso de que
+        '''Retorna un lista con las casillas que pueden realizar saltos posibles, por color & en caso de que
         se desee imprime las coordenadas de las casillas que tienen la posibilidad de saltar'''
 
         cant_fichas_sal = []                              # Para almacenar las casillas que pueden saltar
-        cont_fichas = 0                                   # Para contar fichas disponibles para un color determinado
 
-        print('')
+        if vervose == True:                               # Para imprimir una linea en blanco y que se note la diferencia entre un resultado y otro
+
+            print('')
 
         for f in range(len(self._matriz)):
 
@@ -1283,19 +1284,15 @@ class Tablero:
 
                     if ficha.tipo_color == color:
 
-                        cont_fichas += 1
+                        saltos = self.saltos_posibles_universal(ficha)  # Independientemente si es men o king
 
-                        saltos = self.saltos_posibles_universal(ficha)
-
-                        if len(saltos) > 0:
+                        if len(saltos) > 0:                             # Si hay saltos disponibles, a realizar, se almacena en la lista
                             cant_fichas_sal.append(casilla)
 
-                            if vervose == True:
+                            if vervose == True:          # En caso de que se deseen imprimir las coordenadas por consola
                                 print(casilla.cor_tablero)
 
-        if cont_fichas > 0:
-
-            return cant_fichas_sal
+        return cant_fichas_sal                           # En caso de que no haya casillas disponibles para saltar, se devolvera una lista vacia
                         
 
 
