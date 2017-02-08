@@ -385,7 +385,7 @@ class Tablero:
 
             return (casillas_vacias)
 
-    def movidas_posibles_men(self, ficha):
+    def movidas_posibles_men(self, ficha, vervose=None):
         """Para determinar las movidas posibles de una ficha, men"""
 
         f, c = (self.det_casilla(ficha.rect.centerx, ficha.rect.centery))
@@ -433,12 +433,16 @@ class Tablero:
 
             else:
 
-                print('La ficha introducida no es men')
+                if vervose == True:
 
-            # print('Moves posibles: ', len(casillas_vacias))
-            #
-            # for ele in casillas_vacias:
-            #     print(ele.cor_tablero)
+                    print('La ficha introducida no es men')
+
+            if vervose == True:
+
+                print('Moves posibles: ', len(casillas_vacias))
+
+                for ele in casillas_vacias:
+                    print(ele.cor_tablero)
 
             return (casillas_vacias)
 
@@ -1339,7 +1343,8 @@ class Tablero:
             return saltos
 
     def saltos_validos_por_color(self, color, vervose=None):
-        '''Retorna un listado con las casillas que pueden realizar saltos posibles'''
+        '''Retorna un listado con las casillas que pueden realizar saltos posibles, por color & en caso de que
+        se desee imprime las coordenadas de las casillas que tienen la posibilidad de saltar'''
 
         cant_fichas_sal = []                              # Para almacenar las casillas que pueden saltar
         cont_fichas = 0                                   # Para contar fichas disponibles para un color determinado
