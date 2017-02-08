@@ -159,8 +159,6 @@ def menu_loop():
                                     board.orden_fichas = 'b'
                                     return True               # Para entrar al gameloop en el main program
 
-
-
 def game_loop():
     """Logica del juego, interaccion del usuario y las fichas"""
 
@@ -189,16 +187,16 @@ def game_loop():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_q:                 # Si se presiona la q, el juego termina
                         gana_empate = True
-                        game_over_loop = False
                         game_over = False
+                        game_over_loop = False
+
 
                     if event.key == pygame.K_c:
                         board.limpiar_marcador()                # Si se presiona la c, el juego continua
                         game_over_loop = False
                         game_loop()                             # Jugar nuevamente
-                        gana_empate = True                      # Para que el programa termine cuando salga de la llamada recursiva (no darle 2 veces a la x)
                         game_over = False
-
+                        gana_empate = True                      # Para que el programa termine cuando salga de la llamada recursiva (no darle 2 veces a la x)
 
         for event in pygame.event.get():
 
@@ -217,7 +215,8 @@ def game_loop():
                 #board.movidas_posibles(cas)
                 #board.saltos_posibles(cas, [])
                 #board.movidas_validos_por_color('marron', 'True')
-
+                #board.saltos_validos_por_color('marron', True)
+                #board.movidas_validas_por_color('marron', True)
 
                 if cas.ficha != None:
 
@@ -254,13 +253,14 @@ def game_loop():
                     #print(conf_click_area)
 
                     #board.movidas_posibles_men(cas.ficha)                                               # Movimientos validos fichas men
-                    #board.movidas_posibles_king(cas.ficha)                                              # Movimientos validos fichas king
-                    #board.saltos_posibles_men_2(cas.ficha)
-                    #board.saltos_posibles_king(cas.ficha)
+                    #board.movidas_posibles_king(cas.ficha, True)                                              # Movimientos validos fichas king
+                    #board.saltos_posibles_men_2(cas.ficha, True)
+                    #board.saltos_posibles_king(cas.ficha, True)
 
             if event.type == pygame.MOUSEBUTTONUP and pygame.mouse.get_pressed()[0] == 0 and ficha_selec == True:               # Para determinar si se levanto el boton izq del mouse.
 
                 ficha_selec = False                                                                     # Reseteando, la variable que controla el turno
+                ficha_hombre = False
                 mx, my = pygame.mouse.get_pos()
 
                 cas_vieja = board.casilla_activa(mxg, myg)
@@ -279,11 +279,15 @@ def game_loop():
                         conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
 
                         if board.game_over2() == True:                                                  # Para verificar si se ha trancado a un usuario
+                            input()
                             game_over = True
                             break
 
 
                     elif board.salto_valido(mx, my, mxg, myg) == True:                                  # Para determinar si se esta comiendo validamente
+
+                        if cas_mov.ficha.tipo_men() == True:
+                            ficha_hombre = True
 
                         board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
                         cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
@@ -291,11 +295,18 @@ def game_loop():
                         f, c = board.det_casilla(mx, my)                                                # Para averiguar si la casilla esta en medio de una secuencia de salto
                         cas_ver = board._matriz[f][c]
 
+                        if cas_ver.ficha.tipo_men() == False and ficha_hombre == True:                  # Si la ficha ha sido coronada
+                            saltos_posibles = []                                                        # Para no seguir revisando, la si esta en una secuencia de salto
+
+
                         if len(saltos_posibles) > 0 and [cas_ver] in saltos_posibles:                   # En caso de que se este en una secuencia de salto y el salto realizado este en los saltos posibles que se puedem realizar
                             casilla_en_salto = None  ###########                                        # Para indicar que no se esta en medio de una secuencia de salto
                             #board.contador_turno()
 
                         saltos_posibles = board.saltos_posibles_universal(cas_ver.ficha)                # Para verificar despues del salto si es necesario seguir saltando
+
+                        if cas_ver.ficha.tipo_men() == False and ficha_hombre == True:                  # Si la ficha ha sido coronada
+                            saltos_posibles = []                                                        # Para no seguir revisando, la si esta en una secuencia de salto
 
                         if len(saltos_posibles) == 0:                                                   # En caso de que no sea necesario seguir saltando
                             casilla_en_salto = None  ###########
@@ -312,6 +323,7 @@ def game_loop():
                         conf_click_area = False                                                         # Para evitar segir dibujando, cuando el mouse se mueva
 
                         if board.game_over2() == True:                                                  # Para verificar si se ha trancado a un usuario
+                            input()
                             game_over = True
                             break
 
@@ -323,6 +335,7 @@ def game_loop():
                         dibujarTodasFichas(tablero)
 
                         if board.game_over2() == True:                                                  # Para verificar si se ha trancado a un usuario
+                            input()
                             game_over = True
                             break
 
