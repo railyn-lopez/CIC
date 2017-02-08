@@ -1258,11 +1258,11 @@ class Tablero:
                 casilla = self._matriz[f][c]
 
                 if casilla.ficha != None:
-                    cont_fichas += 1
 
                     ficha = casilla.ficha
 
                     if ficha.tipo_color == color:
+                        cont_fichas += 1                                # Contando las ficha existentes, de dicho color
 
                         saltos = self.saltos_posibles_universal(ficha)  # Independientemente si es men o king
 
@@ -1300,11 +1300,11 @@ class Tablero:
                 casilla = self._matriz[f][c]
 
                 if casilla.ficha != None:
-                    cont_fichas += 1                     # Contando las ficha existentes
 
                     ficha = casilla.ficha
 
                     if ficha.tipo_color == color:
+                        cont_fichas += 1                             # Contando las ficha existentes, de dicho color
 
                         saltos = self.mov_posibles_universal(ficha)  # Independientemente si es men o king
 
