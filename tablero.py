@@ -482,60 +482,6 @@ class Tablero:
 
                 print("La casilla no esta vacia, o la ficha no es men")
 
-    def movidas_validos_por_color(self, color, vervose=None):
-        """Imprime la posicion de las fichas, que pueden tener movimientos validos para ese color
-        y retona la cantidad de fichas que pueden hacer movimientos validos, para dicho color"""
-
-        cant_fichas_mov = 0                             # Para contar las fichas que pueden realizar movimientos
-        cont_fichas = 0                                 # Para contar fichas disponibles para un color determinado
-
-        for f in range(len(self._matriz)):              # Inicializando la matriz del tablero que va a contener los objetos casilla
-
-            for c in range(len(self._matriz[f])):
-
-                casilla = self._matriz[f][c]
-
-                if casilla.ficha != None:
-
-                    ficha = casilla.ficha
-
-                    if ficha.tipo_color == color:
-
-                        if ficha.tipo_men() == True:
-
-                            cont_fichas += 1            # Para contar las fichas disponibles en el tablero
-
-                            movimientos = self.movidas_posibles_men(ficha)
-
-                            if len(movimientos) > 0:
-
-                                cant_fichas_mov += 1
-
-                                if vervose == True:    # Para imprimir cuando el usuario lo deseee
-
-                                    print(casilla.cor_tablero, "\n")
-
-                        else:           # En caso de que sea una king
-
-                            cont_fichas += 1            # Para contar las fichas disponibles en el tablero
-
-                            movimientos = self.movidas_posibles_king(ficha)
-
-                            if len(movimientos) > 0:
-                                cant_fichas_mov += 1
-
-                                if vervose == True:    # Para imprimir cuando el usuario lo deseee
-
-                                    print(casilla.cor_tablero, "\n")
-
-        if cont_fichas > 0:
-
-            return cant_fichas_mov
-
-        else:
-
-            return None
-
     def saltos_posibles_men(self, casilla, enemigos_proximos, lista_saltos, casillas_saltadas, casillas_imposible_saltar):
 
         if len(lista_saltos) == 0:                      # Almacenando la pos inicial como 1er salto
@@ -1199,10 +1145,10 @@ class Tablero:
         if self.cont_f1 == 12 or self.cont_f2 == 12:                        # Game over por comer todas las fichas
 
             if self.cont_f1 == 12:
-                print('El jugador de las fichas claras gano 1')
+                print('El jugador de las fichas oscuras gano 1')
 
             else:
-                print('El jugador de las oscuras gano 1')
+                print('El jugador de las blancas gano 1')
 
             return True
 
@@ -1212,20 +1158,39 @@ class Tablero:
     def game_over2(self):
         """Para determinar si el juego ha acabado por trancar las fichas"""
 
-        if self.movidas_validos_por_color('blanca') == 0 or self.movidas_validos_por_color('marron') == 0:
+        mov_blancas = self.movidas_validas_por_color('blanca')
+        mov_marrones = self.movidas_validas_por_color('marron')
+        sal_blancas = self.saltos_validos_por_color('blanca')
+        sal_marrones = self.saltos_validos_por_color('marron')
 
-            if self.movidas_validos_por_color('blanca') == 0:
-                print('El jugador de las oscuras gano 2')
-                input()
-                return True
-
-            if self.movidas_validos_por_color('marron') == 0:
-                print('El jugador de las fichas claras gano 2')
-                input()
-                return True
-
-        else:
+        if mov_blancas == None or mov_marrones == None:         # Para ver si se han comido todas las fichas de un determinado color.
             return False
+
+        if len(mov_blancas) == 0 and len(sal_blancas) == 0:
+
+            print('Ganaron las fichas oscuras 2')
+            return True
+
+        elif len(mov_marrones) == 0 and len(sal_marrones) == 0:
+
+            print('Ganaron las fichas claras 2')
+            return True
+
+
+        # if self.movidas_validos_por_color('blanca') == 0 or self.movidas_validos_por_color('marron') == 0:
+        #
+        #     if self.movidas_validos_por_color('blanca') == 0:
+        #         print('El jugador de las oscuras gano 2')
+        #         input()
+        #         return True
+        #
+        #     if self.movidas_validos_por_color('marron') == 0:
+        #         print('El jugador de las fichas claras gano 2')
+        #         input()
+        #         return True
+        #
+        # else:
+        #     return False
 
     def limpiar_marcador(self):
         """Para resetear los contadores a 0 luego de que una partida acabe y se desida seguir jugando"""
@@ -1250,7 +1215,7 @@ class Tablero:
         self.cont_turno += control
 
     def saltos_posibles_universal(self, ficha):
-        """Para retornar una lista de los saltos que una ficha, puede dar independientemente del tipo que sea (men o king)"""
+        """Retorna una lista de los saltos que una ficha puede dar, independientemente del tipo que sea (men o king)"""
 
         if ficha.tipo_men() == True:                # Si la ficha es un men
 
@@ -1263,7 +1228,7 @@ class Tablero:
             return saltos
 
     def mov_posibles_universal(self, ficha):
-        """Para retornar una lista de los mov que una ficha, puede dar independientemente del tipo que sea (men o king)"""
+        """Retorna una lista de los mov que una ficha puede dar, independientemente del tipo que sea (men o king)"""
 
         if ficha.tipo_men() == True:                # Si la ficha es un men
 
@@ -1275,12 +1240,12 @@ class Tablero:
             saltos = self.movidas_posibles_king(ficha)
             return saltos
 
-
     def saltos_validos_por_color(self, color, vervose=None):
         '''Retorna un lista con las casillas que pueden realizar saltos posibles, por color & en caso de que
         se desee imprime las coordenadas de las casillas que tienen la posibilidad de saltar'''
 
         cant_fichas_sal = []                              # Para almacenar las casillas que pueden saltar
+        cont_fichas = 0                                   # Para determinar la cantidad de fichas de determinado color, existentes en el tablero
 
         if vervose == True:                               # Para imprimir una linea en blanco y que se note la diferencia entre un resultado y otro
 
@@ -1293,6 +1258,7 @@ class Tablero:
                 casilla = self._matriz[f][c]
 
                 if casilla.ficha != None:
+                    cont_fichas += 1
 
                     ficha = casilla.ficha
 
@@ -1306,11 +1272,57 @@ class Tablero:
                             if vervose == True:          # En caso de que se deseen imprimir las coordenadas por consola
                                 print(casilla.cor_tablero)
 
-        return cant_fichas_sal                           # En caso de que no haya casillas disponibles para saltar, se devolvera una lista vacia
-                        
+        if cont_fichas > 0:
+            return cant_fichas_sal                           # En caso de que no haya casillas disponibles para saltar, se devolvera una lista vacia
 
+        else:                                                # Si no hay fichas exixtentes, (Se las comieron todas)
 
+            if vervose == True:
+                print(None)
 
+            return None
+
+    def movidas_validas_por_color(self, color, vervose=None):
+        '''Retorna un lista con las casillas que pueden realizar saltos posibles, por color, devuelve None, en caso de que
+         no alla fichas & en caso de que se desee imprime las coordenadas de las casillas que tienen la posibilidad de mover'''
+
+        cant_fichas_sal = []                              # Para almacenar las casillas que pueden saltar
+        cont_fichas = 0                                   # Para determinar la cantidad de fichas de determinado color, existentes en el tablero
+
+        if vervose == True:                               # Para imprimir una linea en blanco y que se note la diferencia entre un resultado y otro
+
+            print('')
+
+        for f in range(len(self._matriz)):
+
+            for c in range(len(self._matriz[f])):
+
+                casilla = self._matriz[f][c]
+
+                if casilla.ficha != None:
+                    cont_fichas += 1                     # Contando las ficha existentes
+
+                    ficha = casilla.ficha
+
+                    if ficha.tipo_color == color:
+
+                        saltos = self.mov_posibles_universal(ficha)  # Independientemente si es men o king
+
+                        if len(saltos) > 0:                             # Si hay saltos disponibles, a realizar, se almacena en la lista
+                            cant_fichas_sal.append(casilla)
+
+                            if vervose == True:          # En caso de que se deseen imprimir las coordenadas por consola
+                                print(casilla.cor_tablero)
+
+        if cont_fichas > 0:                             # Si hay fichas existentes, retornar resultados
+            return cant_fichas_sal
+
+        else:                                           # Si no hay fichas exixtentes, (Se las comieron todas)
+
+            if vervose == True:
+                print(None)
+
+            return None
 
 #a = Tablero()
 #
