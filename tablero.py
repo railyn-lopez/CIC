@@ -526,7 +526,7 @@ class Tablero:
             if vervose == True:
                 print("La casilla no esta vacia, o la ficha no es men")
 
-    def saltos_posibles_king(self, ficha, vervose = None):
+    def saltos_posibles_king(self, ficha, vervose=None):
         """Imprime todos los posibles jumps de una ficha"""
 
         f, c = self.det_casilla(ficha.rect.centerx, ficha.rect.centery)
@@ -558,7 +558,7 @@ class Tablero:
 
                 print("La casilla no esta vacia, o la ficha no es men")
 
-    def movidas_validos_por_color(self, color, vervose = None):
+    def movidas_validos_por_color(self, color, vervose=None):
         """Imprime la posicion de las fichas, que pueden tener movimientos validos para ese color
         y retona la cantidad de fichas que pueden hacer movimientos validos, para dicho color"""
 
@@ -1019,7 +1019,7 @@ class Tablero:
 
         return lista_saltos, lista_no_saltos
 
-    def saltos_posibles(self, casilla, casillas_alrededor_enemigos, lista_saltos = None, cas_inicial = None):
+    def saltos_posibles(self, casilla, casillas_alrededor_enemigos, lista_saltos = None, cas_inicial=None):
         """Determina los posibles saltos de una ficha y las fichas sobre las cuales no se puede saltar"""
 
         if cas_inicial != None:
@@ -1338,10 +1338,40 @@ class Tablero:
             saltos = self.saltos_posibles_king(ficha)
             return saltos
 
+    def saltos_validos_por_color(self, color, vervose=None):
+        '''Retorna un listado con las casillas que pueden realizar saltos posibles'''
 
+        cant_fichas_sal = []                              # Para almacenar las casillas que pueden saltar
+        cont_fichas = 0                                   # Para contar fichas disponibles para un color determinado
 
+        print('')
 
+        for f in range(len(self._matriz)):
 
+            for c in range(len(self._matriz[f])):
+
+                casilla = self._matriz[f][c]
+
+                if casilla.ficha != None:
+
+                    ficha = casilla.ficha
+
+                    if ficha.tipo_color == color:
+
+                        cont_fichas += 1
+
+                        saltos = self.saltos_posibles_universal(ficha)
+
+                        if len(saltos) > 0:
+                            cant_fichas_sal.append(casilla)
+
+                            if vervose == True:
+                                print(casilla.cor_tablero)
+
+        if cont_fichas > 0:
+
+            return cant_fichas_sal
+                        
 
 
 
