@@ -267,7 +267,7 @@ def game_loop():
 
                 if cas_vieja.ficha != None:                                                             # Si se clickeo una casilla con ficha, para empezar el movimiento
 
-                    if board.movimiento_valido(mx, my, mxg, myg) == True:                               # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
+                    if board.movimiento_valido(mx, my, mxg, myg) == True and casilla_en_salto == None:  # Determinado si donde el usuario pretende mover la ficha, es un movimiento valido.
 
                         board.cop_ficha(mx, my, cas_mov.ficha)                                          # Copiando la ficha en el tablero
                         cas_mov.ficha = None                                                            # Borrando la ficha de la casilla donde estaba ubicada
